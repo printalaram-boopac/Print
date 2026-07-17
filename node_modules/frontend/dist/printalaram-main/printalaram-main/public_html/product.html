@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Printalarm — Shagun Lifafa Details</title>
+<link rel="icon" type="image/x-icon" href="images/favicon.ico">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png">
+<link rel="apple-touch-icon" href="/favicon-48x48.png">
+<meta name="description" content="Personalize your Shagun Lifafa money cover with your name, family blessing and a cherished photo. Premium print, dispatched within 72 hours." />
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Jost:wght@300;400;500;600;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --maroon: #45102f;
+    --maroon-deep: #340a24;
+    --purple: #5a1a44;
+    --gold: #c79a3b;
+    --gold-light: #e0c073;
+    --cream: #fdf6e6;
+    --cream-2: #f7ecd3;
+    --ivory: #fffdf7;
+    --text-dark: #2a1220;
+    --text-muted: #6b5a55;
+    --green: #25d366;
+    --green-dark: #128c7e;
+  }
+  html { scroll-behavior: smooth; background: var(--cream); }
+  body { font-family: 'Jost', sans-serif; color: var(--text-dark); background: var(--cream); line-height: 1.6; overflow-x: hidden; }
+  h1,h2,h3,h4 { font-family: 'Cormorant Garamond', serif; font-weight: 600; line-height: 1.1; }
+  a { text-decoration: none; color: inherit; }
+  img { max-width: 100%; display: block; }
+  .wrap { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+  /* Navbar */
+  header { background: var(--cream); border-bottom: 1px solid rgba(69,16,47,.08); position: sticky; top: 0; z-index: 50; }
+  .nav { display: flex; align-items: center; justify-content: space-between; padding: 18px 24px; max-width: 1240px; margin: 0 auto; }
+  .brand { display: flex; align-items: center; gap: 12px; }
+  .logo-badge { width: 46px; height: 46px; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 14px rgba(69,16,47,.25); }
+  .logo-badge img { width: 100%; height: 100%; object-fit: cover; }
+  .brand-name { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 600; color: var(--maroon); letter-spacing: .5px; }
+  .brand-sub { font-size: 10px; letter-spacing: 3px; color: var(--gold); font-weight: 600; }
+  .nav-links { display: flex; gap: 34px; list-style: none; }
+  .nav-links a { font-size: 15px; font-weight: 500; color: var(--text-dark); transition: color .2s; }
+  .nav-links a:hover { color: var(--gold); }
+  .menu-toggle { display: none; background: none; border: none; font-size: 26px; color: var(--maroon); cursor: pointer; }
+
+  /* Breadcrumb */
+  .crumb { padding: 22px 0 4px; font-size: 14px; color: var(--text-muted); }
+  .crumb a:hover { color: var(--gold); }
+  .crumb .sep { margin: 0 8px; opacity: .5; }
+  .crumb .current { color: var(--maroon); font-weight: 500; }
+
+  /* Product layout */
+  .product { padding: 24px 0 70px; }
+  .product-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
+
+  /* Gallery */
+  .gallery-card { background: var(--ivory); border: 1px solid rgba(69,16,47,.08); border-radius: 24px; padding: 22px; box-shadow: 0 24px 50px rgba(69,16,47,.10); }
+  .gallery-img { position: relative; border-radius: 16px; overflow: hidden; background: var(--purple); aspect-ratio: 4/5; }
+  .gallery-img img { width: 100%; height: 100%; object-fit: cover; }
+  .tag.best { position: absolute; top: 16px; left: 16px; z-index: 2; background: var(--maroon-deep); color: var(--gold-light); font-size: 11px; font-weight: 700; letter-spacing: 1px; padding: 7px 14px; border-radius: 8px; }
+
+
+  /* Details */
+  .eyebrow-l { color: var(--gold); letter-spacing: 4px; font-size: 13px; font-weight: 600; text-transform: uppercase; }
+  .p-title { font-size: 60px; color: var(--maroon); margin: 8px 0 12px; }
+  .p-rating { display: flex; align-items: center; gap: 10px; font-size: 15px; color: var(--text-muted); margin-bottom: 22px; }
+  .p-rating .stars { color: var(--gold); letter-spacing: 2px; font-size: 18px; }
+
+  .price-row { display: flex; align-items: baseline; gap: 12px; }
+  .price-now { font-family: 'Cormorant Garamond', serif; font-size: 40px; font-weight: 700; color: var(--maroon); }
+  .price-old { text-decoration: line-through; color: var(--text-muted); font-size: 20px; }
+  .price-save { color: var(--gold); font-weight: 700; font-size: 13px; letter-spacing: 1px; }
+  .price-note { font-size: 14px; color: var(--text-muted); margin: 4px 0 26px; }
+
+  /* Quantity card */
+  .qty-card { background: var(--ivory); border: 1px solid rgba(69,16,47,.08); border-radius: 20px; padding: 26px; box-shadow: 0 16px 36px rgba(69,16,47,.08); margin-bottom: 26px; }
+  .qty-label { font-size: 12px; letter-spacing: 3px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; margin-bottom: 16px; }
+  .qty-controls { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+  .stepper { display: flex; align-items: center; background: var(--cream); border-radius: 40px; padding: 6px; }
+  .stepper button { width: 40px; height: 40px; border: none; background: var(--ivory); border-radius: 50%; font-size: 20px; color: var(--maroon); cursor: pointer; box-shadow: 0 2px 8px rgba(69,16,47,.12); }
+  .stepper button:hover { background: var(--maroon); color: var(--cream); }
+  .stepper .qty-val { width: 72px; min-width: 64px; text-align: center; font-size: 20px; font-weight: 600; font-family: 'Cormorant Garamond', serif; color: var(--maroon); background: transparent; border: none; outline: none; -moz-appearance: textfield; }
+  .stepper .qty-val::-webkit-outer-spin-button,
+  .stepper .qty-val::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+  .stepper .qty-val:focus { background: var(--ivory); border-radius: 20px; box-shadow: 0 0 0 2px rgba(69,16,47,.15); }
+  .presets { display: flex; gap: 10px; }
+  .preset { border: 1px solid rgba(69,16,47,.18); background: var(--cream); color: var(--maroon); font-family: 'Jost', sans-serif; font-weight: 600; font-size: 14px; padding: 10px 18px; border-radius: 40px; cursor: pointer; transition: all .2s; }
+  .preset.active { background: var(--maroon); color: var(--cream); border-color: var(--maroon); }
+  .qty-hint { font-size: 13px; color: var(--text-muted); margin-top: 14px; }
+  .subtotal-row { display: flex; align-items: flex-end; justify-content: space-between; border-top: 1px solid rgba(69,16,47,.1); margin-top: 18px; padding-top: 18px; }
+  .subtotal-row .st-label { font-size: 14px; color: var(--text-muted); }
+  .subtotal-row .st-now { font-family: 'Cormorant Garamond', serif; font-size: 30px; font-weight: 700; color: var(--maroon); }
+  .subtotal-row .st-old { text-decoration: line-through; color: var(--gold); font-size: 18px; }
+
+  /* Action buttons */
+  .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 24px; }
+  .actions.actions-single { grid-template-columns: 1fr; }
+  .btn { border: none; cursor: pointer; font-family: 'Jost', sans-serif; font-weight: 600; padding: 18px 24px; border-radius: 50px; font-size: 16px; display: inline-flex; align-items: center; justify-content: center; gap: 10px; transition: transform .2s, box-shadow .2s; }
+  .btn-maroon { background: var(--maroon); color: var(--cream); box-shadow: 0 10px 26px rgba(69,16,47,.3); }
+  .btn-gold { background: linear-gradient(135deg, var(--gold), var(--gold-light)); color: var(--maroon-deep); }
+  .btn:hover { transform: translateY(-3px); }
+
+  .trust { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .trust-item { background: var(--ivory); border: 1px solid rgba(69,16,47,.08); border-radius: 14px; padding: 18px 12px; text-align: center; }
+  .trust-item .ti-ic { color: var(--gold); font-size: 22px; margin-bottom: 8px; }
+  .trust-item small { font-size: 12px; color: var(--text-muted); }
+
+  /* WhatsApp */
+  .whatsapp {
+    position: fixed; right: 24px; bottom: 24px; z-index: 999;
+    background: linear-gradient(135deg, var(--green), var(--green-dark));
+    color: #fff; border-radius: 40px; padding: 10px 20px 10px 12px;
+    display: flex; align-items: center; gap: 10px; box-shadow: 0 12px 26px rgba(18,140,126,.4);
+    transition: transform .2s, box-shadow .2s;
+    animation: waPop .5s ease-out, waFloat 3s ease-in-out .5s infinite;
+  }
+  /* Pulsing radar rings behind the button */
+  .whatsapp::before, .whatsapp::after {
+    content: ""; position: absolute; left: 26px; bottom: 50%;
+    width: 40px; height: 40px; transform: translate(-50%, 50%);
+    border-radius: 50%; background: var(--green); z-index: -1;
+    animation: waPulse 2.2s ease-out infinite;
+  }
+  .whatsapp::after { display: none; }
+  .whatsapp:hover { transform: translateY(-4px); box-shadow: 0 18px 38px rgba(18,140,126,.55); animation-play-state: paused; }
+  .whatsapp .wa-icon { width: 40px; height: 40px; background:#fff; border-radius: 50%; display:grid; place-items:center; color: var(--green-dark); flex-shrink:0; animation: waRing 2.5s ease-in-out infinite; }
+  .whatsapp .wa-icon svg { width: 24px; height: 24px; }
+  .whatsapp small { display:block; font-size:12px; opacity:.95; font-weight:700; }
+  .whatsapp .wa-title { font-size: 13px; font-weight: 600; display:flex; align-items:center; gap:6px; }
+  .whatsapp .online { font-size: 9px; background: rgba(255,255,255,.25); padding: 1px 7px; border-radius: 10px; letter-spacing:.5px; }
+  .whatsapp .online::before { content:""; display:inline-block; width:6px; height:6px; border-radius:50%; background:#7cff9e; margin-right:4px; animation: waBlink 1.4s ease-in-out infinite; }
+  @keyframes waPop { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+  @keyframes waFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+  @keyframes waPulse { 0% { opacity:.6; transform: translate(-50%,50%) scale(1); } 100% { opacity:0; transform: translate(-50%,50%) scale(3); } }
+  @keyframes waRing { 0%,70%,100% { transform: rotate(0); } 75% { transform: rotate(-12deg); } 80% { transform: rotate(12deg); } 85% { transform: rotate(-8deg); } 90% { transform: rotate(8deg); } }
+  @keyframes waBlink { 0%,100% { opacity:1; } 50% { opacity:.3; } }
+  @media (max-width: 640px) {
+    .whatsapp { right: 14px; bottom: 14px; padding: 8px 16px 8px 10px; }
+    .whatsapp .wa-icon { width: 34px; height: 34px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .whatsapp, .whatsapp .wa-icon, .whatsapp::before, .whatsapp::after, .whatsapp .online::before { animation: none; }
+  }
+
+  /* Footer */
+  footer { background: var(--maroon-deep); color: var(--cream-2); padding: 70px 0 0; }
+  .foot-grid { display:grid; grid-template-columns: 1.5fr 1fr 1fr 1.2fr; gap: 40px; }
+  .foot-brand .brand-name { color: var(--cream); }
+  .foot-brand p { font-size: 14px; color: rgba(253,246,230,.6); margin-top: 16px; max-width: 260px; }
+  .socials { display:flex; gap: 12px; margin-top: 22px; }
+  .socials a { width: 40px; height: 40px; border:1px solid rgba(253,246,230,.25); border-radius: 50%; display:grid; place-items:center; color: var(--cream-2); transition: all .2s; }
+  .socials a:hover { background: var(--gold); color: var(--maroon-deep); border-color: var(--gold); }
+  .foot-col h4 { color: var(--gold); letter-spacing: 2px; font-size: 14px; text-transform: uppercase; margin-bottom: 20px; }
+  .foot-col ul { list-style:none; }
+  .foot-col li { margin-bottom: 12px; }
+  .foot-col a { font-size: 14px; color: rgba(253,246,230,.75); transition: color .2s; }
+  .foot-col a:hover { color: var(--gold-light); }
+  .contact-item { display:flex; align-items:center; gap: 10px; margin-bottom: 14px; font-size: 14px; color: rgba(253,246,230,.8); }
+  .contact-item .ic { color: var(--gold); }
+  .foot-bottom { text-align:center; border-top: 1px solid rgba(253,246,230,.12); margin-top: 50px; padding: 24px 0; font-size: 13px; color: rgba(253,246,230,.5); }
+
+  @media (max-width: 992px) {
+    .product-grid { grid-template-columns: 1fr; gap: 32px; }
+    .p-title { font-size: 46px; }
+    .foot-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 640px) {
+    .nav-links { display:none; }
+    .menu-toggle { display:block; }
+    .p-title { font-size: 38px; }
+    .actions { grid-template-columns: 1fr; }
+    .foot-grid { grid-template-columns: 1fr; }
+    .presets { flex-wrap: wrap; }
+  }
+</style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <header>
+    <nav class="nav">
+      <a class="brand" href="/index.html">
+        <div class="logo-badge"><img src="images/logo.png" alt="Printalarm logo" /></div>
+        <div>
+          <div class="brand-name">Printalarm</div>
+          <div class="brand-sub">SHAGUN COUTURE</div>
+        </div>
+      </a>
+      <ul class="nav-links">
+        <li><a href="/index.html#home">Home</a></li>
+        <!--<li><a href="/index.html#shop">Shop</a></li>-->
+        <li><a href="/index.html#collection">Collections</a></li>
+        <!-- <li><a href="/index.html#why">Why Us</a></li> -->
+        <!-- <li><a href="/index.html#faq">FAQ</a></li> -->
+        <li><a href="/index.html#contact">Contact</a></li>
+      </ul>
+      <button class="menu-toggle" aria-label="Open menu">&#9776;</button>
+    </nav>
+  </header>
+
+  <!-- BREADCRUMB -->
+  <div class="wrap crumb">
+    <a href="/index.html">Home</a><span class="sep">/</span>
+    <!--<a href="/index.html#collection">Shop</a><span class="sep">/</span>-->
+    <span class="current" id="crumbTitle">Lifafa</span>
+  </div>
+
+  <!-- PRODUCT -->
+  <section class="product">
+    <div class="wrap product-grid">
+      <!-- Gallery -->
+      <div>
+        <div class="gallery-card">
+          <div class="gallery-img">
+              <img id="mainImage" src="images/card-1.jpeg" alt="Shagun Lifafa preview" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Details -->
+      <div>
+        <div class="eyebrow-l" id="pCategory">Sacred Tradition</div>
+        <h1 class="p-title" id="pTitle">Swaminarayan Lifafa</h1>
+        <div class="p-rating">
+          <span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+          <span id="pRating">4.8 &middot; 132 reviews</span>
+        </div>
+
+        <div class="price-row">
+          <span class="price-now">&#8377;10</span>
+          <span class="price-old">&#8377;49</span>
+          <span class="price-save">SAVE 80%</span>
+        </div>
+        <p class="price-note">Per envelope &bull; Inclusive of all taxes</p>
+
+        <div class="qty-card">
+          <div class="qty-label">Quantity</div>
+          <div class="qty-controls">
+            <div class="stepper">
+              <button id="minusBtn" aria-label="Decrease quantity">&minus;</button>
+              <input class="qty-val" id="qtyVal" type="number" inputmode="numeric" min="1" value="200" aria-label="Quantity" />
+              <button id="plusBtn" aria-label="Increase quantity">+</button>
+            </div>
+            <div class="presets">
+              <button class="preset" data-qty="50">50 pcs</button>
+              <button class="preset" data-qty="100">100 pcs</button>
+              <button class="preset active" data-qty="200">200 pcs</button>
+            </div>
+          </div>
+          <p class="qty-hint">&#8377;10 per envelope at this quantity</p>
+          <div class="subtotal-row">
+            <div>
+              <div class="st-label">Subtotal</div>
+              <div class="st-now" id="subtotalNow">&#8377;2,000</div>
+            </div>
+            <div class="st-old" id="subtotalOld">&#8377;9,800</div>
+          </div>
+        </div>
+
+        <div class="actions actions-single">
+          <!-- Customize Now button hidden for now
+          <a class="btn btn-maroon" id="customizeBtn" href="#">&#10022; Customize Now</a>
+          -->
+          <a class="btn btn-gold" id="buyBtn" href="#">Buy Now</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer id="contact">
+    <div class="wrap foot-grid">
+      <div class="foot-brand">
+        <div class="brand">
+          <div class="logo-badge"><img src="images/logo.png" alt="Printalarm logo" /></div>
+          <div class="brand-name">Printalarm</div>
+        </div>
+        <p>Hand-crafted wedding money covers personalized for your most sacred celebrations.</p>
+        <div class="socials">
+          <a href="https://www.instagram.com/printalarm5/" target="_blank" rel="noopener" aria-label="Instagram">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+          </a>
+          <a href="https://www.facebook.com/profile.php?id=61591651010384&sk=directory_intro" target="_blank" rel="noopener" aria-label="Facebook">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+          </a>
+          <a href="https://www.youtube.com/@Printalarm" target="_blank" rel="noopener" aria-label="YouTube">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"></path><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02" fill="var(--maroon-deep)"></polygon></svg>
+          </a>
+        </div>
+      </div>
+      <!--<div class="foot-col">-->
+      <!--  <h4>Shop</h4>-->
+      <!--  <ul>-->
+      <!--    <li><a href="/index.html#collection">All Lifafas</a></li>-->
+      <!--    <li><a href="/index.html#collection">Collections</a></li>-->
+      <!--  </ul>-->
+      <!--</div>-->
+      <div class="foot-col">
+        <h4>Support</h4>
+        <ul>
+          <li><a href="/index.html#contact">Contact</a></li>
+          <li><a href="/shipping-returns.html">Shipping &amp; Returns</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h4>Get In Touch</h4>
+        <div class="contact-item"><span class="ic">&#9742;</span> +91 99045 51144</div>
+        <div class="contact-item"><span class="ic">&#9993;</span> printalarm@gmail.com</div>
+        <div class="contact-item"><span class="ic">&#9679;</span> Surat, Gujarat, India</div>
+      </div>
+    </div>
+    <div class="foot-bottom">&copy; 2026 Printalarm &bull; Crafted with love for Indian weddings</div>
+  </footer>
+
+  <!-- WHATSAPP -->
+  <a class="whatsapp" id="waBtn" href="https://wa.me/919904551144" target="_blank" rel="noopener" aria-label="Contact Printalarm on WhatsApp">
+    <div class="wa-icon">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51l-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.71.306 1.263.489 1.694.625.712.227 1.36.195 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+    </div>
+    <div>
+      <span class="wa-title">Printalarm <span class="online">ONLINE</span></span>
+      <small>Contact For Customization</small>
+    </div>
+  </a>
+
+  <script>
+    var OLD_PRICE = 49;  // original price per envelope
+
+    // Per-envelope price by pack size (bigger pack = lower per-card price)
+    function priceFor(q) {
+      if (q >= 200) return 10;   // 200 pack
+      if (q >= 100) return 12;   // 100 pack
+      return 13;                 // 50 pack (and anything below 100)
+    }
+
+    var PRODUCTS = {
+      1:  { title: "Swaminarayan Lifafa",   cat: "Sacred Tradition",       rating: "4.8", reviews: 132, best: true },
+      2:  { title: "Palace Peacock Lifafa", cat: "Save The Date",          rating: "4.8", reviews: 74,  best: false },
+      3:  { title: "Adiyogi Moonlight Lifafa", cat: "Divine Congratulations", rating: "4.7", reviews: 96, best: false },
+      4:  { title: "Ivory Peacock Lifafa",  cat: "Royal Peacock",          rating: "4.9", reviews: 61,  best: false },
+      5:  { title: "Ganesha Blessing Lifafa", cat: "Divine Congratulations", rating: "4.8", reviews: 88, best: false },
+      6:  { title: "Emerald Gold Lifafa",   cat: "Regal Green",            rating: "4.7", reviews: 52,  best: false },
+      7:  { title: "Mocha Gazebo Lifafa",   cat: "Wedding Royal",          rating: "4.6", reviews: 47,  best: false },
+      8:  { title: "Kamdhenu Blessing Lifafa", cat: "Sacred Tradition",    rating: "4.6", reviews: 58,  best: false },
+      9:  { title: "Shrinathji Lotus Lifafa", cat: "Sacred Tradition",     rating: "4.9", reviews: 103, best: false },
+      10: { title: "Rose Mandala Lifafa",   cat: "Wedding Royal",          rating: "4.8", reviews: 69,  best: false },
+      11: {
+    title: "Royal Swaminarayan Lifafa",
+    cat: "Sacred Tradition",
+    rating: "4.9",
+    reviews: 154,
+    oldPrice: 69,
+    best: false
+},
+
+12: {
+    title: "Pastel Peacock Couple Lifafa",
+    cat: "Wedding Royal",
+    rating: "4.8",
+    reviews: 126,
+    oldPrice: 59,
+    best: false
+},
+
+13: {
+    title: "Temple Peacock Premium Lifafa",
+    cat: "Premium Heritage",
+    rating: "5.0",
+    reviews: 182,
+    oldPrice: 65,
+    best: true
+},
+
+14: {
+    title: "Royal Garden Peacock Lifafa",
+    cat: "Royal Peacock",
+    rating: "4.9",
+    reviews: 143,
+    oldPrice: 64,
+    best: false
+},
+
+15: {
+    title: "Lotus Blossom Lifafa",
+    cat: "Floral Elegance",
+    rating: "4.8",
+    reviews: 117,
+    oldPrice: 55,
+    best: false
+},
+
+16: {
+    title: "Maharaja Heritage Lifafa",
+    cat: "Royal Heritage",
+    rating: "5.0",
+    reviews: 196,
+    oldPrice: 68,
+    best: true
+},
+
+17: {
+    title: "Pink Palace Couple Lifafa",
+    cat: "Romantic Collection",
+    rating: "4.8",
+    reviews: 138,
+    oldPrice: 62,
+    best: false
+},
+
+18: {
+    title: "Royal Mughal Palace Lifafa",
+    cat: "Mughal Heritage",
+    rating: "5.0",
+    reviews: 208,
+    oldPrice: 70,
+    best: true
+},
+
+19: {
+    title: "Swan Lotus Premium Lifafa",
+    cat: "Luxury Floral",
+    rating: "4.9",
+    reviews: 149,
+    oldPrice: 58,
+    best: false
+},
+
+20: {
+    title: "Golden Elephant Heritage Lifafa",
+    cat: "Royal Collection",
+    rating: "5.0",
+    reviews: 221,
+    oldPrice: 67,
+    best: true
+},
+
+21: {
+    title: "Royal Lotus Garden Lifafa",
+    cat: "Garden Collection",
+    rating: "4.8",
+    reviews: 131,
+    oldPrice: 60,
+    best: false
+},
+
+22: {
+    title: "Vintage Peacock Garden Lifafa",
+    cat: "Vintage Collection",
+    rating: "4.9",
+    reviews: 167,
+    oldPrice: 66,
+    best: false
+}
+    };
+
+    function getParam(name) {
+      var m = new RegExp('[?&]' + name + '=([^&]+)').exec(window.location.search);
+      return m ? decodeURIComponent(m[1]) : null;
+    }
+    function fmt(n) { return n.toLocaleString('en-IN'); }
+
+    var id = parseInt(getParam('id'), 10);
+    if (!id || !PRODUCTS[id]) id = 1;
+    var product = PRODUCTS[id];
+
+    var originalSrc = 'images/card-' + id + '.jpeg';
+    var qty = 200;
+
+    // Populate product info
+    document.title = 'Printalarm — ' + product.title;
+    document.getElementById('crumbTitle').textContent = product.title;
+    document.getElementById('pCategory').textContent = product.cat;
+    document.getElementById('pTitle').textContent = product.title;
+    document.getElementById('pRating').innerHTML = product.rating + ' &middot; ' + product.reviews + ' reviews';
+    document.getElementById('mainImage').src = originalSrc;
+    document.getElementById('mainImage').alt = product.title + ' preview';
+
+    // Quantity + subtotal
+    var qtyVal = document.getElementById('qtyVal');
+    var subtotalNow = document.getElementById('subtotalNow');
+    var subtotalOld = document.getElementById('subtotalOld');
+    var priceNow = document.querySelector('.price-now');
+    var qtyHint = document.querySelector('.qty-hint');
+    var presets = document.querySelectorAll('.preset');
+
+    function syncPresets() {
+      presets.forEach(function (p) {
+        p.classList.toggle('active', parseInt(p.dataset.qty, 10) === qty);
+      });
+    }
+    function render() {
+      if (isNaN(qty) || qty < 1) qty = 1;
+      var price = priceFor(qty);
+      if (document.activeElement !== qtyVal) qtyVal.value = qty;
+      if (priceNow) priceNow.innerHTML = '&#8377;' + price;
+      if (qtyHint) qtyHint.innerHTML = '&#8377;' + price + ' per envelope at this quantity';
+      subtotalNow.innerHTML = '&#8377;' + fmt(qty * price);
+      subtotalOld.innerHTML = '&#8377;' + fmt(qty * OLD_PRICE);
+      syncPresets();
+      updateLinks();
+    }
+    document.getElementById('minusBtn').addEventListener('click', function () { qty = (parseInt(qtyVal.value, 10) || 0) - 10; render(); });
+    document.getElementById('plusBtn').addEventListener('click', function () { qty = (parseInt(qtyVal.value, 10) || 0) + 10; render(); });
+    qtyVal.addEventListener('input', function () { qty = parseInt(qtyVal.value, 10); render(); });
+    qtyVal.addEventListener('blur', function () { qty = parseInt(qtyVal.value, 10) || 1; qtyVal.value = qty; render(); });
+    presets.forEach(function (p) {
+      p.addEventListener('click', function () { qty = parseInt(p.dataset.qty, 10); render(); });
+    });
+
+    // WhatsApp / action links
+    function waLink(action) {
+      var msg = 'Hi Printalarm, I want to ' + action + ' the "' + product.title +
+                '" Shagun Lifafa. Quantity: ' + qty + ' pcs.';
+      return 'https://wa.me/919904551144?text=' + encodeURIComponent(msg);
+    }
+    function updateLinks() {
+      var customizeBtn = document.getElementById('customizeBtn');
+      if (customizeBtn) customizeBtn.href = waLink('customize');
+      // Payment gateway is bypassed for now; checkout collects all details and
+      // sends the full order to WhatsApp on submit.
+      document.getElementById('buyBtn').href = 'checkout.html?id=' + id + '&qty=' + qty;
+      document.getElementById('waBtn').href = waLink('know more about');
+    }
+
+    render();
+
+    // Mobile menu toggle
+    var toggle = document.querySelector('.menu-toggle');
+    var links = document.querySelector('.nav-links');
+    toggle && toggle.addEventListener('click', function () {
+      if (links.style.display === 'flex') { links.style.display = 'none'; }
+      else {
+        links.style.display = 'flex';
+        links.style.flexDirection = 'column';
+        links.style.position = 'absolute';
+        links.style.top = '80px';
+        links.style.right = '24px';
+        links.style.background = 'var(--cream)';
+        links.style.padding = '20px';
+        links.style.borderRadius = '12px';
+        links.style.boxShadow = '0 10px 30px rgba(69,16,47,.15)';
+      }
+    });
+  </script>
+
+</body>
+</html>

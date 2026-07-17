@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Terms &amp; Conditions — Printalarm</title>
+<link rel="icon" type="image/x-icon" href="images/favicon.ico">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png">
+<link rel="apple-touch-icon" href="/favicon-48x48.png">
+<meta name="description" content="Terms and conditions for using the Printalarm website and placing orders." />
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700&family=Jost:wght@300;400;500;600;700&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --maroon: #45102f; --maroon-deep: #340a24; --gold: #c79a3b; --gold-light: #e0c073;
+    --cream: #fdf6e6; --ivory: #fffdf7; --text-dark: #2a1220; --text-muted: #6b5a55;
+  }
+  html { scroll-behavior: smooth; background: var(--cream); }
+  body { font-family: 'Jost', sans-serif; color: var(--text-dark); background: var(--cream); line-height: 1.7; }
+  h1,h2,h3 { font-family: 'Cormorant Garamond', serif; font-weight: 600; line-height: 1.15; }
+  a { text-decoration: none; color: inherit; }
+  img { max-width: 100%; display: block; }
+  .wrap { max-width: 860px; margin: 0 auto; padding: 0 24px; }
+
+  header { background: var(--cream); border-bottom: 1px solid rgba(69,16,47,.08); position: sticky; top: 0; z-index: 50; }
+  .nav { display: flex; align-items: center; justify-content: space-between; padding: 18px 24px; max-width: 1240px; margin: 0 auto; }
+  .brand { display: flex; align-items: center; gap: 12px; }
+  .logo-badge { width: 46px; height: 46px; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 14px rgba(69,16,47,.25); }
+  .logo-badge img { width: 100%; height: 100%; object-fit: cover; }
+  .brand-name { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 600; color: var(--maroon); letter-spacing: .5px; }
+  .brand-sub { font-size: 10px; letter-spacing: 3px; color: var(--gold); font-weight: 600; }
+  .back-link { font-size: 14px; font-weight: 500; color: var(--maroon); }
+  .back-link:hover { color: var(--gold); }
+
+  .page-hero { text-align: center; padding: 64px 0 32px; }
+  .eyebrow { color: var(--gold); letter-spacing: 5px; font-size: 13px; font-weight: 600; text-transform: uppercase; }
+  .page-hero h1 { font-size: 56px; color: var(--maroon); margin-top: 10px; }
+
+  .content { padding: 10px 0 80px; }
+  .card { background: var(--ivory); border-radius: 18px; padding: 40px; box-shadow: 0 12px 30px rgba(69,16,47,.08); }
+  .card h2 { font-size: 26px; color: var(--maroon); margin: 30px 0 14px; }
+  .card h2:first-child { margin-top: 0; }
+  .card p { color: var(--text-muted); margin-bottom: 16px; font-size: 16px; }
+  .card ul { margin: 0 0 16px 22px; color: var(--text-muted); }
+  .card li { margin-bottom: 8px; }
+  .divider { height: 1px; background: rgba(69,16,47,.1); margin: 6px 0 26px; }
+
+  footer { background: var(--maroon-deep); color: rgba(253,246,230,.5); text-align: center; padding: 24px 0; font-size: 13px; }
+
+  @media (max-width: 640px) {
+    .page-hero h1 { font-size: 40px; }
+    .card { padding: 26px; }
+    .brand-sub { display: none; }
+  }
+
+  /* ============ FLOATING WHATSAPP BUTTON ============ */
+  .whatsapp {
+    position: fixed; right: 24px; bottom: 24px; z-index: 999;
+    background: linear-gradient(135deg, #25d366, #128c7e);
+    color: #fff; border-radius: 40px; padding: 10px 20px 10px 12px;
+    display: flex; align-items: center; gap: 10px; box-shadow: 0 12px 26px rgba(18,140,126,.4);
+    transition: transform .2s, box-shadow .2s; text-decoration: none;
+    animation: waPop .5s ease-out, waFloat 3s ease-in-out .5s infinite;
+  }
+  .whatsapp::before, .whatsapp::after {
+    content: ""; position: absolute; left: 26px; bottom: 50%;
+    width: 40px; height: 40px; transform: translate(-50%, 50%);
+    border-radius: 50%; background: #25d366; z-index: -1;
+    animation: waPulse 2.2s ease-out infinite;
+  }
+  .whatsapp::after { display: none; }
+  .whatsapp:hover { transform: translateY(-4px); box-shadow: 0 18px 38px rgba(18,140,126,.55); animation-play-state: paused; }
+  .whatsapp .wa-icon { width: 40px; height: 40px; background:#fff; border-radius: 50%; display:grid; place-items:center; color: #128c7e; flex-shrink:0; animation: waRing 2.5s ease-in-out infinite; }
+  .whatsapp .wa-icon svg { width: 24px; height: 24px; }
+  .whatsapp small { display:block; font-size:12px; opacity:.95; font-weight:700; }
+  .whatsapp .wa-title { font-size: 13px; font-weight: 600; display:flex; align-items:center; gap:6px; }
+  .whatsapp .online { font-size: 9px; background: rgba(255,255,255,.25); padding: 1px 7px; border-radius: 10px; letter-spacing:.5px; }
+  .whatsapp .online::before { content:""; display:inline-block; width:6px; height:6px; border-radius:50%; background:#7cff9e; margin-right:4px; animation: waBlink 1.4s ease-in-out infinite; }
+  @keyframes waPop { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+  @keyframes waFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+  @keyframes waPulse { 0% { opacity:.6; transform: translate(-50%,50%) scale(1); } 100% { opacity:0; transform: translate(-50%,50%) scale(3); } }
+  @keyframes waRing { 0%,70%,100% { transform: rotate(0); } 75% { transform: rotate(-12deg); } 80% { transform: rotate(12deg); } 85% { transform: rotate(-8deg); } 90% { transform: rotate(8deg); } }
+  @keyframes waBlink { 0%,100% { opacity:1; } 50% { opacity:.3; } }
+  @media (max-width: 640px) {
+    .whatsapp { right: 14px; bottom: 14px; padding: 8px 16px 8px 10px; }
+    .whatsapp .wa-icon { width: 34px; height: 34px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .whatsapp, .whatsapp .wa-icon, .whatsapp::before, .whatsapp::after, .whatsapp .online::before { animation: none; }
+  }
+</style>
+</head>
+<body>
+  <header>
+    <nav class="nav">
+      <a class="brand" href="/index.html">
+        <div class="logo-badge"><img src="images/logo.png" alt="Printalarm logo" /></div>
+        <div>
+          <div class="brand-name">Printalarm</div>
+          <div class="brand-sub">SHAGUN COUTURE</div>
+        </div>
+      </a>
+      <a class="back-link" href="/index.html">&larr; Back to Home</a>
+    </nav>
+  </header>
+
+  <section class="page-hero">
+    <div class="wrap">
+      <p class="eyebrow">Our Policies</p>
+      <h1>Terms &amp; Conditions</h1>
+    </div>
+  </section>
+
+  <section class="content">
+    <div class="wrap">
+      <div class="card">
+        <div class="divider"></div>
+        <p>Welcome to Printalarm &ndash; Shagun Couture. By using this website, you agree to the following Terms &amp; Conditions.</p>
+
+        <h2>1. Products</h2>
+        <p>Printalarm offers personalized Shagun Lifafas and wedding money envelopes. Because every product is customized, slight variations in color, print, or finishing may occur.</p>
+
+        <h2>2. Personalization</h2>
+        <p>Customers are responsible for providing accurate:</p>
+        <ul>
+          <li>Names</li>
+          <li>Family names</li>
+          <li>Blessings</li>
+          <li>Messages</li>
+          <li>Photos</li>
+          <li>Design preferences</li>
+        </ul>
+        <p>Once production begins, personalization details cannot be changed.</p>
+
+        <h2>3. Order Confirmation</h2>
+        <p>Orders are confirmed only after communication through WhatsApp. Submitting information through the website does not guarantee order acceptance. We reserve the right to accept or decline any order.</p>
+
+        <h2>4. Payments</h2>
+        <p>Printalarm does not process payments on this website. No online payment gateway is available. Payment (if applicable) is discussed separately during WhatsApp order confirmation.</p>
+
+        <h2>5. Pricing</h2>
+        <p>Prices displayed on the website are subject to change without prior notice. Final pricing will be confirmed during order confirmation.</p>
+
+        <h2>6. Production Time</h2>
+        <p>Customized orders generally require 2&ndash;3 business days for production. Delivery timelines may vary depending on your location.</p>
+
+        <h2>7. Shipping</h2>
+        <p>Shipping times are estimates only. Printalarm is not responsible for courier delays caused by:</p>
+        <ul>
+          <li>Weather</li>
+          <li>Natural disasters</li>
+          <li>Public holidays</li>
+          <li>Courier service delays</li>
+        </ul>
+
+        <h2>8. Cancellation</h2>
+        <p>Because products are personalized, orders cannot be cancelled once production has started.</p>
+
+        <h2>9. Refund &amp; Replacement</h2>
+        <p>Refunds or replacements are provided only for products damaged during transit, subject to our Return &amp; Exchange Policy. Personalized products cannot be returned due to:</p>
+        <ul>
+          <li>Change of mind</li>
+          <li>Incorrect information provided by the customer</li>
+          <li>Design preference after approval</li>
+        </ul>
+
+        <h2>10. Intellectual Property</h2>
+        <p>All website content including designs, images, logos, graphics, product photographs, and text belongs to Printalarm and may not be copied or reproduced without written permission.</p>
+
+        <h2>11. Limitation of Liability</h2>
+        <p>Printalarm shall not be liable for indirect, incidental, or consequential damages arising from the use of our website or products.</p>
+
+        <h2>12. Governing Law</h2>
+        <p>These Terms shall be governed by the laws of India. Any disputes shall be subject to the jurisdiction of the courts of Surat, Gujarat.</p>
+
+        <h2>Contact</h2>
+        <p>Printalarm &ndash; Shagun Couture<br>Surat, Gujarat, India<br>Phone: +91 99045 51144<br>Email: printalarm@gmail.com</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>&copy; 2026 Printalarm &bull; Crafted with love for Indian weddings</footer>
+
+  <!-- ============ FLOATING WHATSAPP BUTTON ============ -->
+  <a class="whatsapp" href="https://wa.me/919904551144?text=Hi%20Printalarm%2C%20I%20want%20to%20customize%20a%20Shagun%20Lifafa" target="_blank" rel="noopener" aria-label="Contact Printalarm on WhatsApp">
+    <div class="wa-icon">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51l-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.71.306 1.263.489 1.694.625.712.227 1.36.195 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+    </div>
+    <div>
+      <span class="wa-title">Printalarm <span class="online">ONLINE</span></span>
+      <small>Contact For Customization</small>
+    </div>
+  </a>
+</body>
+</html>
