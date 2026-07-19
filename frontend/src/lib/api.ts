@@ -1,20 +1,32 @@
-import { getIdToken } from './firebase';
+// import { getIdToken } from './firebase';
 
-const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+// const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
 
-/** Authenticated fetch wrapper — attaches Firebase ID token */
-async function apiFetch(endpoint: string, options: RequestInit = {}) {
+/**
+ * Backend disabled — this build is deployed as a static frontend only (no API server).
+ * Every exported function below funnels through here, so every backend call now
+ * rejects immediately instead of hitting the network. Callers already handle this
+ * (see AuthContext's syncWithBackend fallback, and try/catch blocks in the dashboard
+ * pages) by falling back to local/empty state.
+ * To restore backend calls, uncomment the two lines above and the block below,
+ * and delete the `throw` line.
+ */
+async function apiFetch(endpoint: string, _options: RequestInit = {}): Promise<any> {
+  throw new Error(`Backend is disabled in this deployment (attempted: ${endpoint})`);
+
+  /*
   const token = await getIdToken();
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
-    ...(options.headers as Record<string, string>),
+    ...(_options.headers as Record<string, string>),
   };
   if (token) headers['Authorization'] = `Bearer ${token}`;
 
-  const res = await fetch(`${BASE_URL}${endpoint}`, { ...options, headers });
+  const res = await fetch(`${BASE_URL}${endpoint}`, { ..._options, headers });
   const data = await res.json();
   if (!res.ok) throw new Error(data.message || 'API request failed');
   return data;
+  */
 }
 
 // ─── Auth ───

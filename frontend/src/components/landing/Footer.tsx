@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { useLenis } from 'lenis/react';
 import { Phone, Mail, MapPin, Instagram, Facebook, Youtube } from 'lucide-react';
 import { asset } from '@/lib/asset';
 
@@ -9,14 +10,24 @@ const SOCIAL_LINKS = [
 ];
 
 export default function Footer() {
+  const lenis = useLenis();
+
+  const scrollToTop = () => {
+    if (lenis) {
+      lenis.scrollTo(0, { immediate: true });
+    } else {
+      window.scrollTo(0, 0);
+    }
+  };
+
   return (
     <footer className="border-t border-gold-200 pt-16 pb-8 px-4 bg-luxury-accent text-white">
       <div className="max-w-6xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
           {/* Brand */}
           <div className="flex flex-col items-center md:items-start gap-1">
-            <Link to="/" className="flex items-center gap-2.5">
-              <img src={asset('logo.png')} alt="Printalarm Logo" className="h-10 w-auto rounded-md" />
+            <Link to="/" onClick={scrollToTop} className="flex items-center gap-2.5 cursor-pointer">
+              <img src={asset('logo.png')} alt="Printalarm Logo" className="h-10 w-10 object-contain" />
               <div className="flex flex-col items-start leading-none">
                 <span className="text-lg font-display font-bold text-white tracking-wide">Printalarm</span>
                 <span className="text-[8px] tracking-[0.25em] font-semibold text-luxury-gold uppercase mt-0.5">

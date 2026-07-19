@@ -35,7 +35,7 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2.5 group cursor-pointer">
-          <img src={asset('logo.png')} alt="Printalarm Logo" className="h-11 w-11 object-cover rounded-md" />
+          <img src={asset('logo.png')} alt="Printalarm Logo" className="h-11 w-11 object-contain" />
           <div className="flex flex-col items-start leading-none">
             <span className="text-lg md:text-xl font-display font-bold text-luxury-accent tracking-wide transition-colors group-hover:text-luxury-gold">
               Printalarm
