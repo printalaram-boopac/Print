@@ -1,5 +1,15 @@
 import { motion } from 'framer-motion';
+import { Palette, Camera, CheckCircle2, Printer, Package, PartyPopper, ClipboardList, type LucideIcon } from 'lucide-react';
 import { PROCESS_STEPS } from '@/data/landing';
+
+const STEP_ICONS: Record<string, LucideIcon> = {
+  Palette,
+  Camera,
+  CheckCircle2,
+  Printer,
+  Package,
+  PartyPopper,
+};
 
 export default function HowItWorks() {
   return (
@@ -12,7 +22,7 @@ export default function HowItWorks() {
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
         >
-          <span className="section-badge">📋 Simple Process</span>
+          <span className="section-badge-underline"><ClipboardList className="w-3.5 h-3.5" strokeWidth={2} /> Simple Process</span>
           <h2 className="text-3xl md:text-5xl font-display font-bold">
             How It <span className="text-gold-gradient">Works</span>
           </h2>
@@ -21,7 +31,9 @@ export default function HowItWorks() {
 
         {/* Timeline wrapper */}
         <div className="relative border-l-2 border-gold-200 ml-4 md:ml-8 pl-8 md:pl-12 space-y-12">
-          {PROCESS_STEPS.map((step, i) => (
+          {PROCESS_STEPS.map((step, i) => {
+            const Icon = STEP_ICONS[step.icon];
+            return (
             <motion.div
               key={step.step}
               className="relative flex flex-col md:flex-row gap-4 md:gap-8 items-start"
@@ -37,8 +49,8 @@ export default function HowItWorks() {
 
               {/* Icon & Title Group */}
               <div className="flex gap-4 items-center">
-                <div className="w-12 h-12 rounded-lg bg-luxury-gray border border-gold-200 flex items-center justify-center text-xl shadow-sm">
-                  {step.icon}
+                <div className="w-12 h-12 rounded-lg bg-luxury-gray border border-gold-200 flex items-center justify-center shadow-sm">
+                  <Icon className="w-6 h-6 text-luxury-gold" strokeWidth={1.75} />
                 </div>
                 <div>
                   <span className="text-[9px] font-bold text-luxury-gold uppercase tracking-widest block">Step 0{step.step}</span>
@@ -51,7 +63,8 @@ export default function HowItWorks() {
                 <p className="text-xs md:text-sm text-gray-500 leading-relaxed">{step.desc}</p>
               </div>
             </motion.div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>

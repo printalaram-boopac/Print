@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
+import { ChevronRight, HelpCircle } from 'lucide-react';
 import { FAQS } from '@/data/landing';
 
 function FAQItem({ q, a }: { q: string; a: string }) {
@@ -15,10 +16,10 @@ function FAQItem({ q, a }: { q: string; a: string }) {
           {q}
         </span>
         <span
-          className="text-luxury-gold text-lg flex-shrink-0 transition-transform duration-300"
-          style={{ transform: open ? 'rotate(45deg)' : 'rotate(0deg)' }}
+          className="text-luxury-gold flex-shrink-0 transition-transform duration-300"
+          style={{ transform: open ? 'rotate(90deg)' : 'rotate(0deg)' }}
         >
-          +
+          <ChevronRight className="w-5 h-5" strokeWidth={2} />
         </span>
       </button>
       <div className={`faq-answer ${open ? 'open' : ''}`}>
@@ -30,7 +31,7 @@ function FAQItem({ q, a }: { q: string; a: string }) {
 
 export default function FAQSection() {
   return (
-    <section className="py-20 md:py-28 px-4 bg-luxury-dark/50">
+    <section id="faq" className="py-20 md:py-28 px-4 bg-luxury-dark/50">
       <div className="max-w-3xl mx-auto space-y-10">
         <motion.div
           className="text-center space-y-4"
@@ -39,7 +40,7 @@ export default function FAQSection() {
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
         >
-          <span className="section-badge">❓ Common Questions</span>
+          <span className="section-badge-underline"><HelpCircle className="w-3.5 h-3.5" strokeWidth={2} /> Common Questions</span>
           <h2 className="text-3xl md:text-5xl font-display font-bold">
             Frequently Asked <span className="text-gold-gradient">Questions</span>
           </h2>

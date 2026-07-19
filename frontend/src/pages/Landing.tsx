@@ -1,14 +1,12 @@
 import HeroSection from '@/components/landing/HeroSection';
-import TrustStats from '@/components/landing/TrustStats';
+import PromoTicker from '@/components/landing/PromoTicker';
 import TrendingDesigns from '@/components/landing/TrendingDesigns';
 import HowItWorks from '@/components/landing/HowItWorks';
 import PremiumFeatures from '@/components/landing/PremiumFeatures';
 import CustomerReviews from '@/components/landing/CustomerReviews';
-import UrgencyOffers from '@/components/landing/UrgencyOffers';
+// import UrgencyOffers from '@/components/landing/UrgencyOffers'; // Hidden for now
 // import OccasionCategories from '@/components/landing/OccasionCategories'; // Hidden for now
 import FAQSection from '@/components/landing/FAQSection';
-import FloatingActions from '@/components/landing/FloatingActions';
-import Footer from '@/components/landing/Footer';
 
 export default function Landing() {
   return (
@@ -19,8 +17,8 @@ export default function Landing() {
       {/* 1. Cinematic Hero */}
       <HeroSection />
 
-      {/* 2. Trust Stats */}
-      <TrustStats />
+      {/* Promo Ticker */}
+      <PromoTicker />
 
       {/* Divider */}
       <div className="gold-divider" />
@@ -43,20 +41,14 @@ export default function Landing() {
       {/* 6. Customer Reviews with Photos */}
       <CustomerReviews />
 
-      {/* 7. Urgency Countdown + Offers */}
-      <UrgencyOffers />
+      {/* 7. Urgency Countdown + Offers — HIDDEN */}
+      {/* <UrgencyOffers /> */}
 
       {/* 8. Occasion Categories — HIDDEN */}
       {/* <OccasionCategories /> */}
 
       {/* 9. FAQ */}
       <FAQSection />
-
-      {/* 10. Footer */}
-      <Footer />
-
-      {/* Floating WhatsApp / Call / Instagram */}
-      <FloatingActions />
     </>
   );
 }

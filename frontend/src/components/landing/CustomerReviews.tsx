@@ -1,6 +1,8 @@
 import { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
+import { MessageCircle } from 'lucide-react';
 import { REVIEWS } from '@/data/landing';
+import { asset } from '@/lib/asset';
 
 function StarRating({ count }: { count: number }) {
   return (
@@ -21,7 +23,7 @@ const ALL_REVIEWS = [
     rating: 5,
     text: 'Ordered 500 covers for a corporate Wedding event. Superb quality, everyone was impressed!',
     occasion: 'Wedding',
-    image: '/card-5.jpeg',
+    image: asset('card-5.jpeg'),
   },
   {
     name: 'Meera Joshi',
@@ -29,7 +31,7 @@ const ALL_REVIEWS = [
     rating: 5,
     text: 'The lotus design was absolutely gorgeous. Perfect for our traditional Gujarati wedding.',
     occasion: 'Wedding',
-    image: '/card-2.jpeg',
+    image: asset('card-2.jpeg'),
   },
 ];
 
@@ -64,7 +66,10 @@ export default function CustomerReviews() {
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
         >
-          <span className="section-badge">💬 Real Customers</span>
+          <span className="section-badge-underline">
+            <MessageCircle className="w-3.5 h-3.5" strokeWidth={2} />
+            Real Customers
+          </span>
           <h2 className="text-3xl md:text-5xl font-display font-bold">
             Loved by <span className="text-gold-gradient">Thousands</span>
           </h2>

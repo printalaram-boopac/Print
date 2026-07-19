@@ -1,33 +1,40 @@
+export default function Designer() {
+  return null;
+}
+
+/* ─── Designer page temporarily disabled ───
+
 import { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useSearchParams } from 'react-router-dom';
 import { useCart } from '@/context/CartContext';
 import { useAuth } from '@/context/AuthContext';
 import { createOrder } from '@/lib/api';
+import { asset } from '@/lib/asset';
 
 const TEMPLATES = [
-  { id: 1, src: '/card-1.jpeg', title: 'Royal Peacock Green', category: 'Wedding', price: 15 },
-  { id: 2, src: '/card-2.jpeg', title: 'Lotus Pink Elegance', category: 'Wedding', price: 15 },
-  { id: 3, src: '/card-3.jpeg', title: 'Rajasthani Palace Rose', category: 'Wedding', price: 18 },
-  { id: 4, src: '/card-4.jpeg', title: 'Royal Swan Gold', category: 'Wedding', price: 18 },
-  { id: 5, src: '/card-5.jpeg', title: 'Golden Floral Crest', category: 'Wedding', price: 15 },
-  { id: 6, src: '/card-6.jpeg', title: 'Emerald Palace Arch', category: 'Wedding', price: 15 },
-  { id: 7, src: '/card-7.jpeg', title: 'Royal Elephant Ivory', category: 'Wedding', price: 18 },
-  { id: 8, src: '/card-8.jpeg', title: 'Maharani Velvet Plum', category: 'Wedding', price: 18 },
-  { id: 9, src: '/card-9.jpeg', title: 'Shubh Vivah Vermillion', category: 'Wedding', price: 15 },
-  { id: 10, src: '/card-10.jpeg', title: 'Golden Pichwai Art', category: 'Wedding', price: 15 },
-  { id: 11, src: '/card-11.jpeg', title: 'Marigold Mandap Yellow', category: 'Wedding', price: 15 },
-  { id: 12, src: '/card-12.jpeg', title: 'Darbar Ivory Gold', category: 'Wedding', price: 18 },
-  { id: 13, src: '/card-13.jpeg', title: 'Heritage Paisley Red', category: 'Wedding', price: 15 },
-  { id: 14, src: '/card-14.jpeg', title: 'Regal Shehnai Motif', category: 'Wedding', price: 15 },
-  { id: 15, src: '/card-15.jpeg', title: 'Mughal Jaali Mint', category: 'Wedding', price: 15 },
-  { id: 16, src: '/card-16.jpeg', title: 'Royal Kalash Crimson', category: 'Wedding', price: 15 },
-  { id: 17, src: '/card-17.jpeg', title: 'Vibrant Bandhani Pink', category: 'Wedding', price: 15 },
-  { id: 18, src: '/card-18.jpeg', title: 'Golden Swastik Blessings', category: 'Wedding', price: 15 },
-  { id: 19, src: '/card-19.jpeg', title: 'Monarch Peacock Blue', category: 'Wedding', price: 18 },
-  { id: 20, src: '/card-20.jpeg', title: 'Divine Ganesha Gold', category: 'Wedding', price: 18 },
-  { id: 21, src: '/card-21.jpeg', title: 'Classic Zardozi Border', category: 'Wedding', price: 15 },
-  { id: 22, src: '/card-22.jpeg', title: 'Golden Mandap Arch', category: 'Wedding', price: 15 },
+  { id: 1, src: asset('card-1.jpeg'), title: 'Royal Peacock Green', category: 'Wedding', price: 15 },
+  { id: 2, src: asset('card-2.jpeg'), title: 'Lotus Pink Elegance', category: 'Wedding', price: 15 },
+  { id: 3, src: asset('card-3.jpeg'), title: 'Rajasthani Palace Rose', category: 'Wedding', price: 18 },
+  { id: 4, src: asset('card-4.jpeg'), title: 'Royal Swan Gold', category: 'Wedding', price: 18 },
+  { id: 5, src: asset('card-5.jpeg'), title: 'Golden Floral Crest', category: 'Wedding', price: 15 },
+  { id: 6, src: asset('card-6.jpeg'), title: 'Emerald Palace Arch', category: 'Wedding', price: 15 },
+  { id: 7, src: asset('card-7.jpeg'), title: 'Royal Elephant Ivory', category: 'Wedding', price: 18 },
+  { id: 8, src: asset('card-8.jpeg'), title: 'Maharani Velvet Plum', category: 'Wedding', price: 18 },
+  { id: 9, src: asset('card-9.jpeg'), title: 'Shubh Vivah Vermillion', category: 'Wedding', price: 15 },
+  { id: 10, src: asset('card-10.jpeg'), title: 'Golden Pichwai Art', category: 'Wedding', price: 15 },
+  { id: 11, src: asset('card-11.jpeg'), title: 'Marigold Mandap Yellow', category: 'Wedding', price: 15 },
+  { id: 12, src: asset('card-12.jpeg'), title: 'Darbar Ivory Gold', category: 'Wedding', price: 18 },
+  { id: 13, src: asset('card-13.jpeg'), title: 'Heritage Paisley Red', category: 'Wedding', price: 15 },
+  { id: 14, src: asset('card-14.jpeg'), title: 'Regal Shehnai Motif', category: 'Wedding', price: 15 },
+  { id: 15, src: asset('card-15.jpeg'), title: 'Mughal Jaali Mint', category: 'Wedding', price: 15 },
+  { id: 16, src: asset('card-16.jpeg'), title: 'Royal Kalash Crimson', category: 'Wedding', price: 15 },
+  { id: 17, src: asset('card-17.jpeg'), title: 'Vibrant Bandhani Pink', category: 'Wedding', price: 15 },
+  { id: 18, src: asset('card-18.jpeg'), title: 'Golden Swastik Blessings', category: 'Wedding', price: 15 },
+  { id: 19, src: asset('card-19.jpeg'), title: 'Monarch Peacock Blue', category: 'Wedding', price: 18 },
+  { id: 20, src: asset('card-20.jpeg'), title: 'Divine Ganesha Gold', category: 'Wedding', price: 18 },
+  { id: 21, src: asset('card-21.jpeg'), title: 'Classic Zardozi Border', category: 'Wedding', price: 15 },
+  { id: 22, src: asset('card-22.jpeg'), title: 'Golden Mandap Arch', category: 'Wedding', price: 15 },
 ];
 
 const THEMES = ['Gold Luxury', 'Royal Blue', 'Rose Pink', 'Classic White', 'Emerald Green'];
@@ -193,7 +200,7 @@ export default function Designer() {
   return (
     <div className="min-h-screen pt-28 pb-16 px-4">
       <div className="max-w-6xl mx-auto space-y-8">
-        {/* ─── Step Indicator ─── */}
+        {/* ─── Step Indicator ─── *-/}
         <div className="flex items-center justify-center gap-2 md:gap-4">
           {STEPS.map((s, i) => (
             <div key={s.id} className="flex items-center gap-2 md:gap-4">
@@ -221,7 +228,7 @@ export default function Designer() {
         </div>
 
         <AnimatePresence mode="wait">
-          {/* ═══════ STEP 1: Choose Design ═══════ */}
+          {/* ═══════ STEP 1: Choose Design ═══════ *-/}
           {step === 1 && (
             <motion.div
               key="step1"
@@ -268,7 +275,7 @@ export default function Designer() {
             </motion.div>
           )}
 
-          {/* ═══════ STEP 2: Customize ═══════ */}
+          {/* ═══════ STEP 2: Customize ═══════ *-/}
           {step === 2 && template && (
             <motion.div
               key="step2"
@@ -277,7 +284,7 @@ export default function Designer() {
               exit={{ opacity: 0, x: 30 }}
               className="grid grid-cols-1 lg:grid-cols-2 gap-8"
             >
-              {/* Live Preview */}
+              {/* Live Preview *-/}
               <div className="space-y-4">
                 <h2 className="text-sm text-luxury-gold uppercase tracking-widest font-semibold">Live Preview</h2>
                 <div className="relative rounded-lg overflow-hidden border border-gold-300 bg-luxury-dark">
@@ -288,11 +295,11 @@ export default function Designer() {
                 <p className="text-[10px] text-gray-600 text-center">Preview is approximate — our designers will finalize your cover</p>
               </div>
 
-              {/* Customization Form */}
+              {/* Customization Form *-/}
               <div className="space-y-5">
                 <h2 className="text-sm text-luxury-gold uppercase tracking-widest font-semibold">Customize Your Cover</h2>
 
-                {/* Occasion */}
+                {/* Occasion *-/}
                 <div className="space-y-2">
                   <label className="text-xs text-gray-400 font-medium">Occasion</label>
                   <div className="flex flex-wrap gap-2">
@@ -311,7 +318,7 @@ export default function Designer() {
                   </div>
                 </div>
 
-                {/* Theme - Disabled and Hidden for now
+                {/* [Theme - Disabled and Hidden for now]
                 <div className="space-y-2">
                   <label className="text-xs text-gray-400 font-medium">Color Theme</label>
                   <div className="flex flex-wrap gap-2">
@@ -329,9 +336,9 @@ export default function Designer() {
                     ))}
                   </div>
                 </div>
-                */}
+                [end-comment]}
 
-                {/* Couple Name */}
+                {/* Couple Name *-/}
                 <div className="space-y-2">
                   <label className="text-xs text-gray-400 font-medium">Couple / Person Name</label>
                   <input
@@ -343,7 +350,7 @@ export default function Designer() {
                   />
                 </div>
 
-                {/* Family Name */}
+                {/* Family Name *-/}
                 <div className="space-y-2">
                   <label className="text-xs text-gray-400 font-medium">Family Name</label>
                   <input
@@ -355,7 +362,7 @@ export default function Designer() {
                   />
                 </div>
 
-                {/* Greeting Text */}
+                {/* Greeting Text *-/}
                 <div className="space-y-2">
                   <label className="text-xs text-gray-400 font-medium">Greeting / Blessing Text</label>
                   <select
@@ -388,7 +395,7 @@ export default function Designer() {
                   )}
                 </div>
 
-                {/* Photo Upload */}
+                {/* Photo Upload *-/}
                 <div className="space-y-2">
                   <label className="text-xs text-gray-400 font-medium">Upload Photo (optional)</label>
                   <label className="flex items-center justify-center gap-2 w-full px-4 py-3 bg-luxury-gray border border-dashed border-gold-300 text-gray-500 text-sm cursor-pointer hover:border-luxury-gold hover:text-luxury-gold transition-all rounded-sm">
@@ -397,7 +404,7 @@ export default function Designer() {
                   </label>
                 </div>
 
-                {/* Quantity */}
+                {/* Quantity *-/}
                 <div className="space-y-2">
                   <label className="text-xs text-gray-400 font-medium">
                     Quantity <span className="text-gray-500">(min 50)</span>
@@ -419,7 +426,7 @@ export default function Designer() {
 
                 </div>
 
-                {/* Next */}
+                {/* Next *-/}
                 <button
                   onClick={() => setStep(3)}
                   className="btn-primary w-full gold-glow cursor-pointer"
@@ -430,7 +437,7 @@ export default function Designer() {
             </motion.div>
           )}
 
-          {/* ═══════ STEP 3: Preview & Order ═══════ */}
+          {/* ═══════ STEP 3: Preview & Order ═══════ *-/}
           {step === 3 && template && (
             <motion.div
               key="step3"
@@ -445,7 +452,7 @@ export default function Designer() {
                 </h1>
               </div>
 
-              {/* Order Success Banner */}
+              {/* Order Success Banner *-/}
               {orderSuccess && (
                 <motion.div
                   initial={{ opacity: 0, y: -10 }}
@@ -458,11 +465,11 @@ export default function Designer() {
 
               <div className="glass-card-gold rounded-xl p-6 md:p-8 space-y-6">
                 <div className="flex gap-6">
-                  {/* Image */}
+                  {/* Image *-/}
                   <div className="w-32 h-32 rounded-lg overflow-hidden flex-shrink-0 border border-gold-300">
                     <img src={template.src} alt={template.title} className="w-full h-full object-cover" />
                   </div>
-                  {/* Details */}
+                  {/* Details *-/}
                   <div className="space-y-2 flex-1">
                     <h3 className="text-lg font-display font-semibold text-luxury-accent">{template.title}</h3>
                     <div className="space-y-1 text-xs text-gray-500">
@@ -478,7 +485,7 @@ export default function Designer() {
 
                 {!isCheckingOut ? (
                   <>
-                    {/* Price breakdown */}
+                    {/* Price breakdown *-/}
                     <div className="border-t border-gold-200 pt-4 space-y-2">
                       <div className="flex justify-between text-sm">
                         <span className="text-gray-500">₹{unitPrice} × {quantity} covers</span>
@@ -497,7 +504,7 @@ export default function Designer() {
                       </div>
                     </div>
 
-                    {/* Action Buttons */}
+                    {/* Action Buttons *-/}
                     <div className="flex flex-col sm:flex-row gap-3 pt-2">
                       <button
                         onClick={handleAddToCart}
@@ -586,3 +593,5 @@ export default function Designer() {
     </div>
   );
 }
+
+*/

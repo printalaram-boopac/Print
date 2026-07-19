@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import { Zap, Timer } from 'lucide-react';
 
 function useCountdown() {
   const [time, setTime] = useState({ hours: 18, minutes: 0, seconds: 0 });
@@ -38,7 +39,7 @@ export default function UrgencyOffers() {
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
           >
-            <div className="text-3xl pb-2 select-none">⏰</div>
+            <Timer className="w-8 h-8 mx-auto text-luxury-gold" strokeWidth={1.75} />
             <h2 className="text-2xl md:text-4xl font-display font-bold leading-tight">
               Wedding Next Week? <span className="text-gold-gradient block sm:inline">Get Priority Printing</span>
             </h2>
@@ -60,8 +61,8 @@ export default function UrgencyOffers() {
               </div>
             </div>
 
-            <Link to="/designer" className="btn-magnetic btn-primary inline-flex">
-              ⚡ Order Express Now
+            <Link to="/designer" className="btn-glass btn-glass-gold">
+              <Zap className="w-3.5 h-3.5" strokeWidth={2} /> Order Express Now
             </Link>
           </motion.div>
         </div>
@@ -76,7 +77,7 @@ export default function UrgencyOffers() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <span className="section-badge">🎉 Limited Offers</span>
+            <span className="section-badge-underline"><Gift className="w-3.5 h-3.5" strokeWidth={2} /> Limited Offers</span>
             <h2 className="text-3xl md:text-4xl font-display font-bold">
               Special <span className="text-gold-gradient">Deals</span>
             </h2>

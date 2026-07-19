@@ -5,19 +5,25 @@ import { ReactLenis } from 'lenis/react';
 import 'lenis/dist/lenis.css';
 
 import { AuthProvider } from '@/context/AuthContext';
-import { CartProvider } from '@/context/CartContext';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import AdminRoute from '@/components/AdminRoute';
 import Navbar from '@/components/Navbar';
-import CartDrawer from '@/components/CartDrawer';
+import ScrollToTop from '@/components/ScrollToTop';
+import FloatingActions from '@/components/landing/FloatingActions';
+import Footer from '@/components/landing/Footer';
 
 import Landing from '@/pages/Landing';
 import Designer from '@/pages/Designer';
 import Templates from '@/pages/Templates';
+import DesignDetail from '@/pages/DesignDetail';
 import Dashboard from '@/pages/Dashboard';
 import Profile from '@/pages/Profile';
 import AdminPanel from '@/pages/AdminPanel';
 import Auth from '@/pages/Auth';
+import ReturnExchange from '@/pages/ReturnExchange';
+import PrivacyPolicy from '@/pages/PrivacyPolicy';
+import TermsConditions from '@/pages/TermsConditions';
+import ShippingPolicy from '@/pages/ShippingPolicy';
 
 const queryClient = new QueryClient();
 
@@ -101,55 +107,60 @@ export default function App() {
       <ReactLenis root>
         <BrowserRouter>
           <AuthProvider>
-            <CartProvider>
-              <Routes>
-                {/* Admin panel — separate layout without main navbar */}
-                <Route
-                  path="/admin"
-                  element={
-                    <AdminRoute>
-                      <AdminPanel />
-                    </AdminRoute>
-                  }
-                />
+            <ScrollToTop />
+            <Routes>
+              {/* Admin panel — separate layout without main navbar */}
+              <Route
+                path="/admin"
+                element={
+                  <AdminRoute>
+                    <AdminPanel />
+                  </AdminRoute>
+                }
+              />
 
-                {/* Main site layout with navbar */}
-                <Route
-                  path="*"
-                  element={
-                    <div className="min-h-screen bg-luxury-black text-luxury-accent flex flex-col">
-                      <CustomCursor />
-                      <Navbar />
-                      <CartDrawer />
-                      <main className="flex-grow">
-                        <Routes>
-                          <Route path="/" element={<Landing />} />
-                          <Route path="/designer" element={<Designer />} />
-                          <Route path="/templates" element={<Templates />} />
-                          <Route path="/auth" element={<Auth />} />
-                          <Route
-                            path="/dashboard"
-                            element={
-                              <ProtectedRoute>
-                                <Dashboard />
-                              </ProtectedRoute>
-                            }
-                          />
-                          <Route
-                            path="/profile"
-                            element={
-                              <ProtectedRoute>
-                                <Profile />
-                              </ProtectedRoute>
-                            }
-                          />
-                        </Routes>
-                      </main>
-                    </div>
-                  }
-                />
-              </Routes>
-            </CartProvider>
+              {/* Main site layout with navbar */}
+              <Route
+                path="*"
+                element={
+                  <div className="min-h-screen bg-luxury-black text-luxury-accent flex flex-col">
+                    <CustomCursor />
+                    <Navbar />
+                    <main className="flex-grow">
+                      <Routes>
+                        <Route path="/" element={<Landing />} />
+                        <Route path="/designer" element={<Designer />} />
+                        <Route path="/templates" element={<Templates />} />
+                        <Route path="/design/:id" element={<DesignDetail />} />
+                        <Route path="/auth" element={<Auth />} />
+                        <Route path="/return-exchange" element={<ReturnExchange />} />
+                        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                        <Route path="/terms-conditions" element={<TermsConditions />} />
+                        <Route path="/shipping-policy" element={<ShippingPolicy />} />
+                        <Route
+                          path="/dashboard"
+                          element={
+                            <ProtectedRoute>
+                              <Dashboard />
+                            </ProtectedRoute>
+                          }
+                        />
+                        <Route
+                          path="/profile"
+                          element={
+                            <ProtectedRoute>
+                              <Profile />
+                            </ProtectedRoute>
+                          }
+                        />
+                      </Routes>
+                    </main>
+                    <Footer />
+                    <FloatingActions />
+                  </div>
+                }
+              />
+            </Routes>
           </AuthProvider>
         </BrowserRouter>
       </ReactLenis>

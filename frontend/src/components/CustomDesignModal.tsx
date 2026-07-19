@@ -39,7 +39,7 @@ export default function CustomDesignModal({ isOpen, onClose }: CustomDesignModal
         <>
           {/* Backdrop */}
           <motion.div
-            className="fixed inset-0 bg-black/85 z-[300] backdrop-blur-sm"
+            className="fixed inset-0 bg-black/85 z-[300] backdrop-blur-sm cursor-pointer"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}

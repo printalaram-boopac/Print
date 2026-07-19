@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import { PartyPopper } from 'lucide-react';
 import { OCCASIONS } from '@/data/landing';
 
 export default function OccasionCategories() {
@@ -12,14 +13,14 @@ export default function OccasionCategories() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
-          <span className="section-badge">🎊 Every Occasion</span>
+          <span className="section-badge-underline"><PartyPopper className="w-3.5 h-3.5" strokeWidth={2} /> Every Occasion</span>
           <h2 className="text-3xl md:text-4xl font-display font-bold">
             Covers for Every <span className="text-gold-gradient">Celebration</span>
           </h2>
         </motion.div>
 
         <div className="flex flex-wrap justify-center gap-3">
-          {OCCASIONS.map((occ, i) => (
+          {OCCASIONS.map((occ: string, i: number) => (
             <motion.div
               key={occ}
               initial={{ opacity: 0, scale: 0.9 }}
@@ -29,7 +30,7 @@ export default function OccasionCategories() {
             >
               <Link
                 to={`/templates?occasion=${occ.toLowerCase().replace(/\s/g, '-')}`}
-                className="inline-block px-5 py-2.5 border border-gold-300 text-sm text-luxury-accent font-semibold hover:text-luxury-gold hover:border-luxury-gold hover:bg-gold-50/50 transition-all duration-300 rounded-full"
+                className="inline-block px-5 py-2.5 border border-gold-300 text-sm text-luxury-accent font-semibold hover:text-luxury-gold hover:border-luxury-gold hover:bg-gold-50/50 transition-all duration-300 rounded-full cursor-pointer"
               >
                 {occ}
               </Link>

@@ -180,17 +180,17 @@ export default function AdminOrders() {
         {totalPages > 1 && (
           <div className="flex justify-center gap-2 pt-4">
             <button disabled={page <= 1} onClick={() => setPage(page - 1)}
-              className="px-3 py-1 text-[10px] border border-gold-300 rounded text-luxury-gold disabled:opacity-30 cursor-pointer">← Prev</button>
+              className="px-3 py-1 text-[10px] border border-gold-300 rounded text-luxury-gold hover:bg-gold-50 transition-colors disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent cursor-pointer">← Prev</button>
             <span className="px-3 py-1 text-[10px] text-gray-500">Page {page} of {totalPages}</span>
             <button disabled={page >= totalPages} onClick={() => setPage(page + 1)}
-              className="px-3 py-1 text-[10px] border border-gold-300 rounded text-luxury-gold disabled:opacity-30 cursor-pointer">Next →</button>
+              className="px-3 py-1 text-[10px] border border-gold-300 rounded text-luxury-gold hover:bg-gold-50 transition-colors disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent cursor-pointer">Next →</button>
           </div>
         )}
       </div>
 
       {/* ═══ Order Detail Modal ═══ */}
       {(selectedOrder || detailLoading) && (
-        <div className="fixed inset-0 bg-black/60 z-[300] flex items-center justify-center p-4" onClick={() => setSelectedOrder(null)}>
+        <div className="fixed inset-0 bg-black/60 z-[300] flex items-center justify-center p-4 cursor-pointer" onClick={() => setSelectedOrder(null)}>
           <div className="bg-luxury-dark border border-gold-200 rounded-xl max-w-2xl w-full max-h-[85vh] overflow-y-auto p-6 space-y-5"
             onClick={(e) => e.stopPropagation()}>
             {detailLoading ? (

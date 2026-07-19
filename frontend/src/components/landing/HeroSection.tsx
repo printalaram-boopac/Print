@@ -1,6 +1,8 @@
 import { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import { ArrowRight, Wand2 } from 'lucide-react';
+import { asset } from '@/lib/asset';
 
 function GoldParticles() {
   return (
@@ -90,17 +92,11 @@ export default function HeroSection() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.45 }}
           >
-            <Link
-              to="/templates"
-              className="px-8 py-3.5 bg-luxury-accent text-white font-bold tracking-widest text-[10px] uppercase hover:bg-[#4F283F] transition-all rounded-full shadow-lg shadow-luxury-accent/10 cursor-pointer"
-            >
-              Explore Collection →
+            <Link to="/templates" className="btn-glass btn-glass-maroon">
+              Explore Collection <ArrowRight className="w-3.5 h-3.5" strokeWidth={2} />
             </Link>
-            <Link
-              to="/designer"
-              className="px-8 py-3.5 bg-[#D5C089] text-luxury-accent font-bold tracking-widest text-[10px] uppercase hover:bg-[#E5CD86] transition-all rounded-full shadow-lg shadow-gold-400/10 flex items-center gap-1.5 cursor-pointer"
-            >
-              ✦ Customize Now
+            <Link to="/templates" className="btn-glass btn-glass-gold">
+              <Wand2 className="w-3.5 h-3.5" strokeWidth={2} /> Customize Now
             </Link>
           </motion.div>
 
@@ -144,7 +140,7 @@ export default function HeroSection() {
               transition={{ type: 'spring', stiffness: 300, damping: 20 }}
             >
               <img
-                src="/card-4.jpeg"
+                src={asset('card-4.jpeg')}
                 alt="Personalized White Gold Shagun Cover"
                 className="w-full h-full object-cover rounded-lg"
               />
@@ -157,7 +153,7 @@ export default function HeroSection() {
               transition={{ duration: 0.4 }}
             >
               <img
-                src="/card-6.jpeg"
+                src={asset('card-6.jpeg')}
                 alt="Royal Swaminarayan Shagun Cover"
                 className="w-full h-full object-cover rounded-xl"
               />
@@ -171,7 +167,7 @@ export default function HeroSection() {
               transition={{ type: 'spring', stiffness: 300, damping: 20 }}
             >
               <img
-                src="/card-2.jpeg"
+                src={asset('card-2.jpeg')}
                 alt="Lotus Floral Shagun Cover with Photo"
                 className="w-full h-full object-cover rounded-lg"
               />

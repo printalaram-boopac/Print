@@ -176,9 +176,9 @@ export default function AdminProductManager() {
                   {/* Hover Actions */}
                   <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
                     <button onClick={() => openEditModal(p)}
-                      className="px-3 py-1.5 bg-white text-luxury-accent text-[10px] font-bold rounded cursor-pointer">Edit</button>
+                      className="px-3 py-1.5 bg-white text-luxury-accent text-[10px] font-bold rounded cursor-pointer hover:bg-gold-50 transition-colors">Edit</button>
                     <button onClick={() => handleDelete(p.id)}
-                      className="px-3 py-1.5 bg-red-500 text-white text-[10px] font-bold rounded cursor-pointer">Delete</button>
+                      className="px-3 py-1.5 bg-red-500 text-white text-[10px] font-bold rounded cursor-pointer hover:bg-red-600 transition-colors">Delete</button>
                   </div>
                 </div>
 
@@ -191,7 +191,7 @@ export default function AdminProductManager() {
                   </div>
                   <div className="flex items-center justify-between pt-1">
                     <button onClick={() => toggleFeatured(p)}
-                      className={`text-[9px] px-2 py-0.5 rounded border cursor-pointer ${p.isFeatured ? 'bg-luxury-gold/10 border-luxury-gold text-luxury-gold' : 'border-gray-300 text-gray-500'}`}>
+                      className={`text-[9px] px-2 py-0.5 rounded border cursor-pointer transition-colors hover:border-luxury-gold hover:text-luxury-gold ${p.isFeatured ? 'bg-luxury-gold/10 border-luxury-gold text-luxury-gold' : 'border-gray-300 text-gray-500'}`}>
                       {p.isFeatured ? '⭐ Featured' : '☆ Feature'}
                     </button>
                     <button onClick={() => openEditModal(p)}
@@ -206,17 +206,17 @@ export default function AdminProductManager() {
         {totalPages > 1 && (
           <div className="flex justify-center gap-2 pt-4">
             <button disabled={page <= 1} onClick={() => setPage(page - 1)}
-              className="px-3 py-1 text-[10px] border border-gold-300 rounded text-luxury-gold disabled:opacity-30 cursor-pointer">← Prev</button>
+              className="px-3 py-1 text-[10px] border border-gold-300 rounded text-luxury-gold hover:bg-gold-50 transition-colors disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent cursor-pointer">← Prev</button>
             <span className="px-3 py-1 text-[10px] text-gray-500">Page {page} of {totalPages}</span>
             <button disabled={page >= totalPages} onClick={() => setPage(page + 1)}
-              className="px-3 py-1 text-[10px] border border-gold-300 rounded text-luxury-gold disabled:opacity-30 cursor-pointer">Next →</button>
+              className="px-3 py-1 text-[10px] border border-gold-300 rounded text-luxury-gold hover:bg-gold-50 transition-colors disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent cursor-pointer">Next →</button>
           </div>
         )}
       </div>
 
       {/* ═══ Add/Edit Modal ═══ */}
       {showModal && (
-        <div className="fixed inset-0 bg-black/60 z-[300] flex items-center justify-center p-4" onClick={() => setShowModal(false)}>
+        <div className="fixed inset-0 bg-black/60 z-[300] flex items-center justify-center p-4 cursor-pointer" onClick={() => setShowModal(false)}>
           <div className="bg-luxury-dark border border-gold-200 rounded-xl max-w-lg w-full p-6 space-y-5"
             onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center justify-between">
@@ -281,7 +281,7 @@ export default function AdminProductManager() {
                 Cancel
               </button>
               <button onClick={handleSave} disabled={saving}
-                className="flex-1 px-4 py-2.5 bg-luxury-gold text-luxury-accent text-xs font-bold rounded cursor-pointer disabled:opacity-50">
+                className="flex-1 px-4 py-2.5 bg-luxury-gold text-luxury-accent text-xs font-bold rounded cursor-pointer hover:bg-luxury-gold/80 transition-colors disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-luxury-gold">
                 {saving ? 'Saving...' : editingProduct ? 'Update Product' : 'Create Product'}
               </button>
             </div>

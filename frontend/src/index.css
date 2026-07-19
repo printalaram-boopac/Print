@@ -87,6 +87,38 @@
   transform: translateY(-6px);
 }
 
+/* ─────────────────── POLICY PAGE CONTENT ─────────────────── */
+.policy-content h2 {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--color-luxury-accent);
+  margin: 1.75rem 0 0.5rem;
+}
+.policy-content h2:first-child {
+  margin-top: 0;
+}
+.policy-content p {
+  font-size: 0.9rem;
+  line-height: 1.75;
+  color: var(--color-gray-500);
+  margin-bottom: 1rem;
+}
+.policy-content ul {
+  list-style: disc;
+  padding-left: 1.25rem;
+  color: var(--color-gray-500);
+  font-size: 0.9rem;
+  line-height: 1.75;
+  margin: 0 0 1rem;
+}
+.policy-content li {
+  margin-bottom: 0.5rem;
+}
+.policy-content li:last-child {
+  margin-bottom: 0;
+}
+
 /* ─────────────────── TEXT GRADIENTS ─────────────────── */
 .text-gold-gradient {
   background: linear-gradient(135deg, #d5c089 0%, #b58d34 50%, #75591c 100%);
@@ -165,6 +197,86 @@
   transform: translateY(-2px);
 }
 
+/* ─────────────────── GLASS BUTTONS (marketing CTAs) ─────────────────── */
+.btn-glass {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 32px;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1.5px solid transparent;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  font-size: 11px;
+  text-transform: uppercase;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: background 0.3s ease, color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.btn-glass-gold {
+  background: var(--color-luxury-gold);
+  border-color: rgba(197, 160, 89, 0.55);
+  color: var(--color-luxury-accent);
+}
+.btn-glass-gold:hover {
+  background: var(--color-luxury-gold);
+  color: var(--color-luxury-accent);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(197, 160, 89, 0.3);
+}
+
+.btn-glass-maroon {
+  border-color: rgba(61, 30, 48, 0.4);
+  color: var(--color-luxury-accent);
+}
+.btn-glass-maroon:hover {
+  background: var(--color-luxury-accent);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(61, 30, 48, 0.25);
+}
+
+/* Small chip-style variant for image-overlay actions */
+.chip-glass {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid transparent;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  border-radius: 9999px;
+  transition: background 0.3s ease, color 0.3s ease;
+  cursor: pointer;
+}
+
+.chip-glass-gold {
+  border-color: rgba(197, 160, 89, 0.5);
+  color: var(--color-luxury-gold);
+}
+.chip-glass-gold:hover {
+  background: var(--color-luxury-gold);
+  color: var(--color-luxury-accent);
+}
+
+.chip-glass-green {
+  border-color: rgba(74, 222, 128, 0.5);
+  color: #4ade80;
+}
+.chip-glass-green:hover {
+  background: #22c55e;
+  color: white;
+}
+
 /* ─────────────────── SECTION BADGE ─────────────────── */
 .section-badge {
   display: inline-flex;
@@ -178,6 +290,30 @@
   letter-spacing: 0.15em;
   color: #3D1E30;
   font-weight: 600;
+}
+
+.section-badge-plain {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--color-luxury-gold);
+  font-weight: 700;
+}
+
+.section-badge-underline {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid rgba(197, 160, 89, 0.5);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--color-luxury-gold);
+  font-weight: 700;
 }
 
 /* ─────────────────── IMAGE HOVER CARD ─────────────────── */
@@ -325,6 +461,98 @@
   box-shadow: 0 4px 20px rgba(221, 42, 123, 0.3);
 }
 
+.floating-whatsapp-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 20px 10px 10px;
+  border-radius: 50px;
+  background: linear-gradient(135deg, #2FD66B, #0F9D58);
+  box-shadow: 0 8px 28px rgba(15, 157, 88, 0.35);
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  animation: whatsapp-pulse 2.4s ease-in-out infinite;
+}
+
+.floating-whatsapp-card:hover {
+  transform: scale(1.03);
+  animation-play-state: paused;
+}
+
+@keyframes whatsapp-pulse {
+  0%, 100% { box-shadow: 0 8px 28px rgba(15, 157, 88, 0.35); }
+  50% { box-shadow: 0 8px 28px rgba(15, 157, 88, 0.35), 0 0 0 10px rgba(47, 214, 107, 0.18); }
+}
+
+.floating-whatsapp-icon {
+  animation: whatsapp-icon-bounce 2.4s ease-in-out infinite;
+}
+
+@keyframes whatsapp-icon-bounce {
+  0%, 60%, 100% { transform: rotate(0deg); }
+  70% { transform: rotate(-12deg); }
+  80% { transform: rotate(10deg); }
+  90% { transform: rotate(-6deg); }
+}
+
+.floating-whatsapp-icon {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: white;
+  color: #0F9D58;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.floating-whatsapp-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  color: white;
+  line-height: 1.2;
+}
+
+.floating-whatsapp-title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.floating-whatsapp-title-row strong {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.floating-whatsapp-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.floating-whatsapp-status::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #DFFFE8;
+}
+
+.floating-whatsapp-subtitle {
+  font-size: 12px;
+  font-weight: 700;
+}
+
 /* ─────────────────── GOLD DIVIDER ─────────────────── */
 .gold-divider {
   height: 1px;
@@ -457,6 +685,29 @@
 @keyframes aurora-drift {
   0% { transform: translate(0, 0) scale(1); }
   100% { transform: translate(50px, -30px) scale(1.2); }
+}
+
+/* ─────────────────── PROMO TICKER ─────────────────── */
+.promo-ticker {
+  overflow: hidden;
+  background: var(--color-luxury-accent);
+  white-space: nowrap;
+}
+
+.promo-ticker-track {
+  display: inline-flex;
+  align-items: center;
+  animation: ticker-scroll 28s linear infinite;
+  will-change: transform;
+}
+
+.promo-ticker:hover .promo-ticker-track {
+  animation-play-state: paused;
+}
+
+@keyframes ticker-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
 }
 
 /* ─────────────────── CUSTOM SCROLLBAR ─────────────────── */
