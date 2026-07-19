@@ -1,6 +1,12 @@
 import { Link } from 'react-router-dom';
-import { Phone, Mail, MapPin } from 'lucide-react';
+import { Phone, Mail, MapPin, Instagram, Facebook, Youtube } from 'lucide-react';
 import { asset } from '@/lib/asset';
+
+const SOCIAL_LINKS = [
+  { href: 'https://www.instagram.com/printalarm5/', icon: Instagram, label: 'Instagram' },
+  { href: 'https://www.facebook.com/profile.php?id=61591651010384&sk=directory_intro', icon: Facebook, label: 'Facebook' },
+  { href: 'https://www.youtube.com/@Printalarm', icon: Youtube, label: 'YouTube' },
+];
 
 export default function Footer() {
   return (
@@ -18,6 +24,23 @@ export default function Footer() {
                 </span>
               </div>
             </Link>
+            <p className="text-sm text-gray-300 text-center md:text-left max-w-xs">
+              Hand-crafted wedding money covers personalized for your most sacred celebrations.
+            </p>
+            <div className="flex items-center gap-3 pt-1">
+              {SOCIAL_LINKS.map((social) => (
+                <a
+                  key={social.label}
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={social.label}
+                  className="w-9 h-9 rounded-full border border-luxury-gold/40 flex items-center justify-center text-luxury-gold hover:bg-luxury-gold hover:text-luxury-accent transition-colors cursor-pointer"
+                >
+                  <social.icon className="w-4 h-4" strokeWidth={2} />
+                </a>
+              ))}
+            </div>
           </div>
 
           {/* Policies */}
