@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getClients, getClient, updateClient, deleteClient } from '@/lib/api';
+import { getClients, getClient, updateClient, deleteClient, createClient } from '@/lib/api';
 
 interface ClientSummary {
   id: string;
@@ -49,6 +49,18 @@ export default function AdminCustomers() {
   const [detailLoading, setDetailLoading] = useState(false);
   const [editingRole, setEditingRole] = useState<string | null>(null);
 
+  // Modals and forms state
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [createForm, setCreateForm] = useState({
+    name: '', email: '', phone: '', address: '', role: 'CUSTOMER',
+    shippingName: '', shippingPhone: '', city: '', state: '', pincode: ''
+  });
+  const [editForm, setEditForm] = useState({
+    name: '', email: '', phone: '', address: '', role: 'CUSTOMER',
+    shippingName: '', shippingPhone: '', city: '', state: '', pincode: ''
+  });
+
   useEffect(() => {
     setLoading(true);
     getClients({ search: search || undefined, page })
@@ -65,11 +77,63 @@ export default function AdminCustomers() {
     try {
       const res = await getClient(clientId);
       setSelectedClient(res.client);
+      setEditForm({
+        name: res.client.name || '',
+        email: res.client.email || '',
+        phone: res.client.phone || '',
+        address: res.client.address || '',
+        role: res.client.role || 'CUSTOMER',
+        shippingName: res.client.shippingName || '',
+        shippingPhone: res.client.shippingPhone || '',
+        city: res.client.city || '',
+        state: res.client.state || '',
+        pincode: res.client.pincode || '',
+      });
       setEditingRole(null);
     } catch {
       alert('Failed to load client details.');
     } finally {
       setDetailLoading(false);
+    }
+  };
+
+  const handleCreateCustomer = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!createForm.name || !createForm.email) {
+      alert('Name and Email are required.');
+      return;
+    }
+    try {
+      await createClient(createForm);
+      alert('Customer created successfully!');
+      setShowCreateModal(false);
+      setCreateForm({
+        name: '', email: '', phone: '', address: '', role: 'CUSTOMER',
+        shippingName: '', shippingPhone: '', city: '', state: '', pincode: ''
+      });
+      // Refresh list
+      setPage(1);
+      const resList = await getClients({ search: search || undefined, page: 1 });
+      setClients(resList.clients);
+      setTotalPages(resList.pagination?.totalPages || 1);
+    } catch (err: any) {
+      alert(err.message || 'Failed to create customer');
+    }
+  };
+
+  const handleEditCustomer = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!selectedClient) return;
+    try {
+      await updateClient(selectedClient.id, editForm);
+      alert('Customer updated successfully!');
+      setShowEditModal(false);
+      // Reload details and list
+      openClientDetail(selectedClient.id);
+      const resList = await getClients({ search: search || undefined, page });
+      setClients(resList.clients);
+    } catch (err: any) {
+      alert(err.message || 'Failed to update customer');
     }
   };
 
@@ -112,9 +176,15 @@ export default function AdminCustomers() {
       <div className="glass-panel p-6 rounded-lg">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-gold-200 pb-4 mb-5">
           <h2 className="text-lg font-display text-luxury-accent font-semibold">Customer Directory</h2>
-          <input type="text" placeholder="Search customers..." value={search}
-            onChange={(e) => { setSearch(e.target.value); setPage(1); }}
-            className="bg-luxury-dark border border-gold-300 text-xs text-luxury-accent rounded px-3 py-1.5 focus:outline-none focus:border-luxury-gold w-52" />
+          <div className="flex gap-2 w-full sm:w-auto">
+            <input type="text" placeholder="Search customers..." value={search}
+              onChange={(e) => { setSearch(e.target.value); setPage(1); }}
+              className="bg-luxury-dark border border-gold-300 text-xs text-luxury-accent rounded px-3 py-1.5 focus:outline-none focus:border-luxury-gold w-full sm:w-52" />
+            <button onClick={() => setShowCreateModal(true)}
+              className="bg-luxury-gold text-luxury-black text-xs font-bold rounded px-4 py-1.5 hover:bg-luxury-gold/80 transition-colors cursor-pointer whitespace-nowrap">
+              + Add Customer
+            </button>
+          </div>
         </div>
 
         {loading ? (
@@ -315,7 +385,11 @@ export default function AdminCustomers() {
                 )}
 
                 {/* Actions */}
-                <div className="flex gap-3 pt-2 border-t border-gold-200/30">
+                <div className="flex justify-between items-center pt-2 border-t border-gold-200/30">
+                  <button onClick={() => setShowEditModal(true)}
+                    className="px-4 py-2 bg-luxury-gold text-luxury-black font-bold text-xs rounded hover:bg-luxury-gold/80 cursor-pointer transition-colors">
+                    ✏️ Edit Details
+                  </button>
                   <button onClick={() => handleDeleteClient(selectedClient.id)}
                     className="px-4 py-2 bg-red-50 border border-red-300 text-xs text-red-700 rounded hover:bg-red-100 cursor-pointer transition-colors">
                     🗑️ Delete Customer
@@ -323,6 +397,180 @@ export default function AdminCustomers() {
                 </div>
               </>
             )}
+          </div>
+        </div>
+      )}
+
+      {/* ═══ Create Customer Modal ═══ */}
+      {showCreateModal && (
+        <div className="fixed inset-0 bg-black/60 z-[300] flex items-center justify-center p-4 cursor-pointer" onClick={() => setShowCreateModal(false)}>
+          <div className="bg-luxury-dark border border-gold-200 rounded-xl max-w-lg w-full max-h-[85vh] overflow-y-auto p-6 space-y-4 text-left"
+            onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center justify-between border-b border-gold-200/30 pb-3">
+              <h3 className="text-base font-display font-bold text-gold-gradient">Create New Customer</h3>
+              <button onClick={() => setShowCreateModal(false)} className="text-gray-500 hover:text-luxury-accent text-lg cursor-pointer">✕</button>
+            </div>
+            <form onSubmit={handleCreateCustomer} className="space-y-3 text-xs">
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-gray-500 mb-1">Name *</label>
+                  <input type="text" required value={createForm.name} onChange={(e) => setCreateForm({...createForm, name: e.target.value})}
+                    className="w-full bg-luxury-black border border-gold-300 rounded p-2 text-luxury-accent focus:outline-none focus:border-luxury-gold" />
+                </div>
+                <div>
+                  <label className="block text-gray-500 mb-1">Email *</label>
+                  <input type="email" required value={createForm.email} onChange={(e) => setCreateForm({...createForm, email: e.target.value})}
+                    className="w-full bg-luxury-black border border-gold-300 rounded p-2 text-luxury-accent focus:outline-none focus:border-luxury-gold" />
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-gray-500 mb-1">Phone</label>
+                  <input type="text" value={createForm.phone} onChange={(e) => setCreateForm({...createForm, phone: e.target.value})}
+                    className="w-full bg-luxury-black border border-gold-300 rounded p-2 text-luxury-accent focus:outline-none focus:border-luxury-gold" />
+                </div>
+                <div>
+                  <label className="block text-gray-500 mb-1">Role</label>
+                  <select value={createForm.role} onChange={(e) => setCreateForm({...createForm, role: e.target.value})}
+                    className="w-full bg-luxury-black border border-gold-300 rounded p-2 text-luxury-accent focus:outline-none focus:border-luxury-gold">
+                    <option value="CUSTOMER">CUSTOMER</option>
+                    <option value="DESIGNER">DESIGNER</option>
+                    <option value="PRINTER">PRINTER</option>
+                    <option value="ADMIN">ADMIN</option>
+                  </select>
+                </div>
+              </div>
+              <div>
+                <label className="block text-gray-500 mb-1">Address</label>
+                <textarea value={createForm.address} onChange={(e) => setCreateForm({...createForm, address: e.target.value})}
+                  className="w-full bg-luxury-black border border-gold-300 rounded p-2 text-luxury-accent focus:outline-none focus:border-luxury-gold h-16 resize-none" />
+              </div>
+              <div className="grid grid-cols-3 gap-2">
+                <div>
+                  <label className="block text-gray-500 mb-1">City</label>
+                  <input type="text" value={createForm.city} onChange={(e) => setCreateForm({...createForm, city: e.target.value})}
+                    className="w-full bg-luxury-black border border-gold-300 rounded p-2 text-luxury-accent focus:outline-none focus:border-luxury-gold" />
+                </div>
+                <div>
+                  <label className="block text-gray-500 mb-1">State</label>
+                  <input type="text" value={createForm.state} onChange={(e) => setCreateForm({...createForm, state: e.target.value})}
+                    className="w-full bg-luxury-black border border-gold-300 rounded p-2 text-luxury-accent focus:outline-none focus:border-luxury-gold" />
+                </div>
+                <div>
+                  <label className="block text-gray-500 mb-1">Pincode</label>
+                  <input type="text" value={createForm.pincode} onChange={(e) => setCreateForm({...createForm, pincode: e.target.value})}
+                    className="w-full bg-luxury-black border border-gold-300 rounded p-2 text-luxury-accent focus:outline-none focus:border-luxury-gold" />
+                </div>
+              </div>
+              <div className="border-t border-gold-200/20 pt-3 space-y-3">
+                <h4 className="text-[10px] font-bold text-luxury-gold uppercase tracking-wider">Default Shipping Contact</h4>
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-gray-500 mb-1">Shipping Name</label>
+                    <input type="text" value={createForm.shippingName} onChange={(e) => setCreateForm({...createForm, shippingName: e.target.value})}
+                      className="w-full bg-luxury-black border border-gold-300 rounded p-2 text-luxury-accent focus:outline-none focus:border-luxury-gold" />
+                  </div>
+                  <div>
+                    <label className="block text-gray-500 mb-1">Shipping Phone</label>
+                    <input type="text" value={createForm.shippingPhone} onChange={(e) => setCreateForm({...createForm, shippingPhone: e.target.value})}
+                      className="w-full bg-luxury-black border border-gold-300 rounded p-2 text-luxury-accent focus:outline-none focus:border-luxury-gold" />
+                  </div>
+                </div>
+              </div>
+              <div className="flex justify-end gap-2 pt-3 border-t border-gold-200/30">
+                <button type="button" onClick={() => setShowCreateModal(false)}
+                  className="px-4 py-2 border border-gold-300 rounded text-gray-500 hover:text-luxury-accent transition-colors cursor-pointer">Cancel</button>
+                <button type="submit"
+                  className="px-4 py-2 bg-luxury-gold text-luxury-black font-bold rounded hover:bg-luxury-gold/80 transition-colors cursor-pointer">Create Customer</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* ═══ Edit Customer Modal ═══ */}
+      {showEditModal && (
+        <div className="fixed inset-0 bg-black/60 z-[310] flex items-center justify-center p-4 cursor-pointer" onClick={() => setShowEditModal(false)}>
+          <div className="bg-luxury-dark border border-gold-200 rounded-xl max-w-lg w-full max-h-[85vh] overflow-y-auto p-6 space-y-4 text-left"
+            onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center justify-between border-b border-gold-200/30 pb-3">
+              <h3 className="text-base font-display font-bold text-gold-gradient">Edit Customer Details</h3>
+              <button onClick={() => setShowEditModal(false)} className="text-gray-500 hover:text-luxury-accent text-lg cursor-pointer">✕</button>
+            </div>
+            <form onSubmit={handleEditCustomer} className="space-y-3 text-xs">
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-gray-500 mb-1">Name *</label>
+                  <input type="text" required value={editForm.name} onChange={(e) => setEditForm({...editForm, name: e.target.value})}
+                    className="w-full bg-luxury-black border border-gold-300 rounded p-2 text-luxury-accent focus:outline-none focus:border-luxury-gold" />
+                </div>
+                <div>
+                  <label className="block text-gray-500 mb-1">Email *</label>
+                  <input type="email" required value={editForm.email} onChange={(e) => setEditForm({...editForm, email: e.target.value})}
+                    className="w-full bg-luxury-black border border-gold-300 rounded p-2 text-luxury-accent focus:outline-none focus:border-luxury-gold" />
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-gray-500 mb-1">Phone</label>
+                  <input type="text" value={editForm.phone} onChange={(e) => setEditForm({...editForm, phone: e.target.value})}
+                    className="w-full bg-luxury-black border border-gold-300 rounded p-2 text-luxury-accent focus:outline-none focus:border-luxury-gold" />
+                </div>
+                <div>
+                  <label className="block text-gray-500 mb-1">Role</label>
+                  <select value={editForm.role} onChange={(e) => setEditForm({...editForm, role: e.target.value})}
+                    className="w-full bg-luxury-black border border-gold-300 rounded p-2 text-luxury-accent focus:outline-none focus:border-luxury-gold">
+                    <option value="CUSTOMER">CUSTOMER</option>
+                    <option value="DESIGNER">DESIGNER</option>
+                    <option value="PRINTER">PRINTER</option>
+                    <option value="ADMIN">ADMIN</option>
+                  </select>
+                </div>
+              </div>
+              <div>
+                <label className="block text-gray-500 mb-1">Address</label>
+                <textarea value={editForm.address} onChange={(e) => setEditForm({...editForm, address: e.target.value})}
+                  className="w-full bg-luxury-black border border-gold-300 rounded p-2 text-luxury-accent focus:outline-none focus:border-luxury-gold h-16 resize-none" />
+              </div>
+              <div className="grid grid-cols-3 gap-2">
+                <div>
+                  <label className="block text-gray-500 mb-1">City</label>
+                  <input type="text" value={editForm.city} onChange={(e) => setEditForm({...editForm, city: e.target.value})}
+                    className="w-full bg-luxury-black border border-gold-300 rounded p-2 text-luxury-accent focus:outline-none focus:border-luxury-gold" />
+                </div>
+                <div>
+                  <label className="block text-gray-500 mb-1">State</label>
+                  <input type="text" value={editForm.state} onChange={(e) => setEditForm({...editForm, state: e.target.value})}
+                    className="w-full bg-luxury-black border border-gold-300 rounded p-2 text-luxury-accent focus:outline-none focus:border-luxury-gold" />
+                </div>
+                <div>
+                  <label className="block text-gray-500 mb-1">Pincode</label>
+                  <input type="text" value={editForm.pincode} onChange={(e) => setEditForm({...editForm, pincode: e.target.value})}
+                    className="w-full bg-luxury-black border border-gold-300 rounded p-2 text-luxury-accent focus:outline-none focus:border-luxury-gold" />
+                </div>
+              </div>
+              <div className="border-t border-gold-200/20 pt-3 space-y-3">
+                <h4 className="text-[10px] font-bold text-luxury-gold uppercase tracking-wider">Default Shipping Contact</h4>
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-gray-500 mb-1">Shipping Name</label>
+                    <input type="text" value={editForm.shippingName} onChange={(e) => setEditForm({...editForm, shippingName: e.target.value})}
+                      className="w-full bg-luxury-black border border-gold-300 rounded p-2 text-luxury-accent focus:outline-none focus:border-luxury-gold" />
+                  </div>
+                  <div>
+                    <label className="block text-gray-500 mb-1">Shipping Phone</label>
+                    <input type="text" value={editForm.shippingPhone} onChange={(e) => setEditForm({...editForm, shippingPhone: e.target.value})}
+                      className="w-full bg-luxury-black border border-gold-300 rounded p-2 text-luxury-accent focus:outline-none focus:border-luxury-gold" />
+                  </div>
+                </div>
+              </div>
+              <div className="flex justify-end gap-2 pt-3 border-t border-gold-200/30">
+                <button type="button" onClick={() => setShowEditModal(false)}
+                  className="px-4 py-2 border border-gold-300 rounded text-gray-500 hover:text-luxury-accent transition-colors cursor-pointer">Cancel</button>
+                <button type="submit"
+                  className="px-4 py-2 bg-luxury-gold text-luxury-black font-bold rounded hover:bg-luxury-gold/80 transition-colors cursor-pointer">Save Changes</button>
+              </div>
+            </form>
           </div>
         </div>
       )}

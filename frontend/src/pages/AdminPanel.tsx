@@ -9,11 +9,13 @@ import AdminCustomers from '@/components/dashboard/AdminCustomers';
 import AdminProductManager from '@/components/dashboard/AdminProductManager';
 import PaymentHistory from '@/components/dashboard/PaymentHistory';
 import AuditLog from '@/components/dashboard/AuditLog';
+import AdminAnalytics from '@/components/dashboard/AdminAnalytics';
 
-type AdminTab = 'overview' | 'orders' | 'customers' | 'products' | 'payments' | 'audit';
+type AdminTab = 'overview' | 'orders' | 'customers' | 'products' | 'payments' | 'audit' | 'analytics';
 
 const ADMIN_TABS: { key: AdminTab; label: string; icon: string }[] = [
   { key: 'overview', label: 'Overview', icon: '📊' },
+  { key: 'analytics', label: 'Visitor Events', icon: '📈' },
   { key: 'orders', label: 'Orders', icon: '📦' },
   { key: 'customers', label: 'Customers', icon: '👥' },
   { key: 'products', label: 'Products', icon: '🛍️' },
@@ -104,6 +106,7 @@ export default function AdminPanel() {
               </h2>
               <p className="text-xs text-gray-500 mt-1">
                 {activeTab === 'overview' && 'Dashboard overview with key business metrics'}
+                {activeTab === 'analytics' && 'Track user events, clicks, and checkout funnels'}
                 {activeTab === 'orders' && 'Manage all customer orders and update their status'}
                 {activeTab === 'customers' && 'View and manage all registered customers'}
                 {activeTab === 'products' && 'Manage your product catalog and templates'}
@@ -152,6 +155,7 @@ export default function AdminPanel() {
           )}
 
           {activeTab === 'orders' && <AdminOrders />}
+          {activeTab === 'analytics' && <AdminAnalytics />}
           {activeTab === 'customers' && <AdminCustomers />}
           {activeTab === 'products' && <AdminProductManager />}
           {activeTab === 'payments' && <PaymentHistory />}

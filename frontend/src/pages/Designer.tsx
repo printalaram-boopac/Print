@@ -1,16 +1,10 @@
-export default function Designer() {
-  return null;
-}
-
-/* ─── Designer page temporarily disabled ───
-
-import { useState, useMemo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useMemo, useRef } from 'react';
+import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { useSearchParams } from 'react-router-dom';
-import { useCart } from '@/context/CartContext';
 import { useAuth } from '@/context/AuthContext';
 import { createOrder } from '@/lib/api';
 import { asset } from '@/lib/asset';
+import { logUserEvent } from '@/lib/analytics';
 
 const TEMPLATES = [
   { id: 1, src: asset('card-1.jpeg'), title: 'Royal Peacock Green', category: 'Wedding', price: 15 },
@@ -56,9 +50,123 @@ const STEPS = [
   { id: 3, label: 'Preview & Order', icon: '🛒' },
 ];
 
+/* ─────────────────── LIVE PREVIEW CARD ───────────────────
+   Interactive 3D card: mouse-tracked tilt + click-to-flip, with the
+   couple name / family name / greeting / uploaded photo rendered as a
+   real personalization overlay on top of the chosen design. */
+interface LivePreviewCardProps {
+  src: string;
+  title: string;
+}
+
+function LivePreviewCard({ src, title }: LivePreviewCardProps) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [flipped, setFlipped] = useState(false);
+
+  // Raw pointer position (-0.5 .. 0.5), smoothed with a spring
+  const mvX = useMotionValue(0);
+  const mvY = useMotionValue(0);
+  const springX = useSpring(mvX, { stiffness: 150, damping: 18 });
+  const springY = useSpring(mvY, { stiffness: 150, damping: 18 });
+
+  // Map pointer position to a subtle tilt
+  const rotateX = useTransform(springY, [-0.5, 0.5], [10, -10]);
+  const rotateY = useTransform(springX, [-0.5, 0.5], [-10, 10]);
+  // Glare follows the pointer
+  const glareX = useTransform(springX, [-0.5, 0.5], ['0%', '100%']);
+  const glareY = useTransform(springY, [-0.5, 0.5], ['0%', '100%']);
+  const glare = useTransform(
+    [glareX, glareY],
+    ([x, y]: string[]) =>
+      `radial-gradient(circle at ${x} ${y}, rgba(255,255,255,0.45), rgba(255,255,255,0) 55%)`
+  );
+
+  const handleMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const el = ref.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    mvX.set((e.clientX - rect.left) / rect.width - 0.5);
+    mvY.set((e.clientY - rect.top) / rect.height - 0.5);
+  };
+
+  const handleLeave = () => {
+    mvX.set(0);
+    mvY.set(0);
+  };
+
+  return (
+    <div className="space-y-3">
+      <div className="flex items-center justify-between">
+        <h2 className="text-sm text-luxury-gold uppercase tracking-widest font-semibold">Live Preview</h2>
+        <button
+          onClick={() => setFlipped((f) => !f)}
+          className="text-[10px] uppercase tracking-widest text-gray-500 hover:text-luxury-gold transition-colors cursor-pointer flex items-center gap-1"
+        >
+          ⟳ {flipped ? 'Show Front' : 'Flip Card'}
+        </button>
+      </div>
+
+      <div
+        ref={ref}
+        onMouseMove={handleMove}
+        onMouseLeave={handleLeave}
+        className="perspective-container select-none"
+        style={{ perspective: 1200 }}
+      >
+        <motion.div
+          style={{ rotateX, rotateY, transformStyle: 'preserve-3d' }}
+          className="relative aspect-square w-full"
+        >
+          <motion.div
+            animate={{ rotateY: flipped ? 180 : 0 }}
+            transition={{ duration: 0.7, ease: [0.25, 1, 0.5, 1] }}
+            className="relative w-full h-full"
+            style={{ transformStyle: 'preserve-3d' }}
+          >
+            {/* ───── FRONT ───── */}
+            <div
+              className="absolute inset-0 rounded-lg overflow-hidden border border-gold-300 bg-luxury-dark shadow-[0_24px_64px_rgba(61,30,48,0.18)]"
+              style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden' }}
+            >
+              <img src={src} alt={title} className="absolute inset-0 w-full h-full object-cover" draggable={false} />
+
+              {/* Pointer-tracked glare */}
+              <motion.div
+                className="absolute inset-0 pointer-events-none mix-blend-overlay"
+                style={{ background: glare }}
+              />
+            </div>
+
+            {/* ───── BACK ───── */}
+            <div
+              className="absolute inset-0 rounded-lg overflow-hidden border border-gold-300 bg-luxury-accent flex flex-col items-center justify-center gap-4 p-8 text-center shadow-[0_24px_64px_rgba(61,30,48,0.18)]"
+              style={{
+                backfaceVisibility: 'hidden',
+                WebkitBackfaceVisibility: 'hidden',
+                transform: 'rotateY(180deg)',
+              }}
+            >
+              <div className="h-px w-24 bg-gradient-to-r from-transparent via-luxury-gold to-transparent" />
+              <p className="font-display text-2xl text-gold-100">Printalaram</p>
+              <p className="text-[11px] uppercase tracking-[0.25em] text-gold-300">{title}</p>
+              <div className="h-px w-24 bg-gradient-to-r from-transparent via-luxury-gold to-transparent" />
+              <p className="absolute bottom-5 text-[9px] uppercase tracking-[0.2em] text-gold-400">
+                Premium Invitation
+              </p>
+            </div>
+          </motion.div>
+        </motion.div>
+      </div>
+
+      <p className="text-[10px] text-gray-600 text-center">
+        Move your cursor over the card for a 3D view · click <span className="text-luxury-gold">Flip</span> to see the reverse
+      </p>
+    </div>
+  );
+}
+
 export default function Designer() {
   const [params] = useSearchParams();
-  const { addItem } = useCart();
   const { dbUser } = useAuth();
 
   // Wizard state
@@ -79,7 +187,6 @@ export default function Designer() {
 
   const [quantity, setQuantity] = useState(50);
   const [uploadedPhoto, setUploadedPhoto] = useState<string | null>(null);
-  const [addedToCart, setAddedToCart] = useState(false);
   const [isCheckingOut, setIsCheckingOut] = useState(false);
   const [shippingName, setShippingName] = useState(dbUser?.shippingName || dbUser?.name || '');
   const [shippingPhone, setShippingPhone] = useState(dbUser?.shippingPhone || dbUser?.phone || '');
@@ -105,28 +212,10 @@ export default function Designer() {
   const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
+    logUserEvent('DESIGNER_UPLOAD_PHOTO', { templateId: template?.id });
     const reader = new FileReader();
     reader.onload = () => setUploadedPhoto(reader.result as string);
     reader.readAsDataURL(file);
-  };
-
-  // Add to cart
-  const handleAddToCart = () => {
-    if (!template) return;
-    addItem({
-      templateId: template.id,
-      title: template.title,
-      image: template.src,
-      theme,
-      occasion,
-      coupleName,
-      familyName,
-      greetingText: greetingText || 'Default',
-      quantity,
-      unitPrice,
-    });
-    setAddedToCart(true);
-    setTimeout(() => setAddedToCart(false), 3000);
   };
 
   // Save order to Supabase AND send WhatsApp
@@ -139,8 +228,16 @@ export default function Designer() {
 
     setOrderSaving(true);
 
+    logUserEvent('CLICK_WHATSAPP_ORDER', {
+      templateId: template?.id,
+      templateTitle: template?.title,
+      quantity,
+      total: totalPrice,
+      source: 'designer',
+    });
+
     try {
-      // Save to Supabase
+      // Save to database
       await createOrder({
         templateId: template?.id ? String(template.id) : undefined,
         quantity,
@@ -200,13 +297,14 @@ export default function Designer() {
   return (
     <div className="min-h-screen pt-28 pb-16 px-4">
       <div className="max-w-6xl mx-auto space-y-8">
-        {/* ─── Step Indicator ─── *-/}
+        {/* ─── Step Indicator ─── */}
         <div className="flex items-center justify-center gap-2 md:gap-4">
           {STEPS.map((s, i) => (
             <div key={s.id} className="flex items-center gap-2 md:gap-4">
               <button
                 onClick={() => {
                   if (s.id === 1 || (s.id === 2 && selectedTemplate) || (s.id === 3 && selectedTemplate)) {
+                    logUserEvent('DESIGNER_STEP_NAV', { step: s.id, label: s.label });
                     setStep(s.id);
                   }
                 }}
@@ -228,7 +326,7 @@ export default function Designer() {
         </div>
 
         <AnimatePresence mode="wait">
-          {/* ═══════ STEP 1: Choose Design ═══════ *-/}
+          {/* ═══════ STEP 1: Choose Design ═══════ */}
           {step === 1 && (
             <motion.div
               key="step1"
@@ -251,6 +349,7 @@ export default function Designer() {
                     whileHover={{ scale: 1.03 }}
                     whileTap={{ scale: 0.98 }}
                     onClick={() => {
+                      logUserEvent('CLICK_TEMPLATE_CARD', { templateId: t.id, templateTitle: t.title, source: 'designer' });
                       setSelectedTemplate(t.id);
                       setStep(2);
                     }}
@@ -275,7 +374,7 @@ export default function Designer() {
             </motion.div>
           )}
 
-          {/* ═══════ STEP 2: Customize ═══════ *-/}
+          {/* ═══════ STEP 2: Customize ═══════ */}
           {step === 2 && template && (
             <motion.div
               key="step2"
@@ -284,29 +383,24 @@ export default function Designer() {
               exit={{ opacity: 0, x: 30 }}
               className="grid grid-cols-1 lg:grid-cols-2 gap-8"
             >
-              {/* Live Preview *-/}
-              <div className="space-y-4">
-                <h2 className="text-sm text-luxury-gold uppercase tracking-widest font-semibold">Live Preview</h2>
-                <div className="relative rounded-lg overflow-hidden border border-gold-300 bg-luxury-dark">
-                  <div className="aspect-square">
-                    <img src={template.src} alt={template.title} className="w-full h-full object-cover" />
-                  </div>
-                </div>
-                <p className="text-[10px] text-gray-600 text-center">Preview is approximate — our designers will finalize your cover</p>
-              </div>
+              {/* Live Preview */}
+              <LivePreviewCard src={template.src} title={template.title} />
 
-              {/* Customization Form *-/}
+              {/* Customization Form */}
               <div className="space-y-5">
                 <h2 className="text-sm text-luxury-gold uppercase tracking-widest font-semibold">Customize Your Cover</h2>
 
-                {/* Occasion *-/}
+                {/* Occasion */}
                 <div className="space-y-2">
                   <label className="text-xs text-gray-400 font-medium">Occasion</label>
                   <div className="flex flex-wrap gap-2">
                     {OCCASIONS.map((occ) => (
                       <button
                         key={occ}
-                        onClick={() => setOccasion(occ)}
+                        onClick={() => {
+                          logUserEvent('DESIGNER_SELECT_OCCASION', { occasion: occ });
+                          setOccasion(occ);
+                        }}
                         className={`px-3 py-1.5 text-[11px] font-medium border rounded-sm cursor-pointer transition-all ${occasion === occ
                           ? 'border-luxury-gold bg-gold-100 text-luxury-accent'
                           : 'border-gold-300 text-gray-500 hover:border-luxury-gold'
@@ -318,27 +412,7 @@ export default function Designer() {
                   </div>
                 </div>
 
-                {/* [Theme - Disabled and Hidden for now]
-                <div className="space-y-2">
-                  <label className="text-xs text-gray-400 font-medium">Color Theme</label>
-                  <div className="flex flex-wrap gap-2">
-                    {THEMES.map((t) => (
-                      <button
-                        key={t}
-                        onClick={() => setTheme(t)}
-                        className={`px-3 py-1.5 text-[11px] font-medium border rounded-sm cursor-pointer transition-all ${theme === t
-                          ? 'border-luxury-gold bg-gold-100 text-luxury-accent'
-                          : 'border-gold-300 text-gray-500 hover:border-luxury-gold'
-                          }`}
-                      >
-                        {t}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-                [end-comment]}
-
-                {/* Couple Name *-/}
+                {/* Couple Name */}
                 <div className="space-y-2">
                   <label className="text-xs text-gray-400 font-medium">Couple / Person Name</label>
                   <input
@@ -350,7 +424,7 @@ export default function Designer() {
                   />
                 </div>
 
-                {/* Family Name *-/}
+                {/* Family Name */}
                 <div className="space-y-2">
                   <label className="text-xs text-gray-400 font-medium">Family Name</label>
                   <input
@@ -362,7 +436,7 @@ export default function Designer() {
                   />
                 </div>
 
-                {/* Greeting Text *-/}
+                {/* Greeting Text */}
                 <div className="space-y-2">
                   <label className="text-xs text-gray-400 font-medium">Greeting / Blessing Text</label>
                   <select
@@ -376,7 +450,7 @@ export default function Designer() {
                       </option>
                     ))}
                   </select>
-                  
+
                   {selectedGreeting === 'Custom...' && (
                     <motion.div
                       initial={{ opacity: 0, y: -5 }}
@@ -395,7 +469,7 @@ export default function Designer() {
                   )}
                 </div>
 
-                {/* Photo Upload *-/}
+                {/* Photo Upload */}
                 <div className="space-y-2">
                   <label className="text-xs text-gray-400 font-medium">Upload Photo (optional)</label>
                   <label className="flex items-center justify-center gap-2 w-full px-4 py-3 bg-luxury-gray border border-dashed border-gold-300 text-gray-500 text-sm cursor-pointer hover:border-luxury-gold hover:text-luxury-gold transition-all rounded-sm">
@@ -404,7 +478,7 @@ export default function Designer() {
                   </label>
                 </div>
 
-                {/* Quantity *-/}
+                {/* Quantity */}
                 <div className="space-y-2">
                   <label className="text-xs text-gray-400 font-medium">
                     Quantity <span className="text-gray-500">(min 50)</span>
@@ -413,7 +487,10 @@ export default function Designer() {
                     {[50, 100, 200].map((q) => (
                       <button
                         key={q}
-                        onClick={() => setQuantity(q)}
+                        onClick={() => {
+                          logUserEvent('CLICK_QUICK_QUANTITY', { templateId: template?.id, quantity: q, source: 'designer' });
+                          setQuantity(q);
+                        }}
                         className={`px-3 py-2 text-xs font-bold border rounded-sm cursor-pointer transition-all ${quantity === q
                           ? 'border-luxury-gold bg-luxury-gold text-luxury-accent'
                           : 'border-gold-300 text-gray-500 hover:border-luxury-gold'
@@ -423,12 +500,14 @@ export default function Designer() {
                       </button>
                     ))}
                   </div>
-
                 </div>
 
-                {/* Next *-/}
+                {/* Next */}
                 <button
-                  onClick={() => setStep(3)}
+                  onClick={() => {
+                    logUserEvent('DESIGNER_PREVIEW_CONFIRM', { templateId: template?.id, quantity });
+                    setStep(3);
+                  }}
                   className="btn-primary w-full gold-glow cursor-pointer"
                 >
                   Preview & Confirm →
@@ -437,7 +516,7 @@ export default function Designer() {
             </motion.div>
           )}
 
-          {/* ═══════ STEP 3: Preview & Order ═══════ *-/}
+          {/* ═══════ STEP 3: Preview & Order ═══════ */}
           {step === 3 && template && (
             <motion.div
               key="step3"
@@ -452,7 +531,7 @@ export default function Designer() {
                 </h1>
               </div>
 
-              {/* Order Success Banner *-/}
+              {/* Order Success Banner */}
               {orderSuccess && (
                 <motion.div
                   initial={{ opacity: 0, y: -10 }}
@@ -465,11 +544,11 @@ export default function Designer() {
 
               <div className="glass-card-gold rounded-xl p-6 md:p-8 space-y-6">
                 <div className="flex gap-6">
-                  {/* Image *-/}
+                  {/* Image */}
                   <div className="w-32 h-32 rounded-lg overflow-hidden flex-shrink-0 border border-gold-300">
                     <img src={template.src} alt={template.title} className="w-full h-full object-cover" />
                   </div>
-                  {/* Details *-/}
+                  {/* Details */}
                   <div className="space-y-2 flex-1">
                     <h3 className="text-lg font-display font-semibold text-luxury-accent">{template.title}</h3>
                     <div className="space-y-1 text-xs text-gray-500">
@@ -485,7 +564,7 @@ export default function Designer() {
 
                 {!isCheckingOut ? (
                   <>
-                    {/* Price breakdown *-/}
+                    {/* Price breakdown */}
                     <div className="border-t border-gold-200 pt-4 space-y-2">
                       <div className="flex justify-between text-sm">
                         <span className="text-gray-500">₹{unitPrice} × {quantity} covers</span>
@@ -504,20 +583,13 @@ export default function Designer() {
                       </div>
                     </div>
 
-                    {/* Action Buttons *-/}
+                    {/* Action Button */}
                     <div className="flex flex-col sm:flex-row gap-3 pt-2">
                       <button
-                        onClick={handleAddToCart}
-                        disabled={addedToCart}
-                        className={`flex-1 py-3 px-6 text-sm font-bold tracking-wider rounded-sm cursor-pointer transition-all ${addedToCart
-                          ? 'bg-green-600 text-white animate-pulse'
-                          : 'border border-luxury-accent text-luxury-accent hover:bg-luxury-accent hover:text-white'
-                          }`}
-                      >
-                        {addedToCart ? '✓ Added to Cart!' : '🛒 Add to Cart'}
-                      </button>
-                      <button
-                        onClick={() => setIsCheckingOut(true)}
+                        onClick={() => {
+                          logUserEvent('CLICK_BUY_NOW', { templateId: template?.id, templateTitle: template?.title, quantity, total: totalPrice, source: 'designer' });
+                          setIsCheckingOut(true);
+                        }}
                         className="flex-1 btn-primary cursor-pointer"
                       >
                         🟢 Order on WhatsApp
@@ -593,5 +665,3 @@ export default function Designer() {
     </div>
   );
 }
-
-*/

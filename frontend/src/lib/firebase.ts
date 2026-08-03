@@ -57,11 +57,27 @@ export function resetPassword(email: string) {
   return sendPasswordResetEmail(auth, email);
 }
 
-/** Get the current user's ID token for API calls */
+/** Get the current user's ID token for API calls (waits for auth state if refreshing page) */
 export async function getIdToken(): Promise<string | null> {
-  const user = auth.currentUser;
-  if (!user) return null;
-  return user.getIdToken();
+  if (auth.currentUser) {
+    return auth.currentUser.getIdToken();
+  }
+  return new Promise((resolve) => {
+    const unsubscribe = auth.onAuthStateChanged(async (user) => {
+      unsubscribe();
+      if (user) {
+        try {
+          const token = await user.getIdToken();
+          resolve(token);
+        } catch {
+          resolve(null);
+        }
+      } else {
+        resolve(null);
+      }
+    });
+    setTimeout(() => resolve(null), 2000);
+  });
 }
 
 export type { User };

@@ -18,5 +18,8 @@ npm-debug.log*
 # Prisma
 backend/prisma/*.db
 
+# Build output (bundles env vars/keys inline at build time — never commit)
+frontend/dist/
+
 # Misc
 *.local

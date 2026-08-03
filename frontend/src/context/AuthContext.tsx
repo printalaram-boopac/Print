@@ -137,8 +137,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const logout = useCallback(async () => {
+    localStorage.removeItem('printalarm_static_admin');
     await firebaseSignOut();
     setDbUser(null);
+    setFirebaseUser(null);
   }, []);
 
   const forgotPassword = useCallback(async (email: string) => {

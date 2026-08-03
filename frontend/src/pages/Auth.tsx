@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '@/context/AuthContext';
 import { createRecaptchaVerifier } from '@/lib/firebase';
+import { logUserEvent } from '@/lib/analytics';
 
 export default function Auth() {
   const navigate = useNavigate();
@@ -16,7 +17,8 @@ export default function Auth() {
     forgotPassword,
     clearError,
     sendOtpCode,
-    confirmOtpCode
+    confirmOtpCode,
+    isAdmin
   } = useAuth();
 
   const [mode, setMode] = useState<'login' | 'register' | 'forgot'>('login');
@@ -36,8 +38,14 @@ export default function Auth() {
 
   // If already logged in, redirect
   useEffect(() => {
-    if (!loading && firebaseUser) navigate('/dashboard', { replace: true });
-  }, [loading, firebaseUser, navigate]);
+    if (!loading && firebaseUser) {
+      if (isAdmin) {
+        navigate('/admin', { replace: true });
+      } else {
+        navigate('/dashboard', { replace: true });
+      }
+    }
+  }, [loading, firebaseUser, isAdmin, navigate]);
 
   // Clean up reCAPTCHA on unmount
   useEffect(() => {
@@ -54,13 +62,17 @@ export default function Auth() {
     e.preventDefault();
     clearError();
     setSubmitting(true);
+    logUserEvent('SUBMIT_AUTH_FORM', { mode, method: 'email' });
     try {
       if (mode === 'login') {
         await login(email, password);
+        logUserEvent('LOGIN_SUCCESS', { method: 'email' });
       } else if (mode === 'register') {
         await register(email, password, name);
+        logUserEvent('REGISTER_SUCCESS', { method: 'email' });
       } else {
         await forgotPassword(email);
+        logUserEvent('FORGOT_PASSWORD_SENT');
         setResetSent(true);
       }
     } catch {
@@ -74,6 +86,7 @@ export default function Auth() {
     e.preventDefault();
     clearError();
     setSubmitting(true);
+    logUserEvent('SUBMIT_AUTH_FORM', { mode, method: 'phone', step: 'send_otp' });
     let verifier = recaptchaVerifier;
     try {
       if (!verifier) {
@@ -104,12 +117,14 @@ export default function Auth() {
     e.preventDefault();
     clearError();
     setSubmitting(true);
+    logUserEvent('SUBMIT_AUTH_FORM', { mode, method: 'phone', step: 'verify_otp' });
     try {
       if (!confirmationResult) {
         throw new Error('No verification session found. Please request OTP again.');
       }
       const displayName = mode === 'register' ? name : undefined;
       await confirmOtpCode(confirmationResult, otpCode, displayName);
+      logUserEvent('LOGIN_SUCCESS', { method: 'phone' });
     } catch (err: any) {
       console.error(err);
     } finally {
@@ -120,8 +135,10 @@ export default function Auth() {
   const handleGoogleLogin = async () => {
     clearError();
     setSubmitting(true);
+    logUserEvent('CLICK_GOOGLE_LOGIN');
     try {
       await googleLogin();
+      logUserEvent('LOGIN_SUCCESS', { method: 'google' });
     } catch {
       // error is set by context
     } finally {
@@ -130,6 +147,7 @@ export default function Auth() {
   };
 
   const switchMode = (m: 'login' | 'register' | 'forgot') => {
+    logUserEvent('AUTH_SWITCH_MODE', { from: mode, to: m });
     clearError();
     setResetSent(false);
     setOtpSent(false);

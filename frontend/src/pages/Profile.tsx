@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useAuth } from '@/context/AuthContext';
 import { updateProfile, getMyOrders, getMyDesigns } from '@/lib/api';
+import { logUserEvent } from '@/lib/analytics';
 
 interface Order {
   id: string;
@@ -113,6 +114,7 @@ export default function Profile() {
   const handleSaveProfile = async () => {
     setSaving(true);
     setSaveMsg('');
+    logUserEvent('CLICK_SAVE_PROFILE');
     try {
       await updateProfile({
         name: editName,
@@ -133,6 +135,7 @@ export default function Profile() {
   };
 
   const handleLogout = async () => {
+    logUserEvent('CLICK_LOGOUT', { source: 'profile' });
     await logout();
     navigate('/auth');
   };
@@ -308,7 +311,7 @@ export default function Profile() {
                 <div className="text-center py-12 text-gray-500">
                   <p className="text-4xl mb-3">📭</p>
                   <p>No orders yet. Start designing!</p>
-                  <button onClick={() => navigate('/designer')} className="mt-3 text-luxury-gold text-xs underline cursor-pointer">
+                  <button onClick={() => { logUserEvent('CLICK_START_DESIGNING', { source: 'profile_orders_empty' }); navigate('/designer'); }} className="mt-3 text-luxury-gold text-xs underline cursor-pointer">
                     Create your first design
                   </button>
                 </div>
@@ -362,7 +365,7 @@ export default function Profile() {
                 <div className="text-center py-12 text-gray-500">
                   <p className="text-4xl mb-3">🎨</p>
                   <p>No designs created yet.</p>
-                  <button onClick={() => navigate('/designer')} className="mt-3 text-luxury-gold text-xs underline cursor-pointer">
+                  <button onClick={() => { logUserEvent('CLICK_START_DESIGNING', { source: 'profile_designs_empty' }); navigate('/designer'); }} className="mt-3 text-luxury-gold text-xs underline cursor-pointer">
                     Start designing
                   </button>
                 </div>
@@ -436,7 +439,7 @@ export default function Profile() {
                     <p className="text-[10px] text-gray-500 uppercase tracking-widest">Your Referral Code</p>
                     <p className="text-base font-bold text-luxury-accent tracking-widest">PA-{dbUser?.id?.slice(0, 6)?.toUpperCase() || 'XXXXXX'}</p>
                   </div>
-                  <button onClick={() => navigator.clipboard.writeText(`PA-${dbUser?.id?.slice(0, 6)?.toUpperCase() || 'XXXXXX'}`)}
+                  <button onClick={() => { logUserEvent('CLICK_COPY_REFERRAL_CODE'); navigator.clipboard.writeText(`PA-${dbUser?.id?.slice(0, 6)?.toUpperCase() || 'XXXXXX'}`); }}
                     className="px-4 py-2 bg-gold-50 border border-gold-300 text-xs text-luxury-gold hover:bg-luxury-gold hover:text-luxury-accent transition-colors rounded cursor-pointer">
                     Copy
                   </button>

@@ -1,5 +1,9 @@
 import { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import { X } from 'lucide-react';
+import { toast } from 'react-toastify';
+import { logUserEvent } from '@/lib/analytics';
 
 interface CustomDesignModalProps {
   isOpen: boolean;
@@ -15,7 +19,7 @@ export default function CustomDesignModal({ isOpen, onClose }: CustomDesignModal
     e.preventDefault();
 
     if (!name || !phone || !address) {
-      alert('Please fill in all details.');
+      toast.warn('Please fill in all required contact details.');
       return;
     }
 
@@ -28,95 +32,110 @@ export default function CustomDesignModal({ isOpen, onClose }: CustomDesignModal
       `Address: ${address}`
     ].join('\n');
 
+    logUserEvent('SUBMIT_CUSTOM_DESIGN_REQUEST');
+    toast.success('Custom design inquiry created! Opening WhatsApp...');
     const whatsappUrl = `https://wa.me/919904544702?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
     onClose();
   };
 
-  return (
+  return createPortal(
     <AnimatePresence>
       {isOpen && (
-        <>
-          {/* Backdrop */}
+        <motion.div
+          className="fixed inset-0 bg-black/75 z-[9999] backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          onClick={onClose}
+        >
+          {/* Modal Box */}
           <motion.div
-            className="fixed inset-0 bg-black/85 z-[300] backdrop-blur-sm cursor-pointer"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={onClose}
-          />
-
-          {/* Modal Container */}
-          <motion.div
-            className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md bg-luxury-dark border border-gold-950 p-6 md:p-8 rounded-lg z-[301] space-y-6 shadow-2xl"
-            initial={{ scale: 0.9, y: '-40%', opacity: 0 }}
-            animate={{ scale: 1, y: '-50%', opacity: 1 }}
-            exit={{ scale: 0.9, y: '-40%', opacity: 0 }}
-            transition={{ type: 'spring', duration: 0.5 }}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="custom-modal-title"
+            onClick={(e) => e.stopPropagation()}
+            className="w-full max-w-md bg-white border border-gold-200/60 p-6 md:p-8 rounded-xl z-[10000] space-y-6 shadow-2xl my-auto"
+            initial={{ scale: 0.95, opacity: 0, y: 15 }}
+            animate={{ scale: 1, opacity: 1, y: 0 }}
+            exit={{ scale: 0.95, opacity: 0, y: 15 }}
+            transition={{ type: 'spring', damping: 25, stiffness: 300 }}
           >
-            <div className="flex justify-between items-center border-b border-luxury-gray pb-3">
-              <h3 className="text-lg font-display font-semibold text-gold-gradient">
+            <div className="flex justify-between items-center border-b border-gold-200/40 pb-3">
+              <h3 id="custom-modal-title" className="text-lg font-display font-semibold text-luxury-accent">
                 Customize Shagun Lifafa
               </h3>
               <button
+                type="button"
                 onClick={onClose}
-                className="text-gray-500 hover:text-luxury-accent text-base cursor-pointer"
+                aria-label="Close modal"
+                className="p-1 rounded-full text-gray-400 hover:text-luxury-accent hover:bg-gray-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-luxury-gold cursor-pointer transition-colors"
               >
-                ✕
+                <X className="w-5 h-5" />
               </button>
             </div>
 
-            <p className="text-xs text-gray-600 leading-relaxed">
+            <p className="text-xs text-gray-500 leading-relaxed">
               Fill in your customer & shipping details below to send a customization request directly to our lead design consultant on WhatsApp.
             </p>
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-1">
-                <label className="text-[10px] uppercase tracking-widest text-luxury-accent/80 font-bold">Full Name</label>
+                <label htmlFor="custom-full-name" className="text-[10px] uppercase tracking-widest text-luxury-accent font-bold">
+                  Full Name
+                </label>
                 <input
+                  id="custom-full-name"
                   type="text"
                   required
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  placeholder="e.g. brijesh vasoya"
-                  className="w-full bg-luxury-black border border-luxury-accent/20 p-2.5 text-xs text-luxury-accent placeholder:text-gray-400 focus:outline-none focus:border-luxury-gold rounded-sm"
+                  placeholder="e.g. Brijesh Vasoya"
+                  className="w-full bg-luxury-gray/40 border border-gold-200/60 p-3 text-xs text-luxury-accent placeholder:text-gray-400 focus:outline-none focus:border-luxury-gold focus-visible:ring-2 focus-visible:ring-luxury-gold rounded-lg transition-colors"
                 />
               </div>
 
               <div className="space-y-1">
-                <label className="text-[10px] uppercase tracking-widest text-luxury-accent/80 font-bold">Phone Number</label>
+                <label htmlFor="custom-phone-number" className="text-[10px] uppercase tracking-widest text-luxury-accent font-bold">
+                  Phone Number
+                </label>
                 <input
+                  id="custom-phone-number"
                   type="tel"
                   required
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
-                  placeholder="e.g. +919904544702"
-                  className="w-full bg-luxury-black border border-luxury-accent/20 p-2.5 text-xs text-luxury-accent placeholder:text-gray-400 focus:outline-none focus:border-luxury-gold rounded-sm"
+                  placeholder="e.g. +91 99045 44702"
+                  className="w-full bg-luxury-gray/40 border border-gold-200/60 p-3 text-xs text-luxury-accent placeholder:text-gray-400 focus:outline-none focus:border-luxury-gold focus-visible:ring-2 focus-visible:ring-luxury-gold rounded-lg transition-colors"
                 />
               </div>
 
               <div className="space-y-1">
-                <label className="text-[10px] uppercase tracking-widest text-luxury-accent/80 font-bold">Shipping Address</label>
+                <label htmlFor="custom-shipping-address" className="text-[10px] uppercase tracking-widest text-luxury-accent font-bold">
+                  Shipping Address
+                </label>
                 <textarea
+                  id="custom-shipping-address"
                   required
                   rows={3}
                   value={address}
                   onChange={(e) => setAddress(e.target.value)}
-                  placeholder="e.g. 70,maple villa ,kathor ,kamrej, surat, Gujarat, 394150"
-                  className="w-full bg-luxury-black border border-luxury-accent/20 p-2.5 text-xs text-luxury-accent placeholder:text-gray-400 focus:outline-none focus:border-luxury-gold resize-none rounded-sm"
+                  placeholder="e.g. 70, Maple Villa, Kathor, Kamrej, Surat, Gujarat - 394150"
+                  className="w-full bg-luxury-gray/40 border border-gold-200/60 p-3 text-xs text-luxury-accent placeholder:text-gray-400 focus:outline-none focus:border-luxury-gold focus-visible:ring-2 focus-visible:ring-luxury-gold resize-none rounded-lg transition-colors"
                 />
               </div>
 
               <button
                 type="submit"
-                className="w-full py-3 bg-luxury-accent text-white font-bold tracking-wider text-xs gold-glow cursor-pointer uppercase rounded-sm hover:bg-luxury-accent/90 transition-colors"
+                className="w-full py-3.5 bg-luxury-accent text-white font-bold tracking-wider text-xs cursor-pointer uppercase rounded-lg hover:bg-luxury-gold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-luxury-gold shadow-md"
               >
                 Send Request on WhatsApp
               </button>
             </form>
           </motion.div>
-        </>
+        </motion.div>
       )}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body
   );
 }

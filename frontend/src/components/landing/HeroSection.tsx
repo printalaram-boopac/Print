@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Wand2 } from 'lucide-react';
 import { asset } from '@/lib/asset';
+import { logUserEvent } from '@/lib/analytics';
 
 function GoldParticles() {
   return (
@@ -84,6 +85,15 @@ export default function HeroSection() {
             >
               Personalize luxurious wedding money covers with your name, family blessing, and a cherished photo. Printed on premium paper within 72 hours, delivered with love.
             </motion.p>
+
+            <motion.p
+              className="text-sm md:text-base font-semibold text-luxury-accent max-w-lg leading-relaxed"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.35 }}
+            >
+              Printalarm ships personalized Shagun covers pan-India within 3-5 business days, with 24-48 hour express delivery available.
+            </motion.p>
           </div>
 
           <motion.div
@@ -92,10 +102,10 @@ export default function HeroSection() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.45 }}
           >
-            <Link to="/templates" className="btn-glass btn-glass-maroon">
+            <Link to="/templates" onClick={() => logUserEvent('CLICK_HERO_EXPLORE')} className="btn-glass btn-glass-maroon">
               Explore Collection <ArrowRight className="w-3.5 h-3.5" strokeWidth={2} />
             </Link>
-            <Link to="/templates" className="btn-glass btn-glass-gold">
+            <Link to="/templates" onClick={() => logUserEvent('CLICK_HERO_CUSTOMIZE')} className="btn-glass btn-glass-gold">
               <Wand2 className="w-3.5 h-3.5" strokeWidth={2} /> Customize Now
             </Link>
           </motion.div>
@@ -125,7 +135,7 @@ export default function HeroSection() {
         </div>
 
         {/* Right Column: Overlapping Images Collage */}
-        <div className="lg:col-span-5 relative flex justify-center items-center py-10 lg:py-0">
+        <div className="lg:col-span-5 relative flex justify-center items-center py-10 lg:py-0 overflow-hidden sm:overflow-visible">
           <motion.div
             className="relative w-full max-w-[400px] aspect-[4/5] flex justify-center items-center"
             initial={{ opacity: 0, scale: 0.95 }}

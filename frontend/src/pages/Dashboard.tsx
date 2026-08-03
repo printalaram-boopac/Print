@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import { getOrders } from '@/lib/api';
+import { logUserEvent } from '@/lib/analytics';
 
 // Admin dashboard components
 import AdminStats from '@/components/dashboard/AdminStats';
@@ -66,6 +67,7 @@ export default function Dashboard() {
   }, [dbUser, isAdmin]);
 
   const handleLogout = async () => {
+    logUserEvent('CLICK_LOGOUT', { source: 'dashboard' });
     await logout();
     navigate('/auth');
   };
@@ -86,13 +88,13 @@ export default function Dashboard() {
       <div className="max-w-7xl mx-auto space-y-8">
 
         {/* ─── Header ─── */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-gold-200 pb-6 gap-4">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-gold-200/30 pb-6 gap-4">
           <div>
             <div className="flex items-center gap-3">
               <h1 className="text-3xl font-display text-gold-gradient font-bold">
                 {isAdmin ? 'Royal Command Center' : 'Customer Lounge'}
               </h1>
-              <span className="text-[10px] uppercase bg-gold-100 border border-luxury-gold/30 px-2 py-0.5 rounded text-luxury-gold font-bold">
+              <span className="text-[10px] uppercase bg-luxury-gold/10 border border-luxury-gold/30 px-2.5 py-0.5 rounded text-luxury-gold font-bold">
                 {dbUser?.role || 'CUSTOMER'}
               </span>
             </div>
@@ -103,10 +105,23 @@ export default function Dashboard() {
             </p>
           </div>
 
-          <button onClick={handleLogout}
-            className="px-4 py-2 bg-red-50 border border-red-300 text-xs text-red-700 uppercase tracking-wider hover:bg-red-100 transition-all rounded-sm cursor-pointer">
-            Sign Out
-          </button>
+          <div className="flex items-center gap-3">
+            {/* Admin Panel Button - ONLY VISIBLE TO ADMIN USERS */}
+            {isAdmin && (
+              <button
+                onClick={() => navigate('/admin')}
+                className="px-4 py-2 bg-luxury-gold text-black text-xs font-bold uppercase tracking-wider hover:bg-gold-400 transition-all rounded-lg cursor-pointer flex items-center gap-2 shadow-lg shadow-gold-500/10"
+              >
+                <span>👑</span> Admin Panel
+              </button>
+            )}
+            <button
+              onClick={handleLogout}
+              className="px-4 py-2 bg-red-600/10 border border-red-300/30 text-xs text-red-500 uppercase tracking-wider hover:bg-red-600 hover:text-white transition-all rounded-lg cursor-pointer"
+            >
+              Sign Out
+            </button>
+          </div>
         </div>
 
         {/* ════════════════ ADMIN DASHBOARD ════════════════ */}
@@ -169,7 +184,7 @@ export default function Dashboard() {
                 <div className="text-center py-10 text-gray-500">
                   <p className="text-4xl mb-3">🎨</p>
                   <p>You don't have any orders yet.</p>
-                  <button onClick={() => navigate('/designer')}
+                  <button onClick={() => { logUserEvent('CLICK_START_DESIGNING', { source: 'dashboard_orders_empty' }); navigate('/designer'); }}
                     className="mt-3 text-luxury-gold text-xs underline cursor-pointer">
                     Start your first design
                   </button>
@@ -245,6 +260,7 @@ export default function Dashboard() {
                   <p className="text-base font-bold text-luxury-accent tracking-widest">PA-{dbUser?.id?.slice(0, 6)?.toUpperCase() || 'XXXXXX'}</p>
                 </div>
                 <button onClick={() => {
+                  logUserEvent('CLICK_COPY_REFERRAL_CODE', { source: 'dashboard' });
                   navigator.clipboard.writeText(`PA-${dbUser?.id?.slice(0, 6)?.toUpperCase() || 'XXXXXX'}`);
                 }}
                   className="px-4 py-2 bg-gold-50 border border-gold-300 text-xs text-luxury-gold hover:bg-luxury-gold hover:text-luxury-accent transition-colors rounded cursor-pointer">

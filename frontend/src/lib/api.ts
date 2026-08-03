@@ -1,20 +1,19 @@
-// import { getIdToken } from './firebase';
+import { getIdToken } from './firebase';
 
-// const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
 
-/**
- * Backend disabled — this build is deployed as a static frontend only (no API server).
- * Every exported function below funnels through here, so every backend call now
- * rejects immediately instead of hitting the network. Callers already handle this
- * (see AuthContext's syncWithBackend fallback, and try/catch blocks in the dashboard
- * pages) by falling back to local/empty state.
- * To restore backend calls, uncomment the two lines above and the block below,
- * and delete the `throw` line.
- */
+// The production build has no real backend deployed yet (VITE_API_BASE_URL still
+// defaults to localhost). Calling fetch() against localhost from a public site
+// makes visitors' browsers prompt for "local network access" permission — so
+// these calls are only allowed to actually run against a local backend in dev.
+const isLocalBackend = /^https?:\/\/(localhost|127\.0\.0\.1|0\.0\.0\.0|\[::1\])/i.test(BASE_URL);
+export const BACKEND_ENABLED = import.meta.env.DEV || !isLocalBackend;
+
 async function apiFetch(endpoint: string, _options: RequestInit = {}): Promise<any> {
-  throw new Error(`Backend is disabled in this deployment (attempted: ${endpoint})`);
+  if (!BACKEND_ENABLED) {
+    throw new Error('Backend is not available in this environment.');
+  }
 
-  /*
   const token = await getIdToken();
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
@@ -26,7 +25,6 @@ async function apiFetch(endpoint: string, _options: RequestInit = {}): Promise<a
   const data = await res.json();
   if (!res.ok) throw new Error(data.message || 'API request failed');
   return data;
-  */
 }
 
 // ─── Auth ───
@@ -87,6 +85,9 @@ export const updateOrderStatus = (id: string, body: { status: string; trackingNu
 export const deleteOrder = (id: string) =>
   apiFetch(`/api/orders/${id}`, { method: 'DELETE' });
 
+export const updateOrder = (id: string, body: any) =>
+  apiFetch(`/api/orders/${id}`, { method: 'PATCH', body: JSON.stringify(body) });
+
 // ─── Clients (Admin) ───
 export const getClients = (params?: { search?: string; page?: number }) => {
   const q = new URLSearchParams();
@@ -96,6 +97,13 @@ export const getClients = (params?: { search?: string; page?: number }) => {
 };
 
 export const getClient = (id: string) => apiFetch(`/api/clients/${id}`);
+
+export const createClient = (body: {
+  name: string; email: string; phone?: string; address?: string; role?: string;
+  shippingName?: string; shippingPhone?: string;
+  city?: string; state?: string; pincode?: string;
+}) =>
+  apiFetch('/api/clients', { method: 'POST', body: JSON.stringify(body) });
 
 export const updateClient = (id: string, body: {
   name?: string; phone?: string; address?: string; role?: string;
@@ -163,3 +171,14 @@ export const getAuditLogs = (page?: number) =>
 
 // ─── Stats ───
 export const getStats = () => apiFetch('/api/stats');
+
+// ─── Analytics ───
+export const getAnalyticsEvents = () => apiFetch('/api/analytics/events');
+export const clearAnalyticsEvents = () => apiFetch('/api/analytics/clear', { method: 'DELETE' });
+export const getGaConfig = () => apiFetch('/api/analytics/ga-config');
+export const saveGaConfig = (measurementId: string, propertyId?: string) =>
+  apiFetch('/api/analytics/ga-config', {
+    method: 'POST',
+    body: JSON.stringify({ measurementId, propertyId }),
+  });
+
