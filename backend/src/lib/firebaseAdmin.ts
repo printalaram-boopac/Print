@@ -13,9 +13,17 @@ const serviceAccount = {
 };
 
 if (!admin.apps.length) {
-  admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount as admin.ServiceAccount),
-  });
+  try {
+    if (serviceAccount.projectId && serviceAccount.privateKey) {
+      admin.initializeApp({
+        credential: admin.credential.cert(serviceAccount as admin.ServiceAccount),
+      });
+    } else {
+      admin.initializeApp();
+    }
+  } catch (err) {
+    console.warn('[Firebase Admin] Initialization fallback warning:', err);
+  }
 }
 
 export const firebaseAuth = admin.auth();

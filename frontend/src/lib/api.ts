@@ -1,13 +1,8 @@
 import { getIdToken } from './firebase';
 
-const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+const BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
 
-// The production build has no real backend deployed yet (VITE_API_BASE_URL still
-// defaults to localhost). Calling fetch() against localhost from a public site
-// makes visitors' browsers prompt for "local network access" permission — so
-// these calls are only allowed to actually run against a local backend in dev.
-const isLocalBackend = /^https?:\/\/(localhost|127\.0\.0\.1|0\.0\.0\.0|\[::1\])/i.test(BASE_URL);
-export const BACKEND_ENABLED = import.meta.env.DEV || !isLocalBackend;
+export const BACKEND_ENABLED = true;
 
 async function apiFetch(endpoint: string, _options: RequestInit = {}): Promise<any> {
   if (!BACKEND_ENABLED) {

@@ -1,55 +1,59 @@
-import type { SIZES } from './constants';
+export type PageLayoutType = 
+  | 'cover'
+  | 'editorial_spread'
+  | 'quad_grid'
+  | 'bento_showcase'
+  | 'full_bleed'
+  | 'back_cover';
 
-export type SizeKey = (typeof SIZES)[number]['key'];
-
-// Instagram-Story-style draggable, resizable text stickers and photos —
-// freely positioned per page via xPct/yPct (percentage of the page tile, so
-// it works at any preview size and maps directly onto the fixed-size canvas
-// used for export).
-export type ColorMode = 'solid' | 'gradient';
-
-export interface StickerItem {
+export interface PhotoSlot {
   id: string;
-  content: string;
-  xPct: number; // center, 0-100
-  yPct: number; // center, 0-100
-  fontSizePx: number; // continuous — against the 800px-wide reference canvas
-  font: string;
-  colorMode: ColorMode;
-  color: string; // hex — used when colorMode === 'solid'
-  gradientFrom: string; // hex — used when colorMode === 'gradient'
-  gradientTo: string; // hex — used when colorMode === 'gradient'
+  src?: string | null;
+  caption?: string;
+  zoom?: number; // 1 to 2
+  filter?: 'normal' | 'bw' | 'sepia' | 'vintage' | 'vivid';
+  aspectRatio?: string;
+  colSpan?: string;
+  rowSpan?: string;
+  zIndex?: number;
+  hidden?: boolean;
 }
 
-export interface PhotoItem {
+export interface TextOverlay {
   id: string;
-  src: string; // data URL
-  xPct: number; // center, 0-100
-  yPct: number; // center, 0-100
-  widthPct: number; // of page width, 0-100
-  heightPct: number; // of page height, 0-100
+  text: string;
+  fontSize: number; // in px
+  fontFamily: string;
+  color: string;
+  align: 'left' | 'center' | 'right';
+  xPct: number; // 0 to 100
+  yPct: number; // 0 to 100
+  isHeader?: boolean;
+  fontWeight?: 'normal' | 'bold' | '900';
+  fontStyle?: 'normal' | 'italic';
+  zIndex?: number;
+  hidden?: boolean;
 }
 
-export interface ZinePage {
-  background: string | null; // AI-generated background, if any
-  photos: PhotoItem[]; // user's uploaded photo(s) — freely positioned & resized, no upper limit
-  stickers: StickerItem[]; // freely-positioned, resizable text stickers for this page
-  layout: string | null; // key of a PHOTO_LAYOUTS preset, or null for fully freeform placement
+export interface MagazinePage {
+  id: string;
+  title: string;
+  pageNumber: number;
+  layout: PageLayoutType;
+  slots: PhotoSlot[];
+  subtitle?: string;
+  editorialText?: string;
+  textOverlays: TextOverlay[];
+  backgroundColor?: string;
 }
 
-// A pointer-drag/resize target — kept in a ref (not state) so pointermove
-// doesn't churn re-renders and so start values are read once, not on every
-// render (which would drift as the item's own position/size changes mid-drag).
-export interface DragState {
-  kind: 'photo' | 'sticker';
-  pageIndex: number;
-  id: string;
-  mode: 'move' | 'resize';
-  startClientX: number;
-  startClientY: number;
-  startXPct: number;
-  startYPct: number;
-  startWidthPct?: number;
-  startHeightPct?: number;
-  startFontSizePx?: number;
+export interface MagazineConfig {
+  title: string;
+  subtitle: string;
+  issueNumber: string;
+  dateString: string;
+  editorName: string;
+  themeColor: string;
+  fontFamily: string;
+  pages: MagazinePage[];
 }

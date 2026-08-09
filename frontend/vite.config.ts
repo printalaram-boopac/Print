@@ -21,13 +21,7 @@ export default defineConfig({
   },
   server: {
     port: process.env.PORT ? Number(process.env.PORT) : 3000,
-    proxy: {
-      '/api': {
-        target: 'http://localhost:5000',
-        changeOrigin: true,
-        secure: false,
-      },
-    },
+    host: '0.0.0.0',
   },
   build: {
     rollupOptions: {

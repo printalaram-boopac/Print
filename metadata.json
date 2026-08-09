@@ -1,0 +1,6 @@
+{
+  "name": "Printalarm - Shagun Couture",
+  "description": "Personalized Shagun covers, wedding money envelopes, and custom invites print studio",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

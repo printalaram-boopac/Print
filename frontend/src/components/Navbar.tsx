@@ -85,16 +85,13 @@ export default function Navbar() {
             </Link>
           ))}
 
-          {/* Mini Magazine — highlighted */}
+          {/* Mini Magazine */}
           <Link
             to="/photo-zine-maker"
             className="relative flex items-center gap-1.5 px-4 py-2 rounded-full text-[11px] uppercase tracking-widest font-bold transition-all cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-luxury-gold text-white shadow-md hover:scale-105"
             style={{ background: 'linear-gradient(135deg, #C5A059, #75591C)' }}
           >
             <Images className="w-3 h-3" strokeWidth={2} /> Mini Magazine
-            <span className="absolute -top-1.5 -right-1.5 px-1.5 py-0.5 rounded-full bg-red-500 text-white text-[8px] font-extrabold leading-none animate-pulse">
-              NEW
-            </span>
           </Link>
 
           {/* Explore dropdown */}
@@ -219,17 +216,14 @@ export default function Navbar() {
                 </Link>
               ))}
 
-              {/* Mini Magazine — highlighted */}
+              {/* Mini Magazine */}
               <Link
                 to="/photo-zine-maker"
                 onClick={() => setMobileOpen(false)}
-                className="relative flex items-center gap-2 text-xs uppercase tracking-wider font-bold py-2.5 px-3 rounded-lg text-white cursor-pointer"
+                className="flex items-center gap-2 text-xs uppercase tracking-wider font-bold py-2.5 px-3 rounded-lg text-white cursor-pointer"
                 style={{ background: 'linear-gradient(135deg, #C5A059, #75591C)' }}
               >
                 <Images className="w-4 h-4" strokeWidth={2} /> Mini Magazine
-                <span className="ml-auto px-1.5 py-0.5 rounded-full bg-red-500 text-white text-[8px] font-extrabold leading-none animate-pulse">
-                  NEW
-                </span>
               </Link>
 
               {/* Explore section */}

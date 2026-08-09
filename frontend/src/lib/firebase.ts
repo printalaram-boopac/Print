@@ -1,4 +1,4 @@
-import { initializeApp } from 'firebase/app';
+import { initializeApp, getApps, type FirebaseApp } from 'firebase/app';
 import {
   getAuth,
   signInWithEmailAndPassword,
@@ -10,60 +10,109 @@ import {
   updateProfile,
   RecaptchaVerifier,
   signInWithPhoneNumber,
+  type Auth,
   type User,
 } from 'firebase/auth';
 
+const apiKey = import.meta.env.VITE_FIREBASE_API_KEY;
+
 const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  apiKey: apiKey || 'AIzaSyDummyKeyForFallbackInit123456789',
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || '',
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || '',
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || '',
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || '',
+  appId: import.meta.env.VITE_FIREBASE_APP_ID || '',
 };
 
-const app = initializeApp(firebaseConfig);
-export const auth = getAuth(app);
+let app: FirebaseApp | null = null;
+let authInstance: Auth | null = null;
+export let isFirebaseConfigured = false;
+
+try {
+  if (apiKey && apiKey !== 'AIzaSyDummyKeyForFallbackInit123456789') {
+    app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
+    authInstance = getAuth(app);
+    isFirebaseConfigured = true;
+  } else {
+    console.warn('[Firebase] VITE_FIREBASE_API_KEY is not configured or is empty. Auth features will run in offline fallback mode.');
+  }
+} catch (err) {
+  console.warn('[Firebase] Failed to initialize Firebase:', err);
+}
+
+// Fallback dummy auth object for safe component mounting when Firebase key is absent
+const mockAuth: any = {
+  currentUser: null,
+  onAuthStateChanged: (callback: (user: User | null) => void) => {
+    setTimeout(() => callback(null), 0);
+    return () => {};
+  },
+};
+
+export const auth: Auth = (authInstance || mockAuth) as Auth;
 export const googleProvider = new GoogleAuthProvider();
 
-// Add scopes for Google sign-in
-googleProvider.addScope('email');
-googleProvider.addScope('profile');
+if (authInstance) {
+  try {
+    googleProvider.addScope('email');
+    googleProvider.addScope('profile');
+  } catch (e) {
+    // Ignore scope addition errors on fallback
+  }
+}
+
+/** Helper to check auth before performing operations */
+function ensureAuth() {
+  if (!isFirebaseConfigured || !authInstance) {
+    throw new Error('Firebase Authentication is not configured. Please set VITE_FIREBASE_API_KEY in your environment variables.');
+  }
+}
 
 /** Sign in with email and password */
 export function loginWithEmail(email: string, password: string) {
-  return signInWithEmailAndPassword(auth, email, password);
+  ensureAuth();
+  return signInWithEmailAndPassword(authInstance!, email, password);
 }
 
 /** Register with email and password */
 export async function registerWithEmail(email: string, password: string, displayName: string) {
-  const cred = await createUserWithEmailAndPassword(auth, email, password);
+  ensureAuth();
+  const cred = await createUserWithEmailAndPassword(authInstance!, email, password);
   await updateProfile(cred.user, { displayName });
   return cred;
 }
 
 /** Sign in with Google popup */
 export function loginWithGoogle() {
-  return signInWithPopup(auth, googleProvider);
+  ensureAuth();
+  return signInWithPopup(authInstance!, googleProvider);
 }
 
 /** Sign out */
 export function signOut() {
-  return firebaseSignOut(auth);
+  if (!isFirebaseConfigured || !authInstance) {
+    return Promise.resolve();
+  }
+  return firebaseSignOut(authInstance);
 }
 
 /** Send password reset email */
 export function resetPassword(email: string) {
-  return sendPasswordResetEmail(auth, email);
+  ensureAuth();
+  return sendPasswordResetEmail(authInstance!, email);
 }
 
 /** Get the current user's ID token for API calls (waits for auth state if refreshing page) */
 export async function getIdToken(): Promise<string | null> {
-  if (auth.currentUser) {
-    return auth.currentUser.getIdToken();
+  if (!isFirebaseConfigured || !authInstance) {
+    return null;
+  }
+  if (authInstance.currentUser) {
+    return authInstance.currentUser.getIdToken();
   }
   return new Promise((resolve) => {
-    const unsubscribe = auth.onAuthStateChanged(async (user) => {
+    const unsubscribe = authInstance!.onAuthStateChanged(async (user) => {
       unsubscribe();
       if (user) {
         try {
@@ -84,7 +133,8 @@ export type { User };
 
 /** Create invisible Recaptcha Verifier */
 export function createRecaptchaVerifier(elementId: string) {
-  return new RecaptchaVerifier(auth, elementId, {
+  ensureAuth();
+  return new RecaptchaVerifier(authInstance!, elementId, {
     size: 'invisible',
     callback: () => {
       // reCAPTCHA solved
@@ -97,5 +147,7 @@ export function createRecaptchaVerifier(elementId: string) {
 
 /** Sign in/up with phone number (sends SMS OTP) */
 export function loginWithPhone(phoneNumber: string, appVerifier: RecaptchaVerifier) {
-  return signInWithPhoneNumber(auth, phoneNumber, appVerifier);
+  ensureAuth();
+  return signInWithPhoneNumber(authInstance!, phoneNumber, appVerifier);
 }
+

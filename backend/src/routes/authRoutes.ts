@@ -1,9 +1,9 @@
 import { Router, Request, Response } from 'express';
-import { PrismaClient, Role } from '@prisma/client';
+import { Role } from '@prisma/client';
 import { authenticate } from '../middleware/authMiddleware';
+import prisma from '../lib/prisma';
 
 const router = Router();
-const prisma = new PrismaClient();
 
 // List of admin emails from environment config
 const ADMIN_EMAILS = (process.env.ADMIN_EMAILS || 'admin@printalarm.com')

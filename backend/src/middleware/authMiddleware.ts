@@ -1,8 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { verifyIdToken } from '../lib/firebaseAdmin';
-import { PrismaClient, Role } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import { Role } from '@prisma/client';
+import prisma from '../lib/prisma';
 
 // Extend Express Request to include authenticated user info
 declare global {
