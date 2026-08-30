@@ -1,7 +1,6 @@
 import HeroSection from '@/components/landing/HeroSection';
 import PromoTicker from '@/components/landing/PromoTicker';
 import CategoryCardsSection from '@/components/landing/CategoryCardsSection';
-import MiniMagazineFeature from '@/components/landing/MiniMagazineFeature';
 import TrendingDesigns from '@/components/landing/TrendingDesigns';
 import OfferSection from '@/components/landing/OfferSection';
 import HowItWorks from '@/components/landing/HowItWorks';
@@ -26,9 +25,6 @@ export default function Landing() {
 
       {/* 2. Three Main Category Sections (Shagun, Pocket, Acrylic) */}
       <CategoryCardsSection />
-
-      {/* Mini Magazine & Photo Zine Feature */}
-      <MiniMagazineFeature />
 
       {/* Divider */}
       <div className="gold-divider" />
