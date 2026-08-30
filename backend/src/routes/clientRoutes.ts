@@ -59,10 +59,10 @@ router.get('/', authenticate, requireAdmin, async (req: Request, res: Response) 
     ]);
 
     // Compute aggregated stats for each client
-    const clientsWithStats = clients.map((client) => {
-      const totalSpent = client.orders.reduce((sum, o) => sum + o.totalAmount, 0);
+    const clientsWithStats = clients.map((client: any) => {
+      const totalSpent = client.orders.reduce((sum: number, o: any) => sum + o.totalAmount, 0);
       const activeOrders = client.orders.filter(
-        (o) => !['DELIVERED', 'CANCELLED'].includes(o.status)
+        (o: any) => !['DELIVERED', 'CANCELLED'].includes(o.status)
       ).length;
 
       return {

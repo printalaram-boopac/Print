@@ -23,7 +23,7 @@ router.get('/', authenticate, requireAdmin, async (req: Request, res: Response) 
       prisma.order.findMany({ where: { status: { not: 'CANCELLED' } }, select: { totalAmount: true } }),
     ]);
 
-    const totalRevenue = allOrderAmounts.reduce((s, o) => s + o.totalAmount, 0);
+    const totalRevenue = allOrderAmounts.reduce((s: number, o: any) => s + o.totalAmount, 0);
 
     return res.json({
       status: 'ok',

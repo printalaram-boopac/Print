@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect } from 'react';
+import { Suspense, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { logUserEvent } from '@/lib/analytics';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -26,14 +26,6 @@ import About from '@/pages/About';
 import ShagunCoverGuide from '@/pages/ShagunCoverGuide';
 import Blog from '@/pages/Blog';
 import BlogPost from '@/pages/BlogPost';
-import PhotoZineMaker from '@/pages/PhotoZineMaker';
-
-// The magazine studio ships its own editor, canvas and export code. Loading it
-// lazily keeps it out of the initial bundle for visitors who never open it.
-const MagazineTemplates = lazy(() => import('@/pages/MagazineTemplates'));
-const MagazineTemplatePreview = lazy(() => import('@/pages/MagazineTemplatePreview'));
-const MagazineEditor = lazy(() => import('@/pages/MagazineEditor'));
-const MyMagazines = lazy(() => import('@/pages/MyMagazines'));
 import Dashboard from '@/pages/Dashboard';
 import Profile from '@/pages/Profile';
 import AdminPanel from '@/pages/AdminPanel';
@@ -118,16 +110,6 @@ export default function App() {
                   }
                 />
 
-                {/* Magazine editor — full-screen app shell, no site chrome */}
-                <Route
-                  path="/magazine/editor/:designId"
-                  element={
-                    <Suspense fallback={<div className="flex h-[100dvh] items-center justify-center bg-luxury-black"><span className="h-8 w-8 animate-spin rounded-full border-2 border-luxury-gold border-t-transparent" /></div>}>
-                      <MagazineEditor />
-                    </Suspense>
-                  }
-                />
-
                 {/* Main site layout with navbar */}
                 <Route
                   path="*"
@@ -148,10 +130,6 @@ export default function App() {
                           <Route path="/how-to-choose-a-shagun-cover" element={<ShagunCoverGuide />} />
                           <Route path="/blog" element={<Blog />} />
                           <Route path="/blog/:slug" element={<BlogPost />} />
-                          <Route path="/photo-zine-maker" element={<PhotoZineMaker />} />
-                          <Route path="/magazine" element={<MagazineTemplates />} />
-                          <Route path="/magazine/t/:slug" element={<MagazineTemplatePreview />} />
-                          <Route path="/my-magazines" element={<MyMagazines />} />
                           <Route path="/auth" element={<Auth />} />
                           <Route path="/return-exchange" element={<ReturnExchange />} />
                           <Route path="/privacy-policy" element={<PrivacyPolicy />} />

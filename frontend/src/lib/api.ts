@@ -6,8 +6,7 @@ export const BACKEND_ENABLED = true;
 
 /**
  * Authenticated JSON fetch against the Express API. Exported so feature-level
- * services (e.g. the magazine store) can reuse the auth + error handling
- * instead of re-implementing it.
+ * services can reuse the auth + error handling instead of re-implementing it.
  */
 export async function apiFetch(endpoint: string, _options: RequestInit = {}): Promise<any> {
   if (!BACKEND_ENABLED) {
