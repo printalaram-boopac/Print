@@ -240,6 +240,29 @@ async function composeSheet(slots: Slot[], bgColor: string, showCutLines: boolea
     ctx.textAlign = 'center';
     ctx.fillText('✂ CUT HERE', W / 2, midY - 14);
     ctx.restore();
+
+    // Page-number labels hugging the cut line, as an assembly aid.
+    ctx.save();
+    ctx.font = 'bold 18px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    const pad = 30;
+    layout.forEach((cell) => {
+      const label = `P.${cell.slotIdx + 1}`;
+      const lx = cell.col * cellW + cellW / 2;
+      const ly = cell.row === 0 ? midY - pad : midY + pad;
+      const textW = ctx.measureText(label).width;
+      const boxW = textW + 20;
+      const boxH = 28;
+      ctx.fillStyle = 'rgba(20,16,12,0.85)';
+      ctx.beginPath();
+      // @ts-ignore - roundRect is available in all evergreen browsers
+      ctx.roundRect(lx - boxW / 2, ly - boxH / 2, boxW, boxH, 4);
+      ctx.fill();
+      ctx.fillStyle = '#FFFFFF';
+      ctx.fillText(label, lx, ly + 1);
+    });
+    ctx.restore();
   }
 
   return canvas;
@@ -269,7 +292,7 @@ export default function PhotoZineMaker() {
 
   useEffect(() => {
     let cancelled = false;
-    composeSheet(slots, bgColor, showCutLines, 130).then((canvas) => {
+    composeSheet(slots, bgColor, showCutLines, 200).then((canvas) => {
       if (!cancelled) setSheetPreviewUrl(canvas.toDataURL('image/png'));
     }).catch((err) => console.error('Zine sheet preview failed:', err));
     return () => { cancelled = true; };
