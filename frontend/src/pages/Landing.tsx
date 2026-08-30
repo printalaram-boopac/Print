@@ -1,7 +1,6 @@
 import HeroSection from '@/components/landing/HeroSection';
 import PromoTicker from '@/components/landing/PromoTicker';
 import TrendingDesigns from '@/components/landing/TrendingDesigns';
-import OfferSection from '@/components/landing/OfferSection';
 import HowItWorks from '@/components/landing/HowItWorks';
 import PremiumFeatures from '@/components/landing/PremiumFeatures';
 import CustomerReviews from '@/components/landing/CustomerReviews';
@@ -21,12 +20,6 @@ export default function Landing() {
 
       {/* Promo Ticker */}
       <PromoTicker />
-
-      {/* Offer Section */}
-      <OfferSection />
-
-      {/* Divider */}
-      <div className="gold-divider" />
 
       {/* 3. Trending Designs Gallery */}
       <TrendingDesigns />
