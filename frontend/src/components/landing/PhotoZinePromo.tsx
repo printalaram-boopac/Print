@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowRight, Layers, Shuffle, Type, Lock } from 'lucide-react';
-import { asset } from '@/lib/asset';
 import { logUserEvent } from '@/lib/analytics';
 
 const FEATURES = [
@@ -47,21 +46,11 @@ export default function PhotoZinePromo() {
         </div>
 
         <div className="relative flex items-center justify-center">
-          <div className="grid grid-cols-4 gap-1.5 rotate-[-3deg] rounded-xl overflow-hidden shadow-2xl border border-gold-200/30 max-w-xs mx-auto">
-            {Array.from({ length: 8 }).map((_, i) => (
-              <div
-                key={i}
-                className="aspect-[0.71] bg-luxury-dark flex items-center justify-center"
-                style={{
-                  backgroundImage: `url(${asset('logo.png')})`,
-                  backgroundSize: '40%',
-                  backgroundPosition: 'center',
-                  backgroundRepeat: 'no-repeat',
-                  backgroundColor: i % 2 === 0 ? '#1a1410' : '#2a1420',
-                }}
-              />
-            ))}
-          </div>
+          <img
+            src="/zine-assembly/step-4-finished.png"
+            alt="Finished 8-page photo zines, folded from a single printed A4 sheet"
+            className="rotate-[-3deg] rounded-xl shadow-2xl border border-gold-200/30 max-w-xs w-full object-cover"
+          />
         </div>
       </motion.div>
     </section>
