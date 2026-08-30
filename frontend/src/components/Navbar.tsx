@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Sparkles, MessageCircle, Home, LayoutGrid, HelpCircle, ChevronDown, Inbox, Layers, Crown, Compass, BookOpen, Info, Images, BookMarked, FolderOpen } from 'lucide-react';
+import { Sparkles, MessageCircle, Home, LayoutGrid, HelpCircle, ChevronDown, Inbox, Layers, Crown, Compass, BookOpen, Info, BookMarked, FolderOpen } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import CustomDesignModal from '@/components/CustomDesignModal';
 import { asset } from '@/lib/asset';
@@ -10,7 +10,6 @@ import { logUserEvent } from '@/lib/analytics';
 const NAV_LINKS = [
   { to: '/', label: 'Home', icon: Home },
   { to: '/templates', label: 'Designs', icon: LayoutGrid },
-  { to: '/magazine', label: 'Magazines', icon: BookMarked },
   // { to: '/designer', label: '3D Studio', icon: Palette }, // Hidden for now
 ];
 
@@ -87,15 +86,6 @@ export default function Navbar() {
               <link.icon className="w-3 h-3" strokeWidth={2} /> {link.label}
             </Link>
           ))}
-
-          {/* Mini Magazine */}
-          <Link
-            to="/photo-zine-maker"
-            className="relative flex items-center gap-1.5 px-4 py-2 rounded-full text-[11px] uppercase tracking-widest font-bold transition-all cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-luxury-gold text-white shadow-md hover:scale-105"
-            style={{ background: 'linear-gradient(135deg, #C5A059, #75591C)' }}
-          >
-            <Images className="w-3 h-3" strokeWidth={2} /> Mini Magazine
-          </Link>
 
           {/* Explore dropdown */}
           <div className="relative" ref={exploreRef}>
@@ -218,16 +208,6 @@ export default function Navbar() {
                   <link.icon className="w-4 h-4" strokeWidth={2} /> {link.label}
                 </Link>
               ))}
-
-              {/* Mini Magazine */}
-              <Link
-                to="/photo-zine-maker"
-                onClick={() => setMobileOpen(false)}
-                className="flex items-center gap-2 text-xs uppercase tracking-wider font-bold py-2.5 px-3 rounded-lg text-white cursor-pointer"
-                style={{ background: 'linear-gradient(135deg, #C5A059, #75591C)' }}
-              >
-                <Images className="w-4 h-4" strokeWidth={2} /> Mini Magazine
-              </Link>
 
               {/* Explore section */}
               <button
