@@ -4,6 +4,7 @@ import { jsPDF } from 'jspdf';
 import {
   Download, BookOpen, Scissors, X, RefreshCw, Trash2, Upload, SlidersHorizontal, Printer,
   ChevronRight, Layers, Type, Shuffle, Lock, HelpCircle, Sparkles, ImagePlus,
+  FoldHorizontal, BookOpenCheck,
 } from 'lucide-react';
 import Seo from '@/components/Seo';
 import { BRAND_NAME } from '@/lib/brand';
@@ -16,10 +17,10 @@ const HOW_IT_WORKS_STEPS = [
 ];
 
 const ASSEMBLE_STEPS = [
-  { title: 'Step 1', body: 'Print the exported PDF on A4 paper in landscape orientation, at 100% scale.' },
-  { title: 'Step 2', body: "Trim the printed margins. Home printers can't print edge-to-edge, so trimming keeps the panels aligned once folded." },
-  { title: 'Step 3', body: 'Fold the sheet in half widthwise, then cut along the fold from the folded edge to the centre — about one panel wide. Unfold, fold lengthwise, and push the ends toward the middle so the cut opens into a cross.' },
-  { title: 'Finished', body: 'Fold all eight panels the same direction. Your zine is ready — cover on top, back cover behind.' },
+  { icon: Printer, title: 'Step 1', body: 'Print the exported PDF on A4 paper in landscape orientation, at 100% scale.' },
+  { icon: Scissors, title: 'Step 2', body: "Trim the printed margins. Home printers can't print edge-to-edge, so trimming keeps the panels aligned once folded." },
+  { icon: FoldHorizontal, title: 'Step 3', body: 'Fold the sheet in half widthwise, then cut along the fold from the folded edge to the centre — about one panel wide. Unfold, fold lengthwise, and push the ends toward the middle so the cut opens into a cross.' },
+  { icon: BookOpenCheck, title: 'Finished', body: 'Fold all eight panels the same direction. Your zine is ready — cover on top, back cover behind.' },
 ];
 
 const FEATURES = [
@@ -554,10 +555,13 @@ export default function PhotoZineMaker() {
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {ASSEMBLE_STEPS.map((step, i) => (
-              <div key={step.title} className="glass-card-gold rounded-xl p-5 space-y-2 relative">
+              <div key={step.title} className="glass-card-gold rounded-xl p-5 space-y-3 relative">
                 <span className="absolute top-4 right-4 text-2xl font-display font-bold text-luxury-gold/20">
                   {i + 1}
                 </span>
+                <div className="w-11 h-11 rounded-full bg-luxury-gold/15 border border-luxury-gold/40 flex items-center justify-center">
+                  <step.icon className="w-5 h-5 text-luxury-gold" strokeWidth={2} />
+                </div>
                 <h3 className="text-xs font-bold uppercase tracking-widest text-luxury-gold">{step.title}</h3>
                 <p className="text-xs text-gray-400 leading-relaxed">{step.body}</p>
               </div>
