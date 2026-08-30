@@ -87,6 +87,38 @@ export const BLOG_POSTS: BlogPost[] = [
       { type: 'p', text: "Whichever style you choose, the common thread across 2026's trends is personalization: covers built around a specific family, tradition, or relationship, rather than one generic design used for every guest." },
     ],
   },
+  {
+    slug: 'photo-zine-studio-mini-magazine-guide',
+    title: 'Introducing Photo Zine Studio: Turn Your Photos Into a Mini 8-Page Zine',
+    excerpt: 'Upload 8 photos, arrange them in your browser, and print a single A4 sheet that folds into a pocket-sized photo zine — no stapling, no binding, completely free.',
+    publishDate: '2026-08-30',
+    tags: ['Photo Zine', 'New Feature', 'DIY Guide'],
+    coverImage: '/zine-assembly/step-4-finished.png',
+    coverAlt: 'A stack of finished 8-page photo zines, folded from a single printed A4 sheet',
+    content: [
+      { type: 'p', text: "Zines have quietly become one of the most personal ways to share a set of photos — a travel trip, a portfolio, a small gift for someone. Instead of a printed 4x6 stack or a digital album nobody opens twice, a zine is a tiny booklet people actually flip through. Our new Photo Zine Studio lets you build one from your own photos in minutes, right in your browser." },
+      { type: 'h2', text: 'What Is an 8-Page Zine?' },
+      { type: 'p', text: "It's a printing trick that's been used by DIY publishers for decades: lay out 8 pages on a single sheet of paper in a specific order and orientation, print it, then fold and make one short cut down the center. Unfold it the right way, and the single sheet becomes an 8-page booklet — cover, six inner pages, and a back cover — with no glue, staples, or binding required." },
+      { type: 'h2', text: 'How Photo Zine Studio Works' },
+      { type: 'ul', items: [
+        'Upload — Add one photo per panel across all 8 pages, including a front and back cover.',
+        'Arrange & Customize — Drag pages 2 through 7 into any order, choose how each image fits its frame, add borders or rounded corners, and pick a background color.',
+        'Add a Title — Type a name or title onto the cover and back cover in one of eight fonts, with control over size, color, and position.',
+        'Print & Fold — Export a high-resolution, print-ready PDF in landscape A4, then follow the built-in fold-and-cut guide to assemble the physical zine.',
+      ]},
+      { type: 'h2', text: 'One Sheet, Eight Pages, Zero Waste' },
+      { type: 'p', text: "Because the whole zine comes from a single A4 sheet, there's nothing to bind and nothing to throw away. Print it at home, trim the margins a home printer can't reach, fold it in half, cut along the center fold, then fold it again into a cross — and it opens into a finished booklet ready to hand someone or keep on a shelf." },
+      { type: 'h2', text: 'What People Are Making With It' },
+      { type: 'ul', items: [
+        'A pocket-sized travel diary from a recent trip.',
+        'A mini portfolio of a photoshoot, handed out instead of a link.',
+        'A personal keepsake gift for a friend or partner.',
+        'A tiny event favor — a wedding, a birthday, a reunion — with photos guests can take home.',
+      ]},
+      { type: 'h2', text: 'Private by Design' },
+      { type: 'p', text: "Every photo you upload is processed and composed locally in your browser, and the exported PDF is generated entirely on your device — nothing is uploaded anywhere. Photo Zine Studio is free to use, with no watermark, no account, and no limit on how many zines you create." },
+    ],
+  },
 ];
 
 export function getBlogPostBySlug(slug: string): BlogPost | undefined {
