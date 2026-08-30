@@ -4,7 +4,6 @@ import { jsPDF } from 'jspdf';
 import {
   Download, BookOpen, Scissors, X, RefreshCw, Trash2, Upload, SlidersHorizontal, Printer,
   ChevronRight, Layers, Type, Shuffle, Lock, HelpCircle, Sparkles, ImagePlus,
-  FoldHorizontal, BookOpenCheck,
 } from 'lucide-react';
 import Seo from '@/components/Seo';
 import { BRAND_NAME } from '@/lib/brand';
@@ -16,11 +15,61 @@ const HOW_IT_WORKS_STEPS = [
   { icon: Printer, title: '3. Print & Fold', body: 'Export a high-resolution PDF, print it in landscape on A4, and follow the folding guide to assemble it.' },
 ];
 
+/** Original line-art illustrations for the assembly steps (no third-party photos/icons). */
+function PrintIllustration({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 64 64" fill="none" className={className}>
+      <rect x="12" y="22" width="40" height="20" rx="2" stroke="currentColor" strokeWidth="2" />
+      <rect x="18" y="10" width="28" height="14" rx="1" stroke="currentColor" strokeWidth="2" />
+      <rect x="18" y="40" width="28" height="18" rx="1" stroke="currentColor" strokeWidth="2" />
+      <line x1="22" y1="46" x2="42" y2="46" stroke="currentColor" strokeWidth="1.5" />
+      <line x1="22" y1="51" x2="42" y2="51" stroke="currentColor" strokeWidth="1.5" />
+      <circle cx="45" cy="28" r="1.6" fill="currentColor" />
+    </svg>
+  );
+}
+
+function TrimIllustration({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 64 64" fill="none" className={className}>
+      <rect x="10" y="12" width="30" height="40" rx="1" stroke="currentColor" strokeWidth="2" />
+      <line x1="16" y1="12" x2="16" y2="52" stroke="currentColor" strokeWidth="1.5" strokeDasharray="3 3" />
+      <path d="M46 18 L38 26 M46 34 L38 26" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+      <circle cx="47.5" cy="16.5" r="2.5" stroke="currentColor" strokeWidth="1.6" />
+      <circle cx="47.5" cy="35.5" r="2.5" stroke="currentColor" strokeWidth="1.6" />
+    </svg>
+  );
+}
+
+function FoldIllustration({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 64 64" fill="none" className={className}>
+      <path d="M12 20 L30 14 L30 46 L12 52 Z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+      <path d="M52 20 L34 14 L34 46 L52 52 Z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+      <line x1="32" y1="12" x2="32" y2="48" stroke="currentColor" strokeWidth="1.5" strokeDasharray="3 3" />
+      <path d="M24 33 L20 33 M24 33 L21.5 30.5 M24 33 L21.5 35.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M40 33 L44 33 M40 33 L42.5 30.5 M40 33 L42.5 35.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+function FinishedIllustration({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 64 64" fill="none" className={className}>
+      <path d="M32 16 C26 12 18 12 14 14 L14 48 C18 46 26 46 32 50 Z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+      <path d="M32 16 C38 12 46 12 50 14 L50 48 C46 46 38 46 32 50 Z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+      <line x1="32" y1="18" x2="32" y2="49" stroke="currentColor" strokeWidth="1.5" />
+      <path d="M20 22 L26 22 M20 27 L26 27" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
+      <path d="M38 22 L44 22 M38 27 L44 27" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
+    </svg>
+  );
+}
+
 const ASSEMBLE_STEPS = [
-  { icon: Printer, title: 'Step 1', body: 'Print the exported PDF on A4 paper in landscape orientation, at 100% scale.' },
-  { icon: Scissors, title: 'Step 2', body: "Trim the printed margins. Home printers can't print edge-to-edge, so trimming keeps the panels aligned once folded." },
-  { icon: FoldHorizontal, title: 'Step 3', body: 'Fold the sheet in half widthwise, then cut along the fold from the folded edge to the centre — about one panel wide. Unfold, fold lengthwise, and push the ends toward the middle so the cut opens into a cross.' },
-  { icon: BookOpenCheck, title: 'Finished', body: 'Fold all eight panels the same direction. Your zine is ready — cover on top, back cover behind.' },
+  { icon: PrintIllustration, title: 'Step 1', body: 'Print the exported PDF on A4 paper in landscape orientation, at 100% scale.' },
+  { icon: TrimIllustration, title: 'Step 2', body: "Trim the printed margins. Home printers can't print edge-to-edge, so trimming keeps the panels aligned once folded." },
+  { icon: FoldIllustration, title: 'Step 3', body: 'Fold the sheet in half widthwise, then cut along the fold from the folded edge to the centre — about one panel wide. Unfold, fold lengthwise, and push the ends toward the middle so the cut opens into a cross.' },
+  { icon: FinishedIllustration, title: 'Finished', body: 'Fold all eight panels the same direction. Your zine is ready — cover on top, back cover behind.' },
 ];
 
 const FEATURES = [
@@ -559,8 +608,8 @@ export default function PhotoZineMaker() {
                 <span className="absolute top-4 right-4 text-2xl font-display font-bold text-luxury-gold/20">
                   {i + 1}
                 </span>
-                <div className="w-11 h-11 rounded-full bg-luxury-gold/15 border border-luxury-gold/40 flex items-center justify-center">
-                  <step.icon className="w-5 h-5 text-luxury-gold" strokeWidth={2} />
+                <div className="w-16 h-16 rounded-xl bg-luxury-gold/10 border border-luxury-gold/30 flex items-center justify-center">
+                  <step.icon className="w-10 h-10 text-luxury-gold" />
                 </div>
                 <h3 className="text-xs font-bold uppercase tracking-widest text-luxury-gold">{step.title}</h3>
                 <p className="text-xs text-gray-400 leading-relaxed">{step.body}</p>
