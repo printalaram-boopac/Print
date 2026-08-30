@@ -269,7 +269,7 @@ export default function PhotoZineMaker() {
 
   useEffect(() => {
     let cancelled = false;
-    composeSheet(slots, bgColor, showCutLines, 45).then((canvas) => {
+    composeSheet(slots, bgColor, showCutLines, 130).then((canvas) => {
       if (!cancelled) setSheetPreviewUrl(canvas.toDataURL('image/png'));
     });
     return () => { cancelled = true; };
