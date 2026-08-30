@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { jsPDF } from 'jspdf';
 import {
   Download, BookOpen, Scissors, X, RefreshCw, Trash2, Upload, SlidersHorizontal, Printer,
-  ChevronRight, Layers, Type, Shuffle, Lock, HelpCircle, Sparkles,
+  ChevronRight, Layers, Type, Shuffle, Lock, HelpCircle, Sparkles, ImagePlus,
 } from 'lucide-react';
 import Seo from '@/components/Seo';
 import { BRAND_NAME } from '@/lib/brand';
@@ -440,7 +440,7 @@ export default function PhotoZineMaker() {
             Click a thumbnail to upload or adjust it. Drag pages 2–7 to reorder them.
           </p>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-            {slots.map((_, i) => {
+            {slots.map((slot, i) => {
               const isMiddle = i >= 1 && i <= 6;
               return (
                 <div
@@ -465,6 +465,11 @@ export default function PhotoZineMaker() {
                     height={311}
                     className="w-full h-full block"
                   />
+                  {!slot.imgSrc && (
+                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                      <ImagePlus className="w-8 h-8 text-gray-400" strokeWidth={1.5} />
+                    </div>
+                  )}
                   <input
                     ref={(el) => { fileInputs.current[i] = el; }}
                     type="file"
@@ -614,7 +619,7 @@ export default function PhotoZineMaker() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="rounded-xl overflow-hidden border border-gold-200/30 mx-auto" style={{ aspectRatio: '0.707', maxWidth: 260 }}>
+              <div className="relative rounded-xl overflow-hidden border border-gold-200/30 mx-auto" style={{ aspectRatio: '0.707', maxWidth: 260 }}>
                 <canvas
                   ref={(el) => {
                     if (el && activeIndex !== null) {
@@ -626,6 +631,11 @@ export default function PhotoZineMaker() {
                   height={467}
                   className="w-full h-full block"
                 />
+                {!active.imgSrc && (
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                    <ImagePlus className="w-10 h-10 text-gray-400" strokeWidth={1.5} />
+                  </div>
+                )}
               </div>
 
               <div className="space-y-4">
