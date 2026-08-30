@@ -8,12 +8,6 @@ import {
 import Seo from '@/components/Seo';
 import { BRAND_NAME } from '@/lib/brand';
 import { logUserEvent } from '@/lib/analytics';
-import { asset } from '@/lib/asset';
-
-const DEMO_IMAGES = [
-  'card-1.jpeg', 'card-2.jpeg', 'card-3.jpeg', 'card-4.jpeg',
-  'card-5.jpeg', 'card-6.jpeg', 'card-7.jpeg', 'card-9.jpeg',
-];
 
 const HOW_IT_WORKS_STEPS = [
   { icon: Upload, title: '1. Upload Your Photos', body: 'Add one image per panel. The front and back cover can also carry a custom title or name.' },
@@ -253,26 +247,6 @@ async function composeSheet(slots: Slot[], bgColor: string, showCutLines: boolea
 
 export default function PhotoZineMaker() {
   const [slots, setSlots] = useState<Slot[]>(() => Array.from({ length: 8 }, newSlot));
-
-  // Preload a demo layout so first-time visitors see a filled example instead of a blank grid.
-  useEffect(() => {
-    DEMO_IMAGES.forEach((file, i) => {
-      fetch(asset(file), { mode: 'cors', cache: 'reload' })
-        .then((res) => res.blob())
-        .then((blob) => {
-          const objUrl = URL.createObjectURL(blob);
-          const img = new Image();
-          img.onload = () => {
-            setSlots((prev) =>
-              prev.map((s, idx) => (idx === i && !s.imgSrc ? { ...s, imgSrc: objUrl, img } : s))
-            );
-          };
-          img.src = objUrl;
-        })
-        .catch((err) => console.error('Demo zine image failed to load:', err));
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
   const [bgColor, setBgColor] = useState('#FFFFFF');
   const [showCutLines, setShowCutLines] = useState(true);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
