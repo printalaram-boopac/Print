@@ -7,7 +7,7 @@ export interface Template {
   title: string;
   category: string;
   price: number;
-  coverType: 'money_cover' | 'pocket_money_cover' | 'acrylic_money_cover';
+  coverType: 'money_cover' | 'pocket_money_cover';
   images?: string[];
 }
 
@@ -60,7 +60,6 @@ export const TEMPLATES: Template[] = [
   { id: 38, src: asset('card-30.jpg'), title: 'Divine Shree Ganesha Ivory Cream Lifafa', category: 'Sacred Tradition', price: 15, coverType: 'money_cover' },
   { id: 39, src: asset('card-31.jpg'), title: 'Royal Heritage Oasis & Floral Palace Lifafa', category: 'Wedding', price: 15, coverType: 'money_cover' },
   { id: 40, src: asset('card-32.jpg'), title: 'Royal Palace Jharokha & Peacock Lifafa', category: 'Wedding', price: 15, coverType: 'money_cover' },
-  { id: 30, src: asset('IMG_8514.PNG'), title: 'Premium Acrylic Money Frame - Happy Rakshabandhan', category: 'Luxury Frame', price: 200, coverType: 'acrylic_money_cover', images: [asset('IMG_8514.PNG'), asset('IMG_8480.JPG.jpeg')] },
 ];
 
 // ─── Quantity-tiered pricing ───

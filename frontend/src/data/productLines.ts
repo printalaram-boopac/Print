@@ -76,29 +76,6 @@ export const PRODUCT_LINES: ProductLine[] = [
       { q: 'When should I choose a pocket cover over a standard cover?', a: 'Choose a pocket cover for smaller cash gifts or everyday blessings where a more compact size is preferred.' },
     ],
   },
-  {
-    slug: 'acrylic-money-covers',
-    coverType: 'acrylic_money_cover',
-    navLabel: 'Acrylic Money Covers',
-    h1: 'Premium Acrylic Money Frames',
-    tagline: 'A luxury keepsake gift — cash presented in a custom acrylic frame',
-    quotableFact: 'Printalarm’s acrylic money frames present cash as a keepsake gift, starting at ₹160/pc for a set of 5 frames.',
-    seoTitle: `Acrylic Money Frames Online | Premium Personalized Shagun Gift — ${BRAND_NAME}`,
-    seoDescription: 'Order premium acrylic money frames online — a luxury keepsake alternative to paper Shagun covers, personalized with names & photos, pan-India delivery in 3-5 days.',
-    sizeSpec: 'Premium acrylic frame, standard currency-note size',
-    description: 'For a gift that lasts beyond the celebration, our acrylic money frame presents cash in a clear, durable acrylic keepsake — personalized with names, a photo, or a custom design. A standout alternative to a paper envelope for milestone weddings, Rakshabandhan, and festive occasions.',
-    bestFor: 'Milestone weddings, Rakshabandhan, and gifts meant to be kept as a keepsake',
-    pricingTiers: [
-      { qty: '1 frame', unitPrice: '₹200/pc', total: '₹200' },
-      { qty: '2 frames', unitPrice: '₹175/pc', total: '₹349 for 2' },
-      { qty: '5 frames', unitPrice: '₹160/pc', total: '₹799 for 5', note: 'Best value per frame' },
-    ],
-    faqs: [
-      { q: 'What is an acrylic money frame?', a: 'It is a clear, durable acrylic frame that presents cash as a keepsake gift, personalized with names, a photo, or a custom design — a lasting alternative to a paper envelope.' },
-      { q: 'How much does an acrylic money frame cost?', a: 'A single frame starts at ₹200. A set of 2 is ₹349 (₹175/pc), and a set of 5 is ₹799 (₹160/pc) — the best per-frame value.' },
-      { q: 'What occasions suit an acrylic money frame?', a: 'Milestone weddings, Rakshabandhan, and any gift where you want the presentation itself to be kept as a keepsake.' },
-    ],
-  },
 ];
 
 export function getProductLineBySlug(slug: string): ProductLine | undefined {

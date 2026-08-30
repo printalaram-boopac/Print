@@ -33,10 +33,7 @@ export default function TemplateCard({ template, index = 0, showWhatsApp = false
     setCurrentIndex(idx);
   };
 
-  const priceText =
-    template.coverType === 'acrylic_money_cover'
-      ? 'From ₹200'
-      : 'From ₹12/pc';
+  const priceText = 'From ₹12/pc';
 
   return (
     <motion.div

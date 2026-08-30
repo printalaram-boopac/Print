@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useLocation } from 'react-router-dom';
-import { Layers, Inbox, Crown } from 'lucide-react';
+import { Layers, Inbox } from 'lucide-react';
 import CustomDesignModal from '@/components/CustomDesignModal';
 import TemplateCard from '@/components/TemplateCard';
 import Seo from '@/components/Seo';
@@ -26,13 +26,12 @@ export default function Templates() {
 
   const moneyCovers = TEMPLATES.filter((t) => t.coverType === 'money_cover');
   const pocketMoneyCovers = TEMPLATES.filter((t) => t.coverType === 'pocket_money_cover');
-  const acrylicMoneyCovers = TEMPLATES.filter((t) => t.coverType === 'acrylic_money_cover');
 
   return (
     <div className="min-h-screen pt-28 pb-16 px-4">
       <Seo
         title={`All Shagun Cover Designs | 100+ Personalized Wedding Money Envelopes — ${BRAND_NAME}`}
-        description="Browse 100+ personalized Shagun cover designs — money covers, pocket covers & acrylic money frames. Custom names, photos & gold-foil printing, delivered pan-India."
+        description="Browse 100+ personalized Shagun cover designs — money covers & pocket covers. Custom names, photos & gold-foil printing, delivered pan-India."
         path="/templates"
       />
       <div className="max-w-6xl mx-auto space-y-16">
@@ -92,30 +91,6 @@ export default function Templates() {
 
           <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
             {pocketMoneyCovers.map((t, i) => (
-              <TemplateCard key={t.id} template={t} index={i} />
-            ))}
-          </div>
-        </div>
-
-        {/* Divider */}
-        <div className="gold-divider" />
-
-        {/* ─── SECTION 3: Acrylic Money Covers ─── */}
-        <div id="acrylic-money-covers" className="space-y-6 pt-4">
-          <motion.div 
-            className="flex items-center gap-3 border-b border-gold-200/50 pb-3"
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.3 }}
-          >
-            <Crown className="w-5 h-5 text-luxury-gold" />
-            <h2 className="text-xl md:text-2xl font-display font-bold text-luxury-accent">
-              Acrylic Money Frames <span className="text-xs text-gray-500 font-sans font-normal ml-2">(Tiered pricing available)</span>
-            </h2>
-          </motion.div>
-
-          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
-            {acrylicMoneyCovers.map((t, i) => (
               <TemplateCard key={t.id} template={t} index={i} />
             ))}
           </div>

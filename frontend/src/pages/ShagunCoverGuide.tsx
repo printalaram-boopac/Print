@@ -8,7 +8,7 @@ import { logUserEvent } from '@/lib/analytics';
 
 const PATH = '/how-to-choose-a-shagun-cover';
 const TITLE = `How to Choose the Perfect Shagun Cover for Your Wedding | ${BRAND_NAME}`;
-const DESCRIPTION = 'Standard vs pocket vs acrylic Shagun covers compared — size, price, and best use case — to help you pick the right personalized money cover for your wedding or celebration.';
+const DESCRIPTION = 'Standard vs pocket Shagun covers compared — size, price, and best use case — to help you pick the right personalized money cover for your wedding or celebration.';
 
 const ARTICLE_JSON_LD = {
   '@context': 'https://schema.org',
@@ -32,7 +32,6 @@ const BREADCRUMB_JSON_LD = {
 const TIPS = [
   { q: 'Traditional wedding or bulk gifting?', a: 'The standard Shagun money cover (6.5" x 3.5") is the classic choice — it fits every Indian currency note and is the most budget-friendly for bulk orders of 100+.' },
   { q: 'Want something more compact?', a: 'The pocket money cover (4" x 3") offers the same premium print quality in a sleeker size — ideal for smaller cash gifts or everyday blessings.' },
-  { q: 'Gifting for a milestone occasion?', a: 'An acrylic money frame turns cash into a keepsake gift that lasts well beyond the celebration — best for milestone weddings, Rakshabandhan, or when you want the gift itself to be memorable.' },
   { q: 'Ordering in bulk for a wedding?', a: 'Both standard and pocket covers drop to ₹10/pc at 100+ pieces, and orders of 100+ also qualify for 10 free covers.' },
 ];
 
@@ -57,7 +56,7 @@ export default function ShagunCoverGuide() {
             How to Choose the Perfect <span className="text-gold-gradient">Shagun Cover</span>
           </h1>
           <p className="text-gray-400 text-sm md:text-base leading-relaxed">
-            Standard money cover, pocket cover, or acrylic frame? Here's a straight comparison of size, price, and
+            Standard money cover or pocket cover? Here's a straight comparison of size, price, and
             best use case to help you pick the right personalized Shagun cover for your wedding or celebration.
           </p>
         </motion.div>

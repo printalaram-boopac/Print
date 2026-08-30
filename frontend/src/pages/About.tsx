@@ -12,7 +12,7 @@ const ORG_JSON_LD = {
   url: 'https://printalarm.in/',
   foundingDate: '2023',
   foundingLocation: 'Surat, Gujarat, India',
-  description: 'Custom design & print studio for personalized Shagun covers, wedding money envelopes, and premium acrylic money frames.',
+  description: 'Custom design & print studio for personalized Shagun covers and wedding money envelopes.',
   sameAs: [
     'https://www.instagram.com/printalarm5/',
     'https://www.facebook.com/profile.php?id=61591651010384&sk=directory_intro',

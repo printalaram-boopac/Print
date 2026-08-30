@@ -1,12 +1,11 @@
 import { useMemo, useState, useEffect } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Star, Minus, Plus, Lock, ChevronLeft, ChevronRight, Gift, Sparkles } from 'lucide-react';
+import { Star, Minus, Plus, Lock, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import { createOrder } from '@/lib/api';
 import { DEFAULT_COMPARE_AT_PRICE, getUnitPrice, findTemplateByIdOrSlug, getTemplateSlug } from '@/data/templates';
 import { logUserEvent } from '@/lib/analytics';
-import FreeAcrylicOfferPopup from '@/components/FreeAcrylicOfferPopup';
 import Seo from '@/components/Seo';
 import { BRAND_NAME } from '@/lib/brand';
 
@@ -30,14 +29,9 @@ export default function DesignDetail() {
   const [orderSaving, setOrderSaving] = useState(false);
   const [activeImage, setActiveImage] = useState(template?.src || '');
 
-  // Free Acrylic Money Cover offer state
-  const [showFreeAcrylicPopup, setShowFreeAcrylicPopup] = useState(false);
-  const [freeAcrylicAccepted, setFreeAcrylicAccepted] = useState(false);
-  const [popupShown, setPopupShown] = useState(false);
-
   useEffect(() => {
     if (template) {
-      setQuantity(template.coverType === 'acrylic_money_cover' ? 1 : 100);
+      setQuantity(100);
       setActiveImage(template.src);
 
       // Preload all slide images for instant zero-latency switching
@@ -94,20 +88,6 @@ export default function DesignDetail() {
   const [pincode, setPincode] = useState('');
   const [phone, setPhone] = useState(dbUser?.shippingPhone || dbUser?.phone || '');
 
-  const isAcrylic = template?.coverType === 'acrylic_money_cover';
-
-  // Determine if this product qualifies for the free acrylic offer
-  const qualifiesForFreeAcrylic =
-    !isAcrylic && (template?.coverType === 'money_cover' || template?.coverType === 'pocket_money_cover') && quantity >= 100;
-
-  // Reset free acrylic acceptance when quantity drops below 100
-  useEffect(() => {
-    if (!qualifiesForFreeAcrylic) {
-      setFreeAcrylicAccepted(false);
-      setPopupShown(false);
-    }
-  }, [qualifiesForFreeAcrylic]);
-
   let subtotal = 0;
   let unitPrice = 0;
   let compareAtUnitPrice = DEFAULT_COMPARE_AT_PRICE;
@@ -117,44 +97,14 @@ export default function DesignDetail() {
   let displayCompareAt = 0;
   let priceSubtitle = '';
 
-  if (isAcrylic) {
-    if (quantity === 1) {
-      subtotal = 200;
-      compareAtTotal = 250;
-      displayMainPrice = 200;
-      displayCompareAt = 250;
-      priceSubtitle = 'For 1 frame · Inclusive of all taxes';
-    } else if (quantity === 2) {
-      subtotal = 349;
-      compareAtTotal = 500;
-      displayMainPrice = 349;
-      displayCompareAt = 500;
-      priceSubtitle = 'Set of 2 frames (₹175/pc) · Inclusive of all taxes';
-    } else if (quantity === 5) {
-      subtotal = 799;
-      compareAtTotal = 1250;
-      displayMainPrice = 799;
-      displayCompareAt = 1250;
-      priceSubtitle = 'Set of 5 frames (₹160/pc) · Inclusive of all taxes';
-    } else {
-      subtotal = Math.round(quantity * (799 / 5));
-      compareAtTotal = quantity * 250;
-      displayMainPrice = subtotal;
-      displayCompareAt = compareAtTotal;
-      priceSubtitle = `Total for ${quantity} frames (₹${Math.round(subtotal / quantity)}/pc) · Inclusive of all taxes`;
-    }
-    unitPrice = Math.round((subtotal / quantity) * 100) / 100;
-    savePercent = Math.round((1 - subtotal / compareAtTotal) * 100);
-  } else {
-    unitPrice = getUnitPrice(quantity);
-    subtotal = unitPrice * quantity;
-    compareAtUnitPrice = Math.max(25, Math.round((template?.price || 15) * 1.5));
-    compareAtTotal = compareAtUnitPrice * quantity;
-    displayMainPrice = unitPrice;
-    displayCompareAt = compareAtUnitPrice;
-    savePercent = Math.round((1 - unitPrice / compareAtUnitPrice) * 100);
-    priceSubtitle = `Per envelope (Total: ₹${subtotal} for ${quantity} pcs) · Inclusive of all taxes`;
-  }
+  unitPrice = getUnitPrice(quantity);
+  subtotal = unitPrice * quantity;
+  compareAtUnitPrice = Math.max(25, Math.round((template?.price || 15) * 1.5));
+  compareAtTotal = compareAtUnitPrice * quantity;
+  displayMainPrice = unitPrice;
+  displayCompareAt = compareAtUnitPrice;
+  savePercent = Math.round((1 - unitPrice / compareAtUnitPrice) * 100);
+  priceSubtitle = `Per envelope (Total: ₹${subtotal} for ${quantity} pcs) · Inclusive of all taxes`;
 
   const shippingFee = subtotal >= 999 ? 0 : 50;
   const total = subtotal + shippingFee;
@@ -243,21 +193,12 @@ export default function DesignDetail() {
       console.error('Failed to save order to database:', err);
     }
 
-    const freeGiftLines = freeAcrylicAccepted
-      ? [
-          ``,
-          `🎁 *FREE Gift Included*`,
-          `Premium Acrylic Money Frame (Worth ₹200) — FREE`,
-        ]
-      : [];
-
     const msg = [
       `*New Order - Printalarm*`,
       ``,
       `*Product:* ${template.title}`,
       `*Quantity:* ${quantity} pcs`,
       `*Order Total:* ₹${total.toFixed(2)}`,
-      ...freeGiftLines,
       ``,
       `*Personalization*`,
       `Name: ${coupleName || 'Default'}`,
@@ -479,31 +420,11 @@ export default function DesignDetail() {
               <span className="text-sm font-bold text-luxury-accent">₹{subtotal.toLocaleString('en-IN')}</span>
             </div>
 
-            {/* Free Acrylic Gift Line Item */}
-            {freeAcrylicAccepted && (
-              <div className="flex items-center gap-4 pt-2 border-t border-gold-200/40">
-                <div className="w-10 h-10 rounded-lg overflow-hidden flex-shrink-0 border border-green-300 bg-green-50 flex items-center justify-center">
-                  <Gift className="w-5 h-5 text-green-600" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <h3 className="text-xs font-display font-semibold text-luxury-accent">🎁 Acrylic Money Frame</h3>
-                  <p className="text-[10px] text-green-600 font-bold">FREE GIFT</p>
-                </div>
-                <span className="text-xs font-bold text-green-600">FREE</span>
-              </div>
-            )}
-
             <div className="border-t border-gold-200 pt-4 space-y-2 text-sm">
               <div className="flex justify-between">
                 <span className="text-gray-500">Subtotal · {quantity} pcs</span>
                 <span className="text-luxury-accent font-medium">₹{subtotal.toLocaleString('en-IN')}</span>
               </div>
-              {freeAcrylicAccepted && (
-                <div className="flex justify-between">
-                  <span className="text-gray-500">🎁 Acrylic Money Frame</span>
-                  <span className="text-green-600 font-medium">FREE</span>
-                </div>
-              )}
               <div className="flex justify-between">
                 <span className="text-gray-500">Shipping</span>
                 <span className="text-green-600 font-medium">{shippingFee === 0 ? 'FREE' : `₹${shippingFee}`}</span>
@@ -665,73 +586,23 @@ export default function DesignDetail() {
                   </button>
                 </div>
 
-                {isAcrylic ? (
-                  [1, 2, 5].map((q) => (
-                    <button
-                      key={q}
-                      onClick={() => {
-                        logUserEvent('CLICK_QUICK_QUANTITY', { templateId: template.id, quantity: q });
-                        setQuantity(q);
-                      }}
-                      className={`px-4 py-2 text-xs font-bold rounded-full transition-all cursor-pointer ${quantity === q
-                          ? 'bg-luxury-accent text-white'
-                          : 'bg-luxury-gray text-luxury-accent hover:bg-gold-100'
-                        }`}
-                    >
-                      {q} {q === 1 ? 'pc' : 'pcs'}
-                    </button>
-                  ))
-                ) : (
-                  QUICK_QUANTITIES.map((q) => (
-                    <button
-                      key={q}
-                      onClick={() => {
-                        logUserEvent('CLICK_QUICK_QUANTITY', { templateId: template.id, quantity: q });
-                        setQuantity(q);
-                      }}
-                      className={`px-4 py-2 text-xs font-bold rounded-full transition-all cursor-pointer ${quantity === q
-                          ? 'bg-luxury-accent text-white'
-                          : 'bg-luxury-gray text-luxury-accent hover:bg-gold-100'
-                        }`}
-                    >
-                      {q} pcs
-                    </button>
-                  ))
-                )}
+                {QUICK_QUANTITIES.map((q) => (
+                  <button
+                    key={q}
+                    onClick={() => {
+                      logUserEvent('CLICK_QUICK_QUANTITY', { templateId: template.id, quantity: q });
+                      setQuantity(q);
+                    }}
+                    className={`px-4 py-2 text-xs font-bold rounded-full transition-all cursor-pointer ${quantity === q
+                        ? 'bg-luxury-accent text-white'
+                        : 'bg-luxury-gray text-luxury-accent hover:bg-gold-100'
+                      }`}
+                  >
+                    {q} pcs
+                  </button>
+                ))}
               </div>
-              <p className="text-xs text-gray-500">₹{unitPrice} per {isAcrylic ? 'frame' : 'envelope'} at this quantity</p>
-
-              {/* Free Acrylic Teaser Badge */}
-              {qualifiesForFreeAcrylic && (
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.96, y: 8 }}
-                  animate={{ opacity: 1, scale: 1, y: 0 }}
-                  transition={{ type: 'spring', stiffness: 260, damping: 20 }}
-                  className="free-gift-badge relative flex items-center gap-3 p-3.5 pr-16 rounded-xl border border-luxury-gold/50 mt-2 overflow-hidden"
-                  style={{ background: 'linear-gradient(135deg, #1a1410, #3D1E30 60%, #2a1420)' }}
-                >
-                  {/* Shimmer sweep */}
-                  <div className="absolute inset-0 pointer-events-none">
-                    <div className="absolute inset-y-0 -left-1/2 w-1/3 bg-gradient-to-r from-transparent via-white/15 to-transparent animate-shimmer-sweep" />
-                  </div>
-
-                  <div className="relative w-9 h-9 rounded-full bg-luxury-gold/15 border border-luxury-gold/50 flex items-center justify-center flex-shrink-0">
-                    <Gift className="w-4.5 h-4.5 text-luxury-gold" strokeWidth={2} />
-                    <Sparkles className="w-3 h-3 text-gold-200 absolute -top-1 -right-1 animate-sparkle-twinkle" strokeWidth={2.5} />
-                  </div>
-                  <div className="relative flex-1 min-w-0">
-                    <p className="text-xs font-bold text-gold-shimmer">FREE Acrylic Frame Included</p>
-                    <p className="text-[10px] text-gold-200/80 mt-0.5">Automatically added free on orders of 100+ covers</p>
-                  </div>
-
-                  {/* Ribbon corner tag */}
-                  <div className="free-gift-ribbon absolute top-2 -right-8 w-28 text-center rotate-45">
-                    <span className="block bg-luxury-gold text-luxury-accent text-[9px] font-extrabold uppercase tracking-wider py-0.5 shadow-md">
-                      Worth ₹200
-                    </span>
-                  </div>
-                </motion.div>
-              )}
+              <p className="text-xs text-gray-500">₹{unitPrice} per envelope at this quantity</p>
 
               <div className="border-t border-gold-200 pt-4 flex items-center justify-between">
                 <span className="text-sm text-gray-500">Subtotal</span>
@@ -750,36 +621,12 @@ export default function DesignDetail() {
                   quantity,
                   total,
                 });
-                // Show free acrylic popup if eligible and not yet shown
-                if (qualifiesForFreeAcrylic && !popupShown) {
-                  setShowFreeAcrylicPopup(true);
-                  setPopupShown(true);
-                } else {
-                  setIsCheckingOut(true);
-                }
+                setIsCheckingOut(true);
               }}
               className="w-full btn-primary gold-glow cursor-pointer"
             >
               Buy Now
             </button>
-
-            {/* Free Acrylic Offer Popup */}
-            <FreeAcrylicOfferPopup
-              isOpen={showFreeAcrylicPopup}
-              quantity={quantity}
-              onAccept={() => {
-                setFreeAcrylicAccepted(true);
-                setShowFreeAcrylicPopup(false);
-                logUserEvent('FREE_ACRYLIC_ACCEPTED', { templateId: template.id, quantity });
-                setIsCheckingOut(true);
-              }}
-              onDecline={() => {
-                setFreeAcrylicAccepted(false);
-                setShowFreeAcrylicPopup(false);
-                logUserEvent('FREE_ACRYLIC_DECLINED', { templateId: template.id, quantity });
-                setIsCheckingOut(true);
-              }}
-            />
 
             <button
               onClick={() => navigate('/templates')}

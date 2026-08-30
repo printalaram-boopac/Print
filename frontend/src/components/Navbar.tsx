@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Sparkles, MessageCircle, Home, LayoutGrid, HelpCircle, ChevronDown, Inbox, Layers, Crown, Compass, BookOpen, Info } from 'lucide-react';
+import { Sparkles, MessageCircle, Home, LayoutGrid, HelpCircle, ChevronDown, Inbox, Layers, Compass, BookOpen, Info } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import CustomDesignModal from '@/components/CustomDesignModal';
 import { asset } from '@/lib/asset';
@@ -16,7 +16,6 @@ const NAV_LINKS = [
 const EXPLORE_LINKS = [
   { to: '/shagun-money-covers', label: 'Shagun Money Covers', icon: Inbox },
   { to: '/pocket-money-covers', label: 'Pocket Money Covers', icon: Layers },
-  { to: '/acrylic-money-covers', label: 'Acrylic Money Covers', icon: Crown },
   { to: '/how-to-choose-a-shagun-cover', label: 'How to Choose a Shagun Cover', icon: Compass },
   { to: '/blog', label: 'Blog', icon: BookOpen },
   { to: '/about', label: 'About Us', icon: Info },

@@ -5,8 +5,8 @@ import { TEMPLATES } from '@/data/templates';
 import TemplateCard from '@/components/TemplateCard';
 import { logUserEvent } from '@/lib/analytics';
 
-// Show first 6 non-acrylic templates as trending designs
-const TRENDING = TEMPLATES.filter((t) => t.coverType !== 'acrylic_money_cover').slice(0, 6);
+// Show first 6 templates as trending designs
+const TRENDING = TEMPLATES.slice(0, 6);
 
 export default function TrendingDesigns() {
   return (

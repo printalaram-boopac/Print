@@ -515,7 +515,7 @@ export default function AdminOrders() {
                 </div>
               </div>
               <div className="border-t border-gold-200/20 pt-3 space-y-3">
-                <h4 className="text-[10px] font-bold text-luxury-gold uppercase tracking-wider">Acrylic money frame customization</h4>
+                <h4 className="text-[10px] font-bold text-luxury-gold uppercase tracking-wider">Personalization</h4>
                 <div className="grid grid-cols-2 gap-3">
                   <div>
                     <label className="block text-gray-500 mb-1">Couple Name (optional)</label>
@@ -619,7 +619,7 @@ export default function AdminOrders() {
                   className="w-full bg-luxury-black border border-gold-300 rounded p-2 text-luxury-accent focus:outline-none focus:border-luxury-gold h-16 resize-none" />
               </div>
               <div className="border-t border-gold-200/20 pt-3 space-y-3">
-                <h4 className="text-[10px] font-bold text-luxury-gold uppercase tracking-wider">Acrylic money frame customization</h4>
+                <h4 className="text-[10px] font-bold text-luxury-gold uppercase tracking-wider">Personalization</h4>
                 <div className="grid grid-cols-2 gap-3">
                   <div>
                     <label className="block text-gray-500 mb-1">Couple Name</label>
