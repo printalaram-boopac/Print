@@ -36,11 +36,25 @@ const blogCode = blogResult.outputFiles[0].text;
 const blogMod = await import(`data:text/javascript;base64,${Buffer.from(blogCode).toString('base64')}`);
 const { BLOG_POSTS } = blogMod;
 
+const magazineResult = await build({
+  entryPoints: [resolve(root, 'src/features/magazine/templates/registry.ts')],
+  bundle: true,
+  write: false,
+  format: 'esm',
+  platform: 'node',
+  define: { 'import.meta.env.BASE_URL': '"/"' },
+  alias: { '@': resolve(root, 'src') },
+});
+const magazineCode = magazineResult.outputFiles[0].text;
+const magazineMod = await import(`data:text/javascript;base64,${Buffer.from(magazineCode).toString('base64')}`);
+const { TEMPLATE_INDEX } = magazineMod;
+
 const staticUrls = [
   { loc: '/', changefreq: 'weekly', priority: '1.0' },
   { loc: '/shagun-money-covers', changefreq: 'daily', priority: '0.95' },
   { loc: '/acrylic-money-covers', changefreq: 'daily', priority: '0.95' },
   { loc: '/photo-zine-maker', changefreq: 'daily', priority: '0.95' },
+  { loc: '/magazine', changefreq: 'daily', priority: '0.95' },
   { loc: '/templates', changefreq: 'weekly', priority: '0.9' },
   { loc: '/pocket-money-covers', changefreq: 'weekly', priority: '0.9' },
   { loc: '/how-to-choose-a-shagun-cover', changefreq: 'monthly', priority: '0.7' },
@@ -59,13 +73,19 @@ const designUrls = TEMPLATES.map((t) => ({
   priority: '0.8',
 }));
 
+const magazineUrls = TEMPLATE_INDEX.map((t) => ({
+  loc: `/magazine/t/${t.slug}`,
+  changefreq: 'monthly',
+  priority: '0.8',
+}));
+
 const blogUrls = BLOG_POSTS.map((p) => ({
   loc: `/blog/${p.slug}`,
   changefreq: 'monthly',
   priority: '0.6',
 }));
 
-const allUrls = [...staticUrls, ...designUrls, ...blogUrls];
+const allUrls = [...staticUrls, ...designUrls, ...magazineUrls, ...blogUrls];
 
 const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -82,4 +102,6 @@ ${allUrls
 `;
 
 writeFileSync(resolve(root, 'public/sitemap.xml'), xml);
-console.log(`sitemap.xml generated with ${allUrls.length} URLs (${designUrls.length} designs, ${blogUrls.length} blog posts).`);
+console.log(
+  `sitemap.xml generated with ${allUrls.length} URLs (${designUrls.length} designs, ${magazineUrls.length} magazine templates, ${blogUrls.length} blog posts).`
+);

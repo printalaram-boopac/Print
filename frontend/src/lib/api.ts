@@ -4,7 +4,12 @@ const BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
 
 export const BACKEND_ENABLED = true;
 
-async function apiFetch(endpoint: string, _options: RequestInit = {}): Promise<any> {
+/**
+ * Authenticated JSON fetch against the Express API. Exported so feature-level
+ * services (e.g. the magazine store) can reuse the auth + error handling
+ * instead of re-implementing it.
+ */
+export async function apiFetch(endpoint: string, _options: RequestInit = {}): Promise<any> {
   if (!BACKEND_ENABLED) {
     throw new Error('Backend is not available in this environment.');
   }

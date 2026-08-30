@@ -54,6 +54,7 @@ model User {
 
   // Relations
   designs      CoverDesign[]
+  magazines    MagazineDesign[]
   orders       Order[]
   referrals    Referral[]    @relation("Referrer")
   referees     Referral[]    @relation("Referee")
@@ -169,4 +170,22 @@ model AuditLog {
   details   String   // e.g. "Updated User 123 role to Admin"
   ipAddress String?
   createdAt DateTime @default(now())
+}
+
+/// A magazine created in the online magazine editor. The full design travels as
+/// JSON so the editor's element model can evolve without a schema migration for
+/// every new property.
+model MagazineDesign {
+  id            String   @id                     // Client-generated so autosave can upsert
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title         String
+  templateId    String?                          // Library template this design started from
+  pageCount     Int      @default(0)
+  schemaVersion Int      @default(1)
+  documentJson  String                           // Serialized MagazineDocument
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([userId, updatedAt])
 }

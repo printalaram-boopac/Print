@@ -13,6 +13,7 @@ import paymentRoutes from './routes/paymentRoutes';
 import auditRoutes from './routes/auditRoutes';
 import statsRoutes from './routes/statsRoutes';
 import aiRoutes from './routes/aiRoutes';
+import magazineRoutes from './routes/magazineRoutes';
 
 // Load environment variables
 dotenv.config();
@@ -69,6 +70,7 @@ app.use('/api/payments', paymentRoutes);
 app.use('/api/audit-logs', auditRoutes);
 app.use('/api/stats', statsRoutes);
 app.use('/api/ai', aiRoutes);
+app.use('/api/magazines', magazineRoutes);
 
 // Centralized Error Handling Middleware
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {

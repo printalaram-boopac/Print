@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Sparkles, MessageCircle, Home, LayoutGrid, HelpCircle, ChevronDown, Inbox, Layers, Crown, Compass, BookOpen, Info, Images } from 'lucide-react';
+import { Sparkles, MessageCircle, Home, LayoutGrid, HelpCircle, ChevronDown, Inbox, Layers, Crown, Compass, BookOpen, Info, Images, BookMarked, FolderOpen } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import CustomDesignModal from '@/components/CustomDesignModal';
 import { asset } from '@/lib/asset';
@@ -10,10 +10,13 @@ import { logUserEvent } from '@/lib/analytics';
 const NAV_LINKS = [
   { to: '/', label: 'Home', icon: Home },
   { to: '/templates', label: 'Designs', icon: LayoutGrid },
+  { to: '/magazine', label: 'Magazines', icon: BookMarked },
   // { to: '/designer', label: '3D Studio', icon: Palette }, // Hidden for now
 ];
 
 const EXPLORE_LINKS = [
+  { to: '/magazine', label: 'Magazine Templates', icon: BookMarked },
+  { to: '/my-magazines', label: 'My Magazines', icon: FolderOpen },
   { to: '/shagun-money-covers', label: 'Shagun Money Covers', icon: Inbox },
   { to: '/pocket-money-covers', label: 'Pocket Money Covers', icon: Layers },
   { to: '/acrylic-money-covers', label: 'Acrylic Money Covers', icon: Crown },
