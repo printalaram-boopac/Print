@@ -78,7 +78,7 @@ function newSlot(): Slot {
     fit: 'fill',
     layout: 'full',
     borderSize: 2,
-    rounded: 0,
+    rounded: 8,
     blackBorder: false,
     text: '',
     font: 'typewriter',
@@ -450,7 +450,7 @@ export default function PhotoZineMaker() {
                   onDragOver={(e) => isMiddle && e.preventDefault()}
                   onDrop={() => handleDrop(i)}
                   onClick={() => handleSlotClick(i)}
-                  className={`relative rounded-xl overflow-hidden border-2 cursor-pointer transition-all ${
+                  className={`relative rounded-2xl overflow-hidden border-2 cursor-pointer transition-all ${
                     activeIndex === i ? 'border-luxury-gold shadow-lg shadow-amber-500/20' : 'border-gold-200/30 hover:border-gold-200/60'
                   }`}
                   style={{ aspectRatio: '0.707' }}
