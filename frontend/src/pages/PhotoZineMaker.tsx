@@ -461,8 +461,8 @@ export default function PhotoZineMaker() {
                   </span>
                   <canvas
                     ref={(el) => { canvasRefs.current[i] = el; }}
-                    width={220}
-                    height={311}
+                    width={440}
+                    height={622}
                     className="w-full h-full block"
                   />
                   {!slot.imgSrc && (
@@ -627,8 +627,8 @@ export default function PhotoZineMaker() {
                       if (ctx) drawSlotToCanvas(ctx, el.width, el.height, slots[activeIndex], bgColor);
                     }
                   }}
-                  width={330}
-                  height={467}
+                  width={520}
+                  height={735}
                   className="w-full h-full block"
                 />
                 {!active.imgSrc && (
