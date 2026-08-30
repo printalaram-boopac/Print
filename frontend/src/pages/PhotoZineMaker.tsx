@@ -346,7 +346,8 @@ export default function PhotoZineMaker() {
     setExporting(true);
     logUserEvent('CLICK_DOWNLOAD_ZINE_PDF');
     try {
-      const canvas = await composeSheet(slots, bgColor, showCutLines);
+      // Cut lines are an on-screen guide only — never print them onto the exported sheet.
+      const canvas = await composeSheet(slots, bgColor, false);
       const dataUrl = canvas.toDataURL('image/png');
       const pdf = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
       pdf.addImage(dataUrl, 'PNG', 0, 0, 297, 210);
