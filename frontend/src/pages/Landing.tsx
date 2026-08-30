@@ -1,6 +1,7 @@
 import HeroSection from '@/components/landing/HeroSection';
 import PromoTicker from '@/components/landing/PromoTicker';
 import TrendingDesigns from '@/components/landing/TrendingDesigns';
+import PhotoZinePromo from '@/components/landing/PhotoZinePromo';
 import HowItWorks from '@/components/landing/HowItWorks';
 import PremiumFeatures from '@/components/landing/PremiumFeatures';
 import CustomerReviews from '@/components/landing/CustomerReviews';
@@ -20,6 +21,9 @@ export default function Landing() {
 
       {/* Promo Ticker */}
       <PromoTicker />
+
+      {/* Photo Zine Studio Promo */}
+      <PhotoZinePromo />
 
       {/* 3. Trending Designs Gallery */}
       <TrendingDesigns />

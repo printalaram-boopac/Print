@@ -26,6 +26,7 @@ import About from '@/pages/About';
 import ShagunCoverGuide from '@/pages/ShagunCoverGuide';
 import Blog from '@/pages/Blog';
 import BlogPost from '@/pages/BlogPost';
+import PhotoZineMaker from '@/pages/PhotoZineMaker';
 import Dashboard from '@/pages/Dashboard';
 import Profile from '@/pages/Profile';
 import AdminPanel from '@/pages/AdminPanel';
@@ -130,6 +131,7 @@ export default function App() {
                           <Route path="/how-to-choose-a-shagun-cover" element={<ShagunCoverGuide />} />
                           <Route path="/blog" element={<Blog />} />
                           <Route path="/blog/:slug" element={<BlogPost />} />
+                          <Route path="/photo-zine-maker" element={<PhotoZineMaker />} />
                           <Route path="/auth" element={<Auth />} />
                           <Route path="/return-exchange" element={<ReturnExchange />} />
                           <Route path="/privacy-policy" element={<PrivacyPolicy />} />

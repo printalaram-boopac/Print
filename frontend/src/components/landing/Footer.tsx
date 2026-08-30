@@ -13,6 +13,7 @@ const SOCIAL_LINKS = [
 const EXPLORE_LINKS = [
   { to: '/shagun-money-covers', label: 'Shagun Money Covers' },
   { to: '/pocket-money-covers', label: 'Pocket Money Covers' },
+  { to: '/photo-zine-maker', label: 'Photo Zine Studio' },
   { to: '/how-to-choose-a-shagun-cover', label: 'How to Choose a Shagun Cover' },
   { to: '/blog', label: 'Blog' },
   { to: '/about', label: 'About Us' },
