@@ -154,7 +154,7 @@ function drawSlotToCanvas(ctx: CanvasRenderingContext2D, w: number, h: number, s
       ctx.drawImage(slot.img, dx, dy, dw, dh);
     }
   } else {
-    ctx.fillStyle = '#3D1E30';
+    ctx.fillStyle = '#F3EAE1';
     ctx.fillRect(ix, iy, iw, ih);
   }
   ctx.restore();
