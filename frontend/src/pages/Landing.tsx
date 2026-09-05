@@ -2,6 +2,7 @@ import HeroSection from '@/components/landing/HeroSection';
 import PromoTicker from '@/components/landing/PromoTicker';
 import TrendingDesigns from '@/components/landing/TrendingDesigns';
 import PhotoZinePromo from '@/components/landing/PhotoZinePromo';
+import MagazineMakerPromo from '@/components/landing/MagazineMakerPromo';
 import HowItWorks from '@/components/landing/HowItWorks';
 import PremiumFeatures from '@/components/landing/PremiumFeatures';
 import CustomerReviews from '@/components/landing/CustomerReviews';
@@ -24,6 +25,9 @@ export default function Landing() {
 
       {/* Photo Zine Studio Promo */}
       <PhotoZinePromo />
+
+      {/* Magazine Maker Promo */}
+      <MagazineMakerPromo />
 
       {/* 3. Trending Designs Gallery */}
       <TrendingDesigns />

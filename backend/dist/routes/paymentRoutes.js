@@ -1,10 +1,12 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
-const client_1 = require("@prisma/client");
 const authMiddleware_1 = require("../middleware/authMiddleware");
+const prisma_1 = __importDefault(require("../lib/prisma"));
 const router = (0, express_1.Router)();
-const prisma = new client_1.PrismaClient();
 /**
  * GET /api/payments
  * Admin: all payments | Customer: own order payments
@@ -21,7 +23,7 @@ router.get('/', authMiddleware_1.authenticate, async (req, res) => {
         if (status && status !== 'ALL')
             where.status = status;
         const [payments, total] = await Promise.all([
-            prisma.payment.findMany({
+            prisma_1.default.payment.findMany({
                 where,
                 include: {
                     order: {
@@ -31,7 +33,7 @@ router.get('/', authMiddleware_1.authenticate, async (req, res) => {
                 },
                 orderBy: { createdAt: 'desc' }, skip, take: parseInt(limit),
             }),
-            prisma.payment.count({ where }),
+            prisma_1.default.payment.count({ where }),
         ]);
         return res.json({
             status: 'ok', payments,

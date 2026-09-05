@@ -17,9 +17,19 @@ const serviceAccount = {
     privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
 };
 if (!firebase_admin_1.default.apps.length) {
-    firebase_admin_1.default.initializeApp({
-        credential: firebase_admin_1.default.credential.cert(serviceAccount),
-    });
+    try {
+        if (serviceAccount.projectId && serviceAccount.privateKey) {
+            firebase_admin_1.default.initializeApp({
+                credential: firebase_admin_1.default.credential.cert(serviceAccount),
+            });
+        }
+        else {
+            firebase_admin_1.default.initializeApp();
+        }
+    }
+    catch (err) {
+        console.warn('[Firebase Admin] Initialization fallback warning:', err);
+    }
 }
 exports.firebaseAuth = firebase_admin_1.default.auth();
 /**

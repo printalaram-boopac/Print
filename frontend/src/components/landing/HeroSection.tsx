@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Wand2 } from 'lucide-react';
+import { ArrowRight, Wand2, Gift, Images, BookOpen } from 'lucide-react';
 import { asset } from '@/lib/asset';
 import { logUserEvent } from '@/lib/analytics';
 
@@ -25,6 +25,12 @@ function GoldParticles() {
     </div>
   );
 }
+
+const QUICK_FEATURES = [
+  { to: '/templates', icon: Gift, label: 'Shagun Covers', event: 'CLICK_HERO_QUICKLINK_SHAGUN' },
+  { to: '/photo-zine-maker', icon: Images, label: 'Photo Zine Studio', event: 'CLICK_HERO_QUICKLINK_ZINE' },
+  { to: '/magazine-maker', icon: BookOpen, label: 'Magazine Maker', event: 'CLICK_HERO_QUICKLINK_MAGAZINE' },
+];
 
 export default function HeroSection() {
   const heroRef = useRef<HTMLDivElement>(null);
@@ -108,6 +114,25 @@ export default function HeroSection() {
             <Link to="/templates" onClick={() => logUserEvent('CLICK_HERO_CUSTOMIZE')} className="btn-glass btn-glass-gold">
               <Wand2 className="w-3.5 h-3.5" strokeWidth={2} /> Customize Now
             </Link>
+          </motion.div>
+
+          {/* All features, one glance — no scrolling needed to find them */}
+          <motion.div
+            className="flex flex-wrap gap-2 pt-1"
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.5 }}
+          >
+            {QUICK_FEATURES.map((f) => (
+              <Link
+                key={f.to}
+                to={f.to}
+                onClick={() => logUserEvent(f.event)}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-gold-200/60 bg-white/60 text-[11px] font-semibold text-luxury-accent hover:bg-luxury-gold hover:text-white hover:border-luxury-gold transition-colors cursor-pointer"
+              >
+                <f.icon className="w-3.5 h-3.5" strokeWidth={2} /> {f.label}
+              </Link>
+            ))}
           </motion.div>
 
           {/* Stats Section */}

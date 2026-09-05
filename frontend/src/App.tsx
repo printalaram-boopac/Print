@@ -27,6 +27,7 @@ import ShagunCoverGuide from '@/pages/ShagunCoverGuide';
 import Blog from '@/pages/Blog';
 import BlogPost from '@/pages/BlogPost';
 import PhotoZineMaker from '@/pages/PhotoZineMaker';
+import MagazineMaker from '@/pages/MagazineMaker';
 import Dashboard from '@/pages/Dashboard';
 import Profile from '@/pages/Profile';
 import AdminPanel from '@/pages/AdminPanel';
@@ -132,6 +133,7 @@ export default function App() {
                           <Route path="/blog" element={<Blog />} />
                           <Route path="/blog/:slug" element={<BlogPost />} />
                           <Route path="/photo-zine-maker" element={<PhotoZineMaker />} />
+                          <Route path="/magazine-maker" element={<MagazineMaker />} />
                           <Route path="/auth" element={<Auth />} />
                           <Route path="/return-exchange" element={<ReturnExchange />} />
                           <Route path="/privacy-policy" element={<PrivacyPolicy />} />

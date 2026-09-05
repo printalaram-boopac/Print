@@ -1,10 +1,12 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
-const client_1 = require("@prisma/client");
 const authMiddleware_1 = require("../middleware/authMiddleware");
+const prisma_1 = __importDefault(require("../lib/prisma"));
 const router = (0, express_1.Router)();
-const prisma = new client_1.PrismaClient();
 /**
  * GET /api/templates
  * Public: list all templates (for browsing)
@@ -18,7 +20,7 @@ router.get('/', async (req, res) => {
             where.category = category;
         if (featured === 'true')
             where.isFeatured = true;
-        const templates = await prisma.coverTemplate.findMany({
+        const templates = await prisma_1.default.coverTemplate.findMany({
             where,
             orderBy: { createdAt: 'desc' },
         });
@@ -33,7 +35,7 @@ router.get('/', async (req, res) => {
  */
 router.get('/:id', async (req, res) => {
     try {
-        const template = await prisma.coverTemplate.findUnique({
+        const template = await prisma_1.default.coverTemplate.findUnique({
             where: { id: req.params.id },
         });
         if (!template) {
@@ -58,7 +60,7 @@ router.post('/', authMiddleware_1.authenticate, authMiddleware_1.requireAdmin, a
                 message: 'Missing required fields: title, category, price, thumbnail',
             });
         }
-        const template = await prisma.coverTemplate.create({
+        const template = await prisma_1.default.coverTemplate.create({
             data: {
                 title,
                 description: description || null,
@@ -69,7 +71,7 @@ router.post('/', authMiddleware_1.authenticate, authMiddleware_1.requireAdmin, a
                 isFeatured: isFeatured || false,
             },
         });
-        await prisma.auditLog.create({
+        await prisma_1.default.auditLog.create({
             data: {
                 userId: req.dbUser.id,
                 action: 'TEMPLATE_CREATED',
@@ -90,7 +92,7 @@ router.post('/', authMiddleware_1.authenticate, authMiddleware_1.requireAdmin, a
 router.patch('/:id', authMiddleware_1.authenticate, authMiddleware_1.requireAdmin, async (req, res) => {
     try {
         const { title, description, category, price, thumbnail, configJson, isFeatured } = req.body;
-        const template = await prisma.coverTemplate.update({
+        const template = await prisma_1.default.coverTemplate.update({
             where: { id: req.params.id },
             data: {
                 ...(title !== undefined && { title }),
@@ -102,7 +104,7 @@ router.patch('/:id', authMiddleware_1.authenticate, authMiddleware_1.requireAdmi
                 ...(isFeatured !== undefined && { isFeatured }),
             },
         });
-        await prisma.auditLog.create({
+        await prisma_1.default.auditLog.create({
             data: {
                 userId: req.dbUser.id,
                 action: 'TEMPLATE_UPDATED',
@@ -122,12 +124,12 @@ router.patch('/:id', authMiddleware_1.authenticate, authMiddleware_1.requireAdmi
  */
 router.delete('/:id', authMiddleware_1.authenticate, authMiddleware_1.requireAdmin, async (req, res) => {
     try {
-        const template = await prisma.coverTemplate.findUnique({ where: { id: req.params.id } });
+        const template = await prisma_1.default.coverTemplate.findUnique({ where: { id: req.params.id } });
         if (!template) {
             return res.status(404).json({ status: 'error', message: 'Template not found' });
         }
-        await prisma.coverTemplate.delete({ where: { id: req.params.id } });
-        await prisma.auditLog.create({
+        await prisma_1.default.coverTemplate.delete({ where: { id: req.params.id } });
+        await prisma_1.default.auditLog.create({
             data: {
                 userId: req.dbUser.id,
                 action: 'TEMPLATE_DELETED',

@@ -1,10 +1,12 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.authenticate = authenticate;
 exports.requireAdmin = requireAdmin;
 const firebaseAdmin_1 = require("../lib/firebaseAdmin");
-const client_1 = require("@prisma/client");
-const prisma = new client_1.PrismaClient();
+const prisma_1 = __importDefault(require("../lib/prisma"));
 /**
  * Middleware: Authenticate requests using Firebase ID token
  * Extracts Bearer token from Authorization header and verifies with Firebase Admin
@@ -29,7 +31,7 @@ async function authenticate(req, res, next) {
             phoneNumber: decoded.phone_number,
         };
         // Look up the database user
-        const dbUser = await prisma.user.findUnique({
+        const dbUser = await prisma_1.default.user.findUnique({
             where: { firebaseUid: decoded.uid },
         });
         if (dbUser) {

@@ -16,7 +16,6 @@ const productRoutes_1 = __importDefault(require("./routes/productRoutes"));
 const paymentRoutes_1 = __importDefault(require("./routes/paymentRoutes"));
 const auditRoutes_1 = __importDefault(require("./routes/auditRoutes"));
 const statsRoutes_1 = __importDefault(require("./routes/statsRoutes"));
-const aiRoutes_1 = __importDefault(require("./routes/aiRoutes"));
 // Load environment variables
 dotenv_1.default.config();
 const app = (0, express_1.default)();
@@ -67,7 +66,6 @@ app.use('/api/products', productRoutes_1.default);
 app.use('/api/payments', paymentRoutes_1.default);
 app.use('/api/audit-logs', auditRoutes_1.default);
 app.use('/api/stats', statsRoutes_1.default);
-app.use('/api/ai', aiRoutes_1.default);
 // Centralized Error Handling Middleware
 app.use((err, req, res, next) => {
     console.error('Unhandled Server Error:', err);

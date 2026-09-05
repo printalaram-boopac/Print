@@ -1,21 +1,23 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
-const client_1 = require("@prisma/client");
 const authMiddleware_1 = require("../middleware/authMiddleware");
+const prisma_1 = __importDefault(require("../lib/prisma"));
 const router = (0, express_1.Router)();
-const prisma = new client_1.PrismaClient();
 /** GET /api/audit-logs — Admin only */
 router.get('/', authMiddleware_1.authenticate, authMiddleware_1.requireAdmin, async (req, res) => {
     try {
         const { page = '1', limit = '30' } = req.query;
         const skip = (parseInt(page) - 1) * parseInt(limit);
         const [logs, total] = await Promise.all([
-            prisma.auditLog.findMany({
+            prisma_1.default.auditLog.findMany({
                 include: { user: { select: { name: true, email: true } } },
                 orderBy: { createdAt: 'desc' }, skip, take: parseInt(limit),
             }),
-            prisma.auditLog.count(),
+            prisma_1.default.auditLog.count(),
         ]);
         return res.json({
             status: 'ok', logs,

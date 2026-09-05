@@ -1,10 +1,12 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
-const client_1 = require("@prisma/client");
 const authMiddleware_1 = require("../middleware/authMiddleware");
+const prisma_1 = __importDefault(require("../lib/prisma"));
 const router = (0, express_1.Router)();
-const prisma = new client_1.PrismaClient();
 /**
  * GET /api/clients
  * Admin-only: list all registered clients with order stats
@@ -24,7 +26,7 @@ router.get('/', authMiddleware_1.authenticate, authMiddleware_1.requireAdmin, as
             ];
         }
         const [clients, total] = await Promise.all([
-            prisma.user.findMany({
+            prisma_1.default.user.findMany({
                 where,
                 select: {
                     id: true,
@@ -53,7 +55,7 @@ router.get('/', authMiddleware_1.authenticate, authMiddleware_1.requireAdmin, as
                 skip,
                 take: limitNum,
             }),
-            prisma.user.count({ where }),
+            prisma_1.default.user.count({ where }),
         ]);
         // Compute aggregated stats for each client
         const clientsWithStats = clients.map((client) => {
@@ -103,7 +105,7 @@ router.get('/', authMiddleware_1.authenticate, authMiddleware_1.requireAdmin, as
  */
 router.get('/:id', authMiddleware_1.authenticate, authMiddleware_1.requireAdmin, async (req, res) => {
     try {
-        const client = await prisma.user.findUnique({
+        const client = await prisma_1.default.user.findUnique({
             where: { id: req.params.id },
             include: {
                 orders: {
@@ -150,7 +152,7 @@ router.patch('/:id', authMiddleware_1.authenticate, authMiddleware_1.requireAdmi
         if (role && !['CUSTOMER', 'DESIGNER', 'PRINTER', 'ADMIN'].includes(role)) {
             return res.status(400).json({ status: 'error', message: 'Invalid role' });
         }
-        const updated = await prisma.user.update({
+        const updated = await prisma_1.default.user.update({
             where: { id: req.params.id },
             data: {
                 ...(name !== undefined && { name }),
@@ -165,7 +167,7 @@ router.patch('/:id', authMiddleware_1.authenticate, authMiddleware_1.requireAdmi
             },
         });
         // Audit log
-        await prisma.auditLog.create({
+        await prisma_1.default.auditLog.create({
             data: {
                 userId: req.dbUser.id,
                 action: 'UPDATE_CLIENT',
@@ -189,12 +191,12 @@ router.patch('/:id/role', authMiddleware_1.authenticate, authMiddleware_1.requir
         if (!role || !['CUSTOMER', 'DESIGNER', 'PRINTER', 'ADMIN'].includes(role)) {
             return res.status(400).json({ status: 'error', message: 'Invalid role' });
         }
-        const updated = await prisma.user.update({
+        const updated = await prisma_1.default.user.update({
             where: { id: req.params.id },
             data: { role },
         });
         // Audit log
-        await prisma.auditLog.create({
+        await prisma_1.default.auditLog.create({
             data: {
                 userId: req.dbUser.id,
                 action: 'UPDATE_USER_ROLE',
@@ -214,7 +216,7 @@ router.patch('/:id/role', authMiddleware_1.authenticate, authMiddleware_1.requir
  */
 router.delete('/:id', authMiddleware_1.authenticate, authMiddleware_1.requireAdmin, async (req, res) => {
     try {
-        const client = await prisma.user.findUnique({ where: { id: req.params.id } });
+        const client = await prisma_1.default.user.findUnique({ where: { id: req.params.id } });
         if (!client) {
             return res.status(404).json({ status: 'error', message: 'Client not found' });
         }
@@ -222,8 +224,8 @@ router.delete('/:id', authMiddleware_1.authenticate, authMiddleware_1.requireAdm
         if (client.id === req.dbUser.id) {
             return res.status(400).json({ status: 'error', message: 'Cannot delete your own account' });
         }
-        await prisma.user.delete({ where: { id: req.params.id } });
-        await prisma.auditLog.create({
+        await prisma_1.default.user.delete({ where: { id: req.params.id } });
+        await prisma_1.default.auditLog.create({
             data: {
                 userId: req.dbUser.id,
                 action: 'DELETE_CLIENT',

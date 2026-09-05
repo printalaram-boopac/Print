@@ -1,10 +1,12 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
-const client_1 = require("@prisma/client");
 const authMiddleware_1 = require("../middleware/authMiddleware");
+const prisma_1 = __importDefault(require("../lib/prisma"));
 const router = (0, express_1.Router)();
-const prisma = new client_1.PrismaClient();
 /**
  * GET /api/orders
  * Admin: returns ALL orders with user + design relations
@@ -38,7 +40,7 @@ router.get('/', authMiddleware_1.authenticate, async (req, res) => {
             ];
         }
         const [orders, total] = await Promise.all([
-            prisma.order.findMany({
+            prisma_1.default.order.findMany({
                 where,
                 include: {
                     user: { select: { id: true, name: true, email: true, phone: true, address: true, city: true, state: true, pincode: true } },
@@ -49,7 +51,7 @@ router.get('/', authMiddleware_1.authenticate, async (req, res) => {
                 skip,
                 take: limitNum,
             }),
-            prisma.order.count({ where }),
+            prisma_1.default.order.count({ where }),
         ]);
         return res.status(200).json({
             status: 'ok',
@@ -76,7 +78,7 @@ router.get('/:id', authMiddleware_1.authenticate, async (req, res) => {
         if (!req.dbUser) {
             return res.status(401).json({ status: 'error', message: 'User not found' });
         }
-        const order = await prisma.order.findUnique({
+        const order = await prisma_1.default.order.findUnique({
             where: { id: req.params.id },
             include: {
                 user: {
@@ -125,7 +127,7 @@ router.post('/', authMiddleware_1.authenticate, async (req, res) => {
         // Auto-create CoverDesign if no designId provided
         let finalDesignId = designId || null;
         if (!designId) {
-            const design = await prisma.coverDesign.create({
+            const design = await prisma_1.default.coverDesign.create({
                 data: {
                     userId: req.dbUser.id,
                     templateId: templateId || null,
@@ -143,7 +145,7 @@ router.post('/', authMiddleware_1.authenticate, async (req, res) => {
             });
             finalDesignId = design.id;
         }
-        const order = await prisma.order.create({
+        const order = await prisma_1.default.order.create({
             data: {
                 userId: req.dbUser.id,
                 designId: finalDesignId,
@@ -167,7 +169,7 @@ router.post('/', authMiddleware_1.authenticate, async (req, res) => {
         });
         // Auto-save shipping address to user profile if not already saved
         if (!req.dbUser.address || !req.dbUser.phone) {
-            await prisma.user.update({
+            await prisma_1.default.user.update({
                 where: { id: req.dbUser.id },
                 data: {
                     ...(shippingAddress && !req.dbUser.address && { address: shippingAddress }),
@@ -181,7 +183,7 @@ router.post('/', authMiddleware_1.authenticate, async (req, res) => {
             });
         }
         // Audit log
-        await prisma.auditLog.create({
+        await prisma_1.default.auditLog.create({
             data: {
                 userId: req.dbUser.id,
                 action: 'ORDER_CREATED',
@@ -206,7 +208,7 @@ router.patch('/:id/status', authMiddleware_1.authenticate, authMiddleware_1.requ
         if (!status) {
             return res.status(400).json({ status: 'error', message: 'Status is required' });
         }
-        const order = await prisma.order.update({
+        const order = await prisma_1.default.order.update({
             where: { id: req.params.id },
             data: {
                 status,
@@ -218,7 +220,7 @@ router.patch('/:id/status', authMiddleware_1.authenticate, authMiddleware_1.requ
             },
         });
         // Audit log
-        await prisma.auditLog.create({
+        await prisma_1.default.auditLog.create({
             data: {
                 userId: req.dbUser.id,
                 action: 'ORDER_STATUS_UPDATED',
@@ -238,8 +240,8 @@ router.patch('/:id/status', authMiddleware_1.authenticate, authMiddleware_1.requ
  */
 router.delete('/:id', authMiddleware_1.authenticate, authMiddleware_1.requireAdmin, async (req, res) => {
     try {
-        await prisma.order.delete({ where: { id: req.params.id } });
-        await prisma.auditLog.create({
+        await prisma_1.default.order.delete({ where: { id: req.params.id } });
+        await prisma_1.default.auditLog.create({
             data: {
                 userId: req.dbUser.id,
                 action: 'ORDER_DELETED',

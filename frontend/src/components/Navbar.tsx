@@ -93,6 +93,15 @@ export default function Navbar() {
             <Images className="w-3 h-3" strokeWidth={2} /> Photo Zine Studio
           </Link>
 
+          {/* Magazine Maker */}
+          <Link
+            to="/magazine-maker"
+            className="relative flex items-center gap-1.5 px-4 py-2 rounded-full text-[11px] uppercase tracking-widest font-bold transition-all cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-luxury-gold text-white shadow-md hover:scale-105"
+            style={{ background: 'linear-gradient(135deg, #C5A059, #75591C)' }}
+          >
+            <BookOpen className="w-3 h-3" strokeWidth={2} /> Magazine Maker
+          </Link>
+
           {/* Explore dropdown */}
           <div className="relative" ref={exploreRef}>
             <button
@@ -223,6 +232,16 @@ export default function Navbar() {
                 style={{ background: 'linear-gradient(135deg, #C5A059, #75591C)' }}
               >
                 <Images className="w-4 h-4" strokeWidth={2} /> Photo Zine Studio
+              </Link>
+
+              {/* Magazine Maker */}
+              <Link
+                to="/magazine-maker"
+                onClick={() => setMobileOpen(false)}
+                className="flex items-center gap-2 text-xs uppercase tracking-wider font-bold py-2.5 px-3 rounded-lg text-white cursor-pointer"
+                style={{ background: 'linear-gradient(135deg, #C5A059, #75591C)' }}
+              >
+                <BookOpen className="w-4 h-4" strokeWidth={2} /> Magazine Maker
               </Link>
 
               {/* Explore section */}

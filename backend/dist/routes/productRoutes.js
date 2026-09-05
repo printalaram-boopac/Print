@@ -1,10 +1,12 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
-const client_1 = require("@prisma/client");
 const authMiddleware_1 = require("../middleware/authMiddleware");
+const prisma_1 = __importDefault(require("../lib/prisma"));
 const router = (0, express_1.Router)();
-const prisma = new client_1.PrismaClient();
 /**
  * GET /api/products
  * Public: list all products/templates with optional filters
@@ -28,13 +30,13 @@ router.get('/', async (req, res) => {
             ];
         }
         const [products, total] = await Promise.all([
-            prisma.coverTemplate.findMany({
+            prisma_1.default.coverTemplate.findMany({
                 where,
                 orderBy: { createdAt: 'desc' },
                 skip,
                 take: limitNum,
             }),
-            prisma.coverTemplate.count({ where }),
+            prisma_1.default.coverTemplate.count({ where }),
         ]);
         return res.status(200).json({
             status: 'ok',
@@ -57,7 +59,7 @@ router.get('/', async (req, res) => {
  */
 router.get('/:id', async (req, res) => {
     try {
-        const product = await prisma.coverTemplate.findUnique({
+        const product = await prisma_1.default.coverTemplate.findUnique({
             where: { id: req.params.id },
             include: {
                 designs: {
@@ -88,7 +90,7 @@ router.post('/', authMiddleware_1.authenticate, authMiddleware_1.requireAdmin, a
                 message: 'Missing required fields: title, category, price, thumbnail',
             });
         }
-        const product = await prisma.coverTemplate.create({
+        const product = await prisma_1.default.coverTemplate.create({
             data: {
                 title,
                 description: description || null,
@@ -99,7 +101,7 @@ router.post('/', authMiddleware_1.authenticate, authMiddleware_1.requireAdmin, a
                 isFeatured: isFeatured || false,
             },
         });
-        await prisma.auditLog.create({
+        await prisma_1.default.auditLog.create({
             data: {
                 userId: req.dbUser.id,
                 action: 'PRODUCT_CREATED',
@@ -120,7 +122,7 @@ router.post('/', authMiddleware_1.authenticate, authMiddleware_1.requireAdmin, a
 router.patch('/:id', authMiddleware_1.authenticate, authMiddleware_1.requireAdmin, async (req, res) => {
     try {
         const { title, description, category, price, thumbnail, configJson, isFeatured } = req.body;
-        const product = await prisma.coverTemplate.update({
+        const product = await prisma_1.default.coverTemplate.update({
             where: { id: req.params.id },
             data: {
                 ...(title !== undefined && { title }),
@@ -132,7 +134,7 @@ router.patch('/:id', authMiddleware_1.authenticate, authMiddleware_1.requireAdmi
                 ...(isFeatured !== undefined && { isFeatured }),
             },
         });
-        await prisma.auditLog.create({
+        await prisma_1.default.auditLog.create({
             data: {
                 userId: req.dbUser.id,
                 action: 'PRODUCT_UPDATED',
@@ -152,12 +154,12 @@ router.patch('/:id', authMiddleware_1.authenticate, authMiddleware_1.requireAdmi
  */
 router.delete('/:id', authMiddleware_1.authenticate, authMiddleware_1.requireAdmin, async (req, res) => {
     try {
-        const product = await prisma.coverTemplate.findUnique({ where: { id: req.params.id } });
+        const product = await prisma_1.default.coverTemplate.findUnique({ where: { id: req.params.id } });
         if (!product) {
             return res.status(404).json({ status: 'error', message: 'Product not found' });
         }
-        await prisma.coverTemplate.delete({ where: { id: req.params.id } });
-        await prisma.auditLog.create({
+        await prisma_1.default.coverTemplate.delete({ where: { id: req.params.id } });
+        await prisma_1.default.auditLog.create({
             data: {
                 userId: req.dbUser.id,
                 action: 'PRODUCT_DELETED',

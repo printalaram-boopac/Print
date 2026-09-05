@@ -1,10 +1,12 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
-const client_1 = require("@prisma/client");
 const authMiddleware_1 = require("../middleware/authMiddleware");
+const prisma_1 = __importDefault(require("../lib/prisma"));
 const router = (0, express_1.Router)();
-const prisma = new client_1.PrismaClient();
 // List of admin emails from environment config
 const ADMIN_EMAILS = (process.env.ADMIN_EMAILS || 'admin@printalarm.com')
     .split(',')
@@ -21,12 +23,12 @@ router.post('/sync', authMiddleware_1.authenticate, async (req, res) => {
         const { name, phone, avatarUrl } = req.body;
         const finalPhone = phone || phoneNumber || null;
         // Check if user already exists
-        let user = await prisma.user.findUnique({
+        let user = await prisma_1.default.user.findUnique({
             where: { firebaseUid: uid },
         });
         if (user) {
             // Update last login and any provided profile fields
-            user = await prisma.user.update({
+            user = await prisma_1.default.user.update({
                 where: { firebaseUid: uid },
                 data: {
                     lastLoginAt: new Date(),
@@ -41,7 +43,7 @@ router.post('/sync', authMiddleware_1.authenticate, async (req, res) => {
             const isAdmin = ADMIN_EMAILS.includes(email.toLowerCase());
             const role = isAdmin ? 'ADMIN' : 'CUSTOMER';
             // Create new user record
-            user = await prisma.user.create({
+            user = await prisma_1.default.user.create({
                 data: {
                     firebaseUid: uid,
                     email: email,
@@ -53,7 +55,7 @@ router.post('/sync', authMiddleware_1.authenticate, async (req, res) => {
                 },
             });
             // Log the new user creation
-            await prisma.auditLog.create({
+            await prisma_1.default.auditLog.create({
                 data: {
                     userId: user.id,
                     action: 'USER_REGISTERED',
@@ -104,7 +106,7 @@ router.get('/me', authMiddleware_1.authenticate, async (req, res) => {
             });
         }
         // Fetch full user data including new fields
-        const fullUser = await prisma.user.findUnique({
+        const fullUser = await prisma_1.default.user.findUnique({
             where: { id: req.dbUser.id },
             select: {
                 id: true, firebaseUid: true, email: true, name: true, role: true,
@@ -136,7 +138,7 @@ router.patch('/profile', authMiddleware_1.authenticate, async (req, res) => {
             return res.status(404).json({ status: 'error', message: 'User not found' });
         }
         const { name, phone, address, shippingName, shippingPhone, city, state, pincode, avatarUrl } = req.body;
-        const updated = await prisma.user.update({
+        const updated = await prisma_1.default.user.update({
             where: { id: req.dbUser.id },
             data: {
                 ...(name !== undefined && { name }),
@@ -168,7 +170,7 @@ router.get('/profile/orders', authMiddleware_1.authenticate, async (req, res) =>
         if (!req.dbUser) {
             return res.status(404).json({ status: 'error', message: 'User not found' });
         }
-        const orders = await prisma.order.findMany({
+        const orders = await prisma_1.default.order.findMany({
             where: { userId: req.dbUser.id },
             include: {
                 design: {
@@ -196,7 +198,7 @@ router.get('/profile/designs', authMiddleware_1.authenticate, async (req, res) =
         if (!req.dbUser) {
             return res.status(404).json({ status: 'error', message: 'User not found' });
         }
-        const designs = await prisma.coverDesign.findMany({
+        const designs = await prisma_1.default.coverDesign.findMany({
             where: { userId: req.dbUser.id },
             include: {
                 template: { select: { id: true, title: true, thumbnail: true, category: true } },
