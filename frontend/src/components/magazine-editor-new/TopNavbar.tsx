@@ -2,8 +2,10 @@ import { Link } from 'react-router-dom';
 import { Undo2, Redo2, Eye, Download, FolderHeart } from 'lucide-react';
 import { asset } from '@/lib/asset';
 import type { SaveStatus } from '@/lib/magazine-editor-new/storage/useAutosave';
+import type { TemplateDimensions } from '@/lib/magazine-editor-new/types';
 import SaveStatusIndicator from './SaveStatusIndicator';
 import ProjectNameEditor from './ProjectNameEditor';
+import DocumentSizeControls from './DocumentSizeControls';
 
 interface TopNavbarProps {
   onUndo: () => void;
@@ -18,11 +20,15 @@ interface TopNavbarProps {
   lastSavedAt: string | null;
   saveError: string | null;
   onRetrySave: () => void;
+  dimensions?: TemplateDimensions;
+  hasContent?: boolean;
+  onChangeDimensions?: (next: TemplateDimensions) => void;
 }
 
 export default function TopNavbar({
   onUndo, onRedo, canUndo, canRedo, onPreview, onDownload,
   projectName, onRenameProject, saveStatus, lastSavedAt, saveError, onRetrySave,
+  dimensions, hasContent, onChangeDimensions,
 }: TopNavbarProps) {
   return (
     <header className="h-14 sm:h-[68px] flex-shrink-0 bg-white border-b border-[#E7E7E4] flex items-center justify-between px-2.5 sm:px-5 gap-2">
@@ -65,13 +71,16 @@ export default function TopNavbar({
           </button>
         </div>
 
-        <button
-          type="button"
-          title="Resize & Switch"
-          className="hidden lg:flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[12px] font-semibold text-[#7D2AE8] bg-[#EDE4FF] hover:bg-[#E3D4FF] transition-all cursor-pointer"
-        >
-          <span>Resize</span>
-        </button>
+        {dimensions && onChangeDimensions && (
+          <div className="hidden sm:flex items-center">
+            <DocumentSizeControls
+              dimensions={dimensions}
+              hasContent={!!hasContent}
+              onChangeDimensions={onChangeDimensions}
+              variant="navbarButton"
+            />
+          </div>
+        )}
 
         <Link
           to="/magazine-maker/my-designs"

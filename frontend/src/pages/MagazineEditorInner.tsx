@@ -1036,6 +1036,9 @@ export default function MagazineEditorInner({ storedProject, initialDocument, on
         lastSavedAt={autosave.lastSavedAt}
         saveError={autosave.error}
         onRetrySave={autosave.saveNow}
+        dimensions={project.dimensions}
+        hasContent={hasContent}
+        onChangeDimensions={handleChangeDimensions}
       />
 
       <div className="flex-1 flex min-h-0 min-w-0 relative overflow-hidden">

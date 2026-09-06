@@ -18,14 +18,10 @@ interface DocumentSizeControlsProps {
   dimensions: TemplateDimensions;
   hasContent: boolean;
   onChangeDimensions: (next: TemplateDimensions) => void;
+  variant?: 'select' | 'navbarButton';
 }
 
-/** Document size + orientation control (Step 7 §18–23) — real print
- * dimensions in mm internally; the Custom Size form accepts mm/cm/in and
- * converts on submit. Since element positions are already %-of-page (Step 6),
- * changing dimensions here naturally preserves relative layout for free —
- * no separate "proportional repositioning" math is needed (§21). */
-export default function DocumentSizeControls({ dimensions, hasContent, onChangeDimensions }: DocumentSizeControlsProps) {
+export default function DocumentSizeControls({ dimensions, hasContent, onChangeDimensions, variant = 'select' }: DocumentSizeControlsProps) {
   const [open, setOpen] = useState(false);
   const [customOpen, setCustomOpen] = useState(false);
   const [pending, setPending] = useState<TemplateDimensions | null>(null);
@@ -77,44 +73,70 @@ export default function DocumentSizeControls({ dimensions, hasContent, onChangeD
   return (
     <>
       <div className="relative">
-        <button
-          type="button"
-          onClick={() => setOpen((v) => !v)}
-          className="w-full flex items-center justify-between gap-1.5 px-2.5 py-1.5 rounded-lg border border-[#E7E7E4] text-[11px] font-medium text-[#1C2024] hover:bg-[#F5F5F3] transition-colors cursor-pointer"
-        >
-          <span className="flex items-center gap-1.5 truncate"><Maximize className="w-3 h-3 text-[#6F7478] flex-shrink-0" strokeWidth={1.75} /> {sizeLabel(dimensions)}</span>
-          <ChevronDown className="w-3 h-3 text-[#6F7478] flex-shrink-0" strokeWidth={2} />
-        </button>
+        {variant === 'navbarButton' ? (
+          <button
+            type="button"
+            title={`Resize (${sizeLabel(dimensions)})`}
+            onClick={() => setOpen((v) => !v)}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[12px] font-semibold text-[#7D2AE8] bg-[#EDE4FF] hover:bg-[#E3D4FF] transition-all cursor-pointer"
+          >
+            <Maximize className="w-3.5 h-3.5 text-[#7D2AE8]" strokeWidth={2} />
+            <span>Resize</span>
+          </button>
+        ) : (
+          <button
+            type="button"
+            onClick={() => setOpen((v) => !v)}
+            className="w-full flex items-center justify-between gap-1.5 px-2.5 py-1.5 rounded-lg border border-[#E7E7E4] text-[11px] font-medium text-[#1C2024] hover:bg-[#F5F5F3] transition-colors cursor-pointer"
+          >
+            <span className="flex items-center gap-1.5 truncate"><Maximize className="w-3 h-3 text-[#6F7478] flex-shrink-0" strokeWidth={1.75} /> {sizeLabel(dimensions)}</span>
+            <ChevronDown className="w-3 h-3 text-[#6F7478] flex-shrink-0" strokeWidth={2} />
+          </button>
+        )}
 
         {open && (
           <>
             <div className="fixed inset-0 z-[150]" onClick={() => setOpen(false)} />
-            <div className="absolute top-full left-0 mt-1 z-[160] bg-white rounded-xl border border-[#E7E7E4] shadow-lg p-2 w-56">
-              {dimensions.orientation !== 'square' && (
-                <div className="flex items-center gap-1 p-1 mb-1.5 rounded-lg bg-[#F5F5F3]">
-                  <button type="button" onClick={() => toggleOrientation(false)} className={`flex-1 py-1 rounded-md text-[11px] font-medium cursor-pointer ${!isLandscape ? 'bg-white shadow-sm text-[#1C2024]' : 'text-[#6F7478]'}`}>Portrait</button>
-                  <button type="button" onClick={() => toggleOrientation(true)} className={`flex-1 py-1 rounded-md text-[11px] font-medium cursor-pointer ${isLandscape ? 'bg-white shadow-sm text-[#1C2024]' : 'text-[#6F7478]'}`}>Landscape</button>
+            <div className={`absolute z-[160] bg-white rounded-xl border border-[#E7E7E4] shadow-xl p-2.5 w-60 ${variant === 'navbarButton' ? 'top-full right-0 mt-2' : 'top-full left-0 mt-1'}`}>
+              {variant === 'navbarButton' && (
+                <div className="px-1.5 py-1 mb-2 border-b border-[#E7E7E4] flex items-center justify-between">
+                  <span className="text-[11px] font-semibold text-[#1C2024]">Resize document</span>
+                  <span className="text-[10px] text-[#7D2AE8] bg-[#EDE4FF] px-1.5 py-0.5 rounded font-semibold truncate max-w-[120px]">{sizeLabel(dimensions)}</span>
                 </div>
               )}
-              {DOCUMENT_SIZE_PRESETS.map((p) => {
-                const dimsSorted = [dimensions.widthMm, dimensions.heightMm].sort((a, b) => a - b);
-                const presetSorted = [p.widthMm, p.heightMm].sort((a, b) => a - b);
-                const active = Math.round(dimsSorted[0]) === Math.round(presetSorted[0]) && Math.round(dimsSorted[1]) === Math.round(presetSorted[1]);
-                return (
-                  <button
-                    key={p.id}
-                    type="button"
-                    onClick={() => applyPreset(p)}
-                    className="w-full flex items-center justify-between px-2 py-1.5 rounded-lg text-[12px] text-[#1C2024] hover:bg-[#F5F5F3] cursor-pointer"
-                  >
-                    <span>{p.label} <span className="text-[#6F7478]">· {p.widthMm}×{p.heightMm}mm</span></span>
-                    {active && <Check className="w-3 h-3 text-[#B8895A]" strokeWidth={2.5} />}
-                  </button>
-                );
-              })}
-              <button type="button" onClick={() => { setOpen(false); setCustomOpen(true); }} className="w-full text-left px-2 py-1.5 rounded-lg text-[12px] text-[#1C2024] hover:bg-[#F5F5F3] cursor-pointer">
-                Custom Size…
-              </button>
+              {dimensions.orientation !== 'square' && (
+                <div className="flex items-center gap-1 p-1 mb-2 rounded-lg bg-[#F5F5F3]">
+                  <button type="button" onClick={() => toggleOrientation(false)} className={`flex-1 py-1 rounded-md text-[11px] font-medium transition-colors cursor-pointer ${!isLandscape ? 'bg-white shadow-xs text-[#1C2024]' : 'text-[#6F7478] hover:text-[#1C2024]'}`}>Portrait</button>
+                  <button type="button" onClick={() => toggleOrientation(true)} className={`flex-1 py-1 rounded-md text-[11px] font-medium transition-colors cursor-pointer ${isLandscape ? 'bg-white shadow-xs text-[#1C2024]' : 'text-[#6F7478] hover:text-[#1C2024]'}`}>Landscape</button>
+                </div>
+              )}
+              <div className="max-h-56 overflow-y-auto space-y-0.5">
+                {DOCUMENT_SIZE_PRESETS.map((p) => {
+                  const dimsSorted = [dimensions.widthMm, dimensions.heightMm].sort((a, b) => a - b);
+                  const presetSorted = [p.widthMm, p.heightMm].sort((a, b) => a - b);
+                  const active = Math.round(dimsSorted[0]) === Math.round(presetSorted[0]) && Math.round(dimsSorted[1]) === Math.round(presetSorted[1]);
+                  return (
+                    <button
+                      key={p.id}
+                      type="button"
+                      onClick={() => applyPreset(p)}
+                      className={`w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg text-[12px] transition-colors cursor-pointer ${active ? (variant === 'navbarButton' ? 'bg-[#EDE4FF] font-semibold text-[#7D2AE8]' : 'bg-[#F5F5F3] font-semibold text-[#1C2024]') : 'text-[#1C2024] hover:bg-[#F5F5F3]'}`}
+                    >
+                      <span>{p.label} <span className={`text-[10px] ${active && variant === 'navbarButton' ? 'text-[#7D2AE8]/80' : 'text-[#6F7478]'}`}>· {p.widthMm}×{p.heightMm}mm</span></span>
+                      {active && <Check className={`w-3.5 h-3.5 ${variant === 'navbarButton' ? 'text-[#7D2AE8]' : 'text-[#B8895A]'}`} strokeWidth={2.5} />}
+                    </button>
+                  );
+                })}
+              </div>
+              <div className="pt-1.5 mt-1 border-t border-[#E7E7E4]">
+                <button
+                  type="button"
+                  onClick={() => { setOpen(false); setCustomOpen(true); }}
+                  className={`w-full text-left px-2.5 py-1.5 rounded-lg text-[12px] font-medium transition-colors cursor-pointer ${variant === 'navbarButton' ? 'text-[#7D2AE8] hover:bg-[#EDE4FF]' : 'text-[#1C2024] hover:bg-[#F5F5F3]'}`}
+                >
+                  Custom Size…
+                </button>
+              </div>
             </div>
           </>
         )}
