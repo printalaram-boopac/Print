@@ -9,6 +9,7 @@ interface ZoomControlsProps {
   onRedo?: () => void;
   canUndo?: boolean;
   canRedo?: boolean;
+  className?: string;
 }
 
 export default function ZoomControls({
@@ -20,9 +21,10 @@ export default function ZoomControls({
   onRedo,
   canUndo = false,
   canRedo = false,
+  className = '',
 }: ZoomControlsProps) {
   return (
-    <div className="hidden sm:flex absolute bottom-5 right-5 items-center gap-1 bg-white border border-[#E7E7E4] rounded-full shadow-md px-1.5 py-1 z-10 select-none">
+    <div className={`hidden sm:flex items-center gap-1 bg-white border border-[#E7E7E4] rounded-full px-1.5 py-0.5 select-none ${className}`}>
       {onUndo && onRedo && (
         <>
           <button

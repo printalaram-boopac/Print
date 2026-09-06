@@ -5,6 +5,7 @@ import type { ViewSettings } from './MagazineCanvas';
 interface ViewMenuProps {
   view: ViewSettings;
   onChange: (patch: Partial<ViewSettings>) => void;
+  className?: string;
 }
 
 const OPTIONS: { key: keyof ViewSettings; label: string }[] = [
@@ -14,22 +15,22 @@ const OPTIONS: { key: keyof ViewSettings; label: string }[] = [
   { key: 'showGrid', label: 'Show grid' },
 ];
 
-export default function ViewMenu({ view, onChange }: ViewMenuProps) {
+export default function ViewMenu({ view, onChange, className = '' }: ViewMenuProps) {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="absolute bottom-5 left-5">
+    <div className={`relative ${className}`}>
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
-        className="flex items-center gap-1.5 px-3 py-2 rounded-full bg-white border border-[#E7E7E4] shadow-sm text-[12px] font-medium text-[#1C2024] hover:bg-[#F5F5F3] cursor-pointer"
+        className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-white border border-[#E7E7E4] shadow-xs text-[11px] font-medium text-[#1C2024] hover:bg-[#F5F5F3] cursor-pointer transition-colors"
       >
         <Eye className="w-3.5 h-3.5" strokeWidth={1.75} /> View
       </button>
       {open && (
         <>
           <div className="fixed inset-0 z-[150]" onClick={() => setOpen(false)} />
-          <div className="absolute bottom-11 left-0 z-[160] bg-white rounded-xl border border-[#E7E7E4] shadow-lg p-2 w-44">
+          <div className="absolute bottom-full mb-2 left-0 z-[160] bg-white rounded-xl border border-[#E7E7E4] shadow-lg p-2 w-44">
             {OPTIONS.map((opt) => (
               <label key={opt.key} className="flex items-center gap-2 px-2 py-1.5 rounded-lg hover:bg-[#F5F5F3] cursor-pointer text-[12px] text-[#1C2024]">
                 <input

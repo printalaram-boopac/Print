@@ -1176,7 +1176,7 @@ export default function MagazineEditorInner({ storedProject, initialDocument, on
           />
 
           <div
-            className="relative flex-1 overflow-auto flex items-center justify-center p-3 sm:p-6 md:p-10 pb-20 md:pb-12"
+            className="relative flex-1 overflow-auto flex items-center justify-center p-3 sm:p-6 md:p-10"
             onContextMenu={(e) => { e.preventDefault(); setContextMenu({ x: e.clientX, y: e.clientY }); }}
           >
             {viewMode === 'single' ? (
@@ -1259,9 +1259,33 @@ export default function MagazineEditorInner({ storedProject, initialDocument, on
                 })}
               </div>
             )}
+          </div>
 
-            {/* Floating page navigation pill */}
-            <div className="absolute bottom-16 md:bottom-5 left-1/2 -translate-x-1/2 z-20 flex items-center gap-1.5 bg-white/95 backdrop-blur-sm border border-[#E7E7E4] rounded-full shadow-lg px-2 py-1 text-xs select-none">
+          {/* Dedicated bottom footer toolbar matching Canva layout */}
+          <footer className="h-10 sm:h-11 bg-white border-t border-[#E7E7E4] flex items-center justify-between px-3 sm:px-4 z-20 flex-shrink-0 select-none">
+            {/* Left controls: View menu and Single/Spread toggle */}
+            <div className="flex items-center gap-2">
+              <ViewMenu view={view} onChange={(patch) => setView((v) => ({ ...v, ...patch }))} />
+              <div className="hidden sm:flex items-center gap-0.5 bg-[#F5F5F3] border border-[#E7E7E4] rounded-full p-0.5">
+                <button
+                  type="button"
+                  onClick={() => setViewMode('single')}
+                  className={`px-2.5 py-0.5 rounded-full text-[11px] font-medium transition-colors cursor-pointer ${viewMode === 'single' ? 'bg-white shadow-xs text-[#1C2024]' : 'text-[#6F7478] hover:text-[#1C2024]'}`}
+                >
+                  Single
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setViewMode('spread')}
+                  className={`px-2.5 py-0.5 rounded-full text-[11px] font-medium transition-colors cursor-pointer ${viewMode === 'spread' ? 'bg-white shadow-xs text-[#1C2024]' : 'text-[#6F7478] hover:text-[#1C2024]'}`}
+                >
+                  Spread
+                </button>
+              </div>
+            </div>
+
+            {/* Center controls: Page navigation & open Pages drawer */}
+            <div className="flex items-center gap-1 sm:gap-1.5 text-xs">
               <button
                 type="button"
                 aria-label="Previous page"
@@ -1274,7 +1298,7 @@ export default function MagazineEditorInner({ storedProject, initialDocument, on
               <button
                 type="button"
                 onClick={() => setPagesOpen((v) => !v)}
-                className="px-2 py-1 font-semibold text-[#1C2024] hover:text-[#B8895A] transition-colors cursor-pointer whitespace-nowrap"
+                className="px-2 py-1 font-medium text-[#1C2024] hover:text-[#B8895A] transition-colors cursor-pointer whitespace-nowrap"
               >
                 Page {selectedPageIndex + 1} of {project.pages.length}
               </button>
@@ -1287,49 +1311,30 @@ export default function MagazineEditorInner({ storedProject, initialDocument, on
               >
                 <ChevronRight className="w-4 h-4" />
               </button>
-              <div className="w-px h-4 bg-[#E7E7E4]" />
+              <div className="w-px h-4 bg-[#E7E7E4] mx-1" />
               <button
                 type="button"
                 onClick={() => setPagesOpen((v) => !v)}
-                className={`px-2 py-1 rounded-full text-[11px] font-medium transition-colors cursor-pointer ${pagesOpen ? 'bg-[#B8895A]/10 text-[#B8895A]' : 'text-[#6F7478] hover:text-[#1C2024]'}`}
+                className={`px-2.5 py-1 rounded-md text-[11px] font-medium transition-colors cursor-pointer ${pagesOpen ? 'bg-[#B8895A]/10 text-[#B8895A]' : 'text-[#6F7478] hover:bg-[#F5F5F3] hover:text-[#1C2024]'}`}
               >
                 Pages
               </button>
             </div>
 
-            {/* Desktop / tablet zoom & history controls */}
-            <ZoomControls
-              zoom={zoom}
-              onZoomIn={() => setZoom((z) => Math.min(200, z + 15))}
-              onZoomOut={() => setZoom((z) => Math.max(40, z - 15))}
-              onResetZoom={() => setZoom(100)}
-              onUndo={undo}
-              onRedo={redo}
-              canUndo={canUndo}
-              canRedo={canRedo}
-            />
-
-            {/* View menu & single/spread switcher */}
-            <div className="hidden sm:flex absolute bottom-16 md:bottom-5 left-3 sm:left-5 items-center gap-2 z-10">
-              <ViewMenu view={view} onChange={(patch) => setView((v) => ({ ...v, ...patch }))} />
-              <div className="flex items-center gap-0.5 bg-white border border-[#E7E7E4] rounded-full shadow-sm p-1">
-                <button
-                  type="button"
-                  onClick={() => setViewMode('single')}
-                  className={`px-2.5 py-1 rounded-full text-[11px] font-medium cursor-pointer ${viewMode === 'single' ? 'bg-[#F5F5F3] text-[#1C2024]' : 'text-[#6F7478]'}`}
-                >
-                  Single
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setViewMode('spread')}
-                  className={`px-2.5 py-1 rounded-full text-[11px] font-medium cursor-pointer ${viewMode === 'spread' ? 'bg-[#F5F5F3] text-[#1C2024]' : 'text-[#6F7478]'}`}
-                >
-                  Spread
-                </button>
-              </div>
+            {/* Right controls: Undo, Redo, Zoom controls */}
+            <div className="flex items-center">
+              <ZoomControls
+                zoom={zoom}
+                onZoomIn={() => setZoom((z) => Math.min(200, z + 15))}
+                onZoomOut={() => setZoom((z) => Math.max(40, z - 15))}
+                onResetZoom={() => setZoom(100)}
+                onUndo={undo}
+                onRedo={redo}
+                canUndo={canUndo}
+                canRedo={canRedo}
+              />
             </div>
-          </div>
+          </footer>
         </main>
 
         {/* Pages panel: slide-over drawer on < xl, docked sidebar on xl+ */}
