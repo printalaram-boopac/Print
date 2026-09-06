@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC '-//W3C//DTD SVG 1.0//EN'
+          'http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd'>
+<svg data-name="Camada 1" height="332.0" preserveAspectRatio="xMidYMid meet" version="1.0" viewBox="-0.0 -0.0 1275.1 332.0" width="1275.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" zoomAndPan="magnify"
+><defs
+  ><linearGradient data-name="Gradiente sem nome 47" gradientTransform="translate(-1605.62 -3254.93)" gradientUnits="userSpaceOnUse" id="a" x1="2077.15" x2="2409.14" xlink:actuate="onLoad" xlink:show="other" xlink:type="simple" y1="3420.93" y2="3420.93"
+    ><stop offset=".16" stop-color="#009fe3" stop-opacity="0"
+      /><stop offset=".21" stop-color="#009fe3" stop-opacity=".03"
+      /><stop offset=".29" stop-color="#009fe3" stop-opacity=".12"
+      /><stop offset=".39" stop-color="#009fe3" stop-opacity=".26"
+      /><stop offset=".42" stop-color="#009fe3" stop-opacity=".33"
+      /><stop offset=".5" stop-color="#009fe3" stop-opacity=".43"
+      /><stop offset=".68" stop-color="#009fe3" stop-opacity=".71"
+      /><stop offset=".79" stop-color="#009fe3" stop-opacity=".9"
+    /></linearGradient
+  ></defs
+  ><path d="M471.53 -471.53H803.52V803.52H471.53z" fill="url(#a)" transform="rotate(90 637.525 165.995)"
+/></svg
+>

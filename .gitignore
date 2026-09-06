@@ -19,7 +19,18 @@ npm-debug.log*
 backend/prisma/*.db
 
 # Build output (bundles env vars/keys inline at build time — never commit)
+dist/
 frontend/dist/
+
+# Editor/OS
+.DS_Store
+.vscode/
+.idea/
+.claude/
+
+# Temporary / scraper scripts
+*.py
+scraped_canva_design/
 
 # Misc
 *.local

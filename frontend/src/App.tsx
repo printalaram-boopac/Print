@@ -28,6 +28,7 @@ import Blog from '@/pages/Blog';
 import BlogPost from '@/pages/BlogPost';
 import PhotoZineMaker from '@/pages/PhotoZineMaker';
 import MagazineMaker from '@/pages/MagazineMaker';
+import MyDesigns from '@/pages/MyDesigns';
 import Dashboard from '@/pages/Dashboard';
 import Profile from '@/pages/Profile';
 import AdminPanel from '@/pages/AdminPanel';
@@ -112,6 +113,13 @@ export default function App() {
                   }
                 />
 
+                {/* Magazine Maker — full-screen Canva-style editor layout, no main navbar/footer */}
+                <Route path="/magazine-maker" element={<MagazineMaker />} />
+                <Route path="/magazine-maker/:projectId" element={<MagazineMaker />} />
+                <Route path="/magazine-maker/new" element={<MagazineMaker />} />
+                <Route path="/magazine-maker/new/:projectId" element={<MagazineMaker />} />
+                <Route path="/magazine-maker/my-designs" element={<MyDesigns />} />
+
                 {/* Main site layout with navbar */}
                 <Route
                   path="*"
@@ -133,7 +141,6 @@ export default function App() {
                           <Route path="/blog" element={<Blog />} />
                           <Route path="/blog/:slug" element={<BlogPost />} />
                           <Route path="/photo-zine-maker" element={<PhotoZineMaker />} />
-                          <Route path="/magazine-maker" element={<MagazineMaker />} />
                           <Route path="/auth" element={<Auth />} />
                           <Route path="/return-exchange" element={<ReturnExchange />} />
                           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
