@@ -1,10 +1,8 @@
-import { useState, useMemo, useRef } from 'react';
-import { Plus, Search, Sparkles, Crown, ChevronRight, ChevronLeft, X } from 'lucide-react';
+import { useState, useMemo } from 'react';
+import { Plus, Search, Sparkles, Crown, X } from 'lucide-react';
 import {
   CANVA_OFFICIAL_TEXT_COMBOS,
-  CANVA_TEXT_APPS,
   type CanvaOfficialTextCombo,
-  type CanvaTextApp,
 } from '@/lib/magazine-editor-new/canvaOfficialTextCombos';
 import type { TemplateElement } from '@/lib/magazine-editor-new/types';
 
@@ -18,7 +16,6 @@ export default function TextPanel({
   onAddMultipleElements,
 }: TextPanelProps) {
   const [search, setSearch] = useState('');
-  const appsScrollRef = useRef<HTMLDivElement>(null);
 
   const filteredCombos = useMemo(() => {
     const q = search.trim().toLowerCase();
@@ -82,27 +79,6 @@ export default function TextPanel({
       onAddMultipleElements(elements);
     } else if (onAddText) {
       onAddText('headline', combo.primaryText);
-    }
-  };
-
-  const handleSelectApp = (app: CanvaTextApp) => {
-    const appStyles: Record<string, { text: string; role: 'headline'; fontKey: string; color: string }> = {
-      typestudio: { text: 'STUDIO TYPE', role: 'headline', fontKey: 'display', color: '#8B3DFF' },
-      typecraft: { text: 'CRAFTED', role: 'headline', fontKey: 'serif', color: '#10B981' },
-      motiontext: { text: 'MOTION', role: 'headline', fontKey: 'condensed', color: '#F59E0B' },
-      typeextrude: { text: '3D EXTRUDE', role: 'headline', fontKey: 'display', color: '#EC4899' },
-      typecutout: { text: 'CUTOUT', role: 'headline', fontKey: 'display', color: '#2563EB' },
-    };
-    const s = appStyles[app.id] || { text: app.name.toUpperCase(), role: 'headline', fontKey: 'display', color: '#8B3DFF' };
-    if (onAddText) {
-      onAddText(s.role, s.text);
-    }
-  };
-
-  const scrollApps = (direction: 'left' | 'right') => {
-    if (appsScrollRef.current) {
-      const scrollAmount = direction === 'left' ? -180 : 180;
-      appsScrollRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
     }
   };
 
@@ -254,61 +230,7 @@ export default function TextPanel({
           </div>
         )}
 
-        {/* 4. Apps Row (Canva Style) */}
-        {!search && (
-          <div className="space-y-2.5 pt-1">
-            <div className="flex items-center justify-between">
-              <h5 className="text-[13px] font-bold text-[#1C2024]">Apps</h5>
-              <div className="flex items-center gap-1">
-                <button
-                  type="button"
-                  onClick={() => scrollApps('left')}
-                  className="w-6 h-6 rounded-full border border-[#E7E7E4] flex items-center justify-center text-[#6F7478] hover:bg-[#F5F5F3] transition-colors cursor-pointer"
-                >
-                  <ChevronLeft className="w-3.5 h-3.5" />
-                </button>
-                <button
-                  type="button"
-                  onClick={() => scrollApps('right')}
-                  className="w-6 h-6 rounded-full border border-[#E7E7E4] flex items-center justify-center text-[#6F7478] hover:bg-[#F5F5F3] transition-colors cursor-pointer"
-                >
-                  <ChevronRight className="w-3.5 h-3.5" />
-                </button>
-              </div>
-            </div>
-
-            <div
-              ref={appsScrollRef}
-              className="flex items-start gap-2.5 overflow-x-auto pb-1.5 scrollbar-none scroll-smooth"
-            >
-              {CANVA_TEXT_APPS.map((app) => (
-                <button
-                  key={app.id}
-                  type="button"
-                  onClick={() => handleSelectApp(app)}
-                  className="group flex flex-col items-center flex-shrink-0 w-20 text-center cursor-pointer"
-                >
-                  <div className="w-20 h-20 rounded-xl overflow-hidden border border-[#E7E7E4] group-hover:border-[#8B3DFF] group-hover:shadow-md transition-all relative bg-white flex items-center justify-center">
-                    <img
-                      src={app.icon}
-                      alt={app.name}
-                      className="w-full h-full object-cover transition-transform duration-200 group-hover:scale-105"
-                      loading="lazy"
-                    />
-                    <div className="absolute top-1.5 right-1.5 w-4 h-4 rounded-full bg-black/60 flex items-center justify-center">
-                      <Crown className="w-2.5 h-2.5 text-[#F59E0B] fill-current" />
-                    </div>
-                  </div>
-                  <span className="text-[11px] font-medium text-[#1C2024] group-hover:text-[#8B3DFF] mt-1.5 truncate max-w-full">
-                    {app.name}
-                  </span>
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* 5. Font combinations (90 Canva official combinations) */}
+        {/* 4. Font combinations (90 Canva official combinations) */}
         <div className="space-y-3 pt-1">
           <div className="flex items-center justify-between">
             <h5 className="text-[13px] font-bold text-[#1C2024]">
