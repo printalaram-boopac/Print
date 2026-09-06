@@ -13,14 +13,6 @@ import MiniPageThumbnail from './MiniPageThumbnail';
 const PAGE_SIZE = 12;
 const LAYOUT_DIMENSIONS: TemplateDimensions = { widthMm: 210, heightMm: 297, orientation: 'portrait' };
 
-type SortOption = 'featured' | 'newest' | 'most-used' | 'az';
-const SORT_OPTIONS: { value: SortOption; label: string }[] = [
-  { value: 'featured', label: 'Featured' },
-  { value: 'newest', label: 'Newest' },
-  { value: 'most-used', label: 'Most used' },
-  { value: 'az', label: 'A–Z' },
-];
-
 interface TemplatesPanelProps {
   recentTemplates?: MagazineTemplate[];
   onPreview: (template: MagazineTemplate) => void;
@@ -34,7 +26,6 @@ export default function TemplatesPanel({ onPreview, onRequestApply, onCreateBlan
   const [tab, setTab] = useState<'magazines' | 'layouts'>('magazines');
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState<TemplateCategory | 'All'>('All');
-  const [sort, setSort] = useState<SortOption>('featured');
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
   const filtered = useMemo(() => {
@@ -49,13 +40,8 @@ export default function TemplatesPanel({ onPreview, onRequestApply, onCreateBlan
         || (t.tags ?? []).some((tag) => tag.toLowerCase().includes(query));
       return matchesCategory && matchesSearch;
     });
-    const sorted = [...matched];
-    if (sort === 'az') sorted.sort((a, b) => a.name.localeCompare(b.name));
-    else if (sort === 'newest') sorted.sort((a, b) => (b.createdAt ?? '').localeCompare(a.createdAt ?? ''));
-    else if (sort === 'most-used') sorted.sort((a, b) => (b.useCount ?? 0) - (a.useCount ?? 0));
-    else sorted.sort((a, b) => Number(b.isFeatured ?? false) - Number(a.isFeatured ?? false));
-    return sorted;
-  }, [templates, search, category, sort]);
+    return [...matched].sort((a, b) => Number(b.isFeatured ?? false) - Number(a.isFeatured ?? false));
+  }, [templates, search, category]);
 
   const featured = useMemo(() => (templates ?? []).filter((t) => t.isFeatured).slice(0, 6), [templates]);
   const visible = filtered.slice(0, visibleCount);
@@ -86,16 +72,6 @@ export default function TemplatesPanel({ onPreview, onRequestApply, onCreateBlan
           <>
             <TemplateSearch value={search} onChange={(v) => { setSearch(v); setVisibleCount(PAGE_SIZE); }} />
             <TemplateCategories value={category} onChange={(v) => { setCategory(v); setVisibleCount(PAGE_SIZE); }} />
-            <div className="flex items-center justify-end">
-              <select
-                value={sort}
-                onChange={(e) => setSort(e.target.value as SortOption)}
-                aria-label="Sort templates"
-                className="px-2 py-1 rounded-lg border border-[#E7E7E4] text-[11px] text-[#6F7478] cursor-pointer"
-              >
-                {SORT_OPTIONS.map((o) => <option key={o.value} value={o.value}>Sort: {o.label}</option>)}
-              </select>
-            </div>
           </>
         )}
       </div>
