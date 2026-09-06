@@ -77,6 +77,8 @@ export default function MagazineCanvas({
   const safeArea = mmInsetToPct(MARGIN_MM + SAFE_AREA_MM, dimensions);
   const gridSizePct = mmInsetToPct(10, dimensions);
 
+  const scale = (width ?? 480) / 480;
+
   return (
     <div
       ref={containerRef}
@@ -119,6 +121,7 @@ export default function MagazineCanvas({
             onChange={(patch) => onChangeElement(el.id, patch)}
             onCommit={onCommitElement}
             isCoverLike={isCoverLike}
+            scale={scale}
           />
         ))}
 
@@ -138,7 +141,12 @@ export default function MagazineCanvas({
       {pageNumber && (
         <div
           className="absolute pointer-events-none select-none"
-          style={{ ...POSITION_STYLE[pageNumber.position], fontFamily: pageNumber.fontFamily, fontSize: pageNumber.fontSize, color: pageNumber.color }}
+          style={{
+            ...POSITION_STYLE[pageNumber.position],
+            fontFamily: pageNumber.fontFamily,
+            fontSize: Math.max(7, Math.round(pageNumber.fontSize * scale)),
+            color: pageNumber.color,
+          }}
         >
           {pageNumber.label}
         </div>

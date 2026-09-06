@@ -1007,13 +1007,53 @@ export default function MagazineEditorInner({ storedProject, initialDocument, on
   const activeToolLabel = TOOLS.find((t) => t.key === activeTool)?.label ?? '';
   const pageSettingsPage = pageSettingsId ? project.pages.find((p) => p.id === pageSettingsId) ?? null : null;
 
-  const baseCanvasWidth = useMemo(() => {
-    if (typeof window === 'undefined') return 480;
-    if (window.innerWidth < 480) return Math.min(330, window.innerWidth - 32);
-    if (window.innerWidth < 768) return Math.min(420, window.innerWidth - 64);
-    return 480;
+  const canvasContainerRef = useRef<HTMLDivElement>(null);
+  const [containerSize, setContainerSize] = useState<{ width: number; height: number }>({ width: 0, height: 0 });
+
+  useEffect(() => {
+    const el = canvasContainerRef.current;
+    if (!el) return;
+    const update = () => {
+      const rect = el.getBoundingClientRect();
+      if (rect.width > 0 && rect.height > 0) {
+        setContainerSize({ width: rect.width, height: rect.height });
+      }
+    };
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    window.addEventListener('resize', update);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener('resize', update);
+    };
   }, []);
-  const canvasWidth = Math.round(baseCanvasWidth * (zoom / 100));
+
+  const fitCanvasWidth = useMemo(() => {
+    const cW = containerSize.width || (typeof window !== 'undefined' ? window.innerWidth - (activeTool ? 420 : 100) : 680);
+    const cH = containerSize.height || (typeof window !== 'undefined' ? window.innerHeight - 150 : 520);
+
+    // Padding inside viewport to leave clean, comfortable breathing room around the full page
+    const padH = cW < 640 ? 24 : 48;
+    const padV = cH < 640 ? 24 : 36;
+    const availW = Math.max(140, cW - padH);
+    const availH = Math.max(140, cH - padV);
+
+    const aspect = project.dimensions.widthMm / project.dimensions.heightMm;
+
+    if (viewMode === 'single') {
+      // Must fit in both available height AND available width so the FULL PAGE is always visible:
+      const widthConstrainedByHeight = availH * aspect;
+      return Math.round(Math.min(availW, widthConstrainedByHeight));
+    } else {
+      // Spread mode: two pages side-by-side with 12px gap
+      const spreadAspect = (2 * project.dimensions.widthMm) / project.dimensions.heightMm;
+      const totalSpreadWidth = Math.min(availW - 16, availH * spreadAspect);
+      return Math.round(Math.max(140, (totalSpreadWidth - 16) / 2));
+    }
+  }, [containerSize, activeTool, project.dimensions.widthMm, project.dimensions.heightMm, viewMode]);
+
+  const canvasWidth = Math.round(fitCanvasWidth * (zoom / 100));
 
   return (
     <div className="fixed inset-0 w-full h-full flex flex-col bg-[#F5F5F3] text-[#1C2024] overflow-hidden select-none" data-lenis-prevent>
@@ -1179,41 +1219,44 @@ export default function MagazineEditorInner({ storedProject, initialDocument, on
           />
 
           <div
-            className="relative flex-1 overflow-auto flex items-center justify-center p-3 sm:p-6 md:p-10"
+            ref={canvasContainerRef}
+            className="relative flex-1 overflow-auto flex items-center justify-center p-3 sm:p-5 md:p-6"
             onContextMenu={(e) => { e.preventDefault(); setContextMenu({ x: e.clientX, y: e.clientY }); }}
           >
             {viewMode === 'single' ? (
-              <CanvasErrorBoundary resetKey={currentPage.id}>
-                <MagazineCanvas
-                  page={currentPage}
-                  dimensions={project.dimensions}
-                  gradient={project.accentGradient}
-                  selectedIds={selectedIds}
-                  onSelectElement={handleSelectElement}
-                  onDeselect={() => setSelectedIds([])}
-                  onChangeElement={updateElementLive}
-                  onCommitElement={commitCurrentLiveState}
-                  cropElementId={cropElementId}
-                  onCropChange={cropChange}
-                  onCropDone={cropDone}
-                  onCropCancel={cropCancel}
-                  view={view}
-                  width={canvasWidth}
-                  locked={pageLocked}
-                  pageNumber={pageNumberFor(currentPage, selectedPageIndex)}
-                  backgroundCropActive={bgCropActive}
-                  onBackgroundCropChange={backgroundCropChange}
-                  onBackgroundCropDone={backgroundCropDone}
-                  onBackgroundCropCancel={backgroundCropCancel}
-                  drawingMode={activeTool === 'draw' ? (activeDrawTool === 'pen' || activeDrawTool === 'signature' ? activeDrawTool : null) : null}
-                  drawStrokeColor={drawStrokeColor}
-                  drawStrokeWidth={drawStrokeWidth}
-                  drawIsHighlighter={drawIsHighlighter}
-                  onFinishDrawStroke={handleAddDrawnElement}
-                />
-              </CanvasErrorBoundary>
+              <div className="m-auto flex items-center justify-center flex-shrink-0">
+                <CanvasErrorBoundary resetKey={currentPage.id}>
+                  <MagazineCanvas
+                    page={currentPage}
+                    dimensions={project.dimensions}
+                    gradient={project.accentGradient}
+                    selectedIds={selectedIds}
+                    onSelectElement={handleSelectElement}
+                    onDeselect={() => setSelectedIds([])}
+                    onChangeElement={updateElementLive}
+                    onCommitElement={commitCurrentLiveState}
+                    cropElementId={cropElementId}
+                    onCropChange={cropChange}
+                    onCropDone={cropDone}
+                    onCropCancel={cropCancel}
+                    view={view}
+                    width={canvasWidth}
+                    locked={pageLocked}
+                    pageNumber={pageNumberFor(currentPage, selectedPageIndex)}
+                    backgroundCropActive={bgCropActive}
+                    onBackgroundCropChange={backgroundCropChange}
+                    onBackgroundCropDone={backgroundCropDone}
+                    onBackgroundCropCancel={backgroundCropCancel}
+                    drawingMode={activeTool === 'draw' ? (activeDrawTool === 'pen' || activeDrawTool === 'signature' ? activeDrawTool : null) : null}
+                    drawStrokeColor={drawStrokeColor}
+                    drawStrokeWidth={drawStrokeWidth}
+                    drawIsHighlighter={drawIsHighlighter}
+                    onFinishDrawStroke={handleAddDrawnElement}
+                  />
+                </CanvasErrorBoundary>
+              </div>
             ) : (
-              <div className="flex items-end gap-3 max-w-full overflow-x-auto p-2">
+              <div className="m-auto flex items-center justify-center gap-3 max-w-full overflow-x-auto p-2 flex-shrink-0">
                 {[currentSpread.left, currentSpread.right].map((pageIdx) => {
                   if (pageIdx === null) return null;
                   const pg = project.pages[pageIdx];
@@ -1242,7 +1285,7 @@ export default function MagazineEditorInner({ storedProject, initialDocument, on
                           onCropDone={isActive ? cropDone : () => {}}
                           onCropCancel={isActive ? cropCancel : () => {}}
                           view={view}
-                          width={Math.round(canvasWidth * 0.72)}
+                          width={canvasWidth}
                           locked={pg.locked}
                           interactive={isActive}
                           pageNumber={pageNumberFor(pg, pageIdx)}

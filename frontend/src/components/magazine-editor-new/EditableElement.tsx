@@ -15,6 +15,7 @@ interface EditableElementProps {
   onChange: (patch: Partial<TemplateElement>) => void;
   onCommit: () => void;
   isCoverLike: boolean;
+  scale?: number;
 }
 
 /**
@@ -23,7 +24,7 @@ interface EditableElementProps {
  * for every type, per Step 5's "don't create separate movement code per type"
  * requirement. Only the inner content differs by `el.kind`.
  */
-export default function EditableElement({ element: el, containerRef, selected, showHandles, onSelect, onChange, onCommit, isCoverLike }: EditableElementProps) {
+export default function EditableElement({ element: el, containerRef, selected, showHandles, onSelect, onChange, onCommit, isCoverLike, scale = 1 }: EditableElementProps) {
   const [isInlineEditing, setIsInlineEditing] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -296,6 +297,9 @@ export default function EditableElement({ element: el, containerRef, selected, s
         const effectiveStyle = el.fontStyle ?? (el.role === 'headline' ? 'italic' : 'normal');
         const effectiveWeight = el.fontWeight ?? (el.role === 'headline' ? 700 : (el.role === 'kicker' || el.role === 'caption' ? 600 : 400));
 
+        const baseFontSize = el.fontSize ?? (el.role === 'headline' ? 28 : el.role === 'subheading' ? 16 : el.role === 'kicker' ? 10 : 12);
+        const effectiveFontSize = Math.max(7, Math.round(baseFontSize * scale));
+
         return isInlineEditing ? (
           <textarea
             autoFocus
@@ -318,7 +322,7 @@ export default function EditableElement({ element: el, containerRef, selected, s
               fontFamily: effectiveFamily,
               color: effectiveColor,
               textAlign: el.textAlign ?? 'center',
-              fontSize: el.fontSize ? `${el.fontSize}px` : undefined,
+              fontSize: `${effectiveFontSize}px`,
               lineHeight: el.lineHeight ?? 1.2,
               letterSpacing: el.letterSpacing,
               fontWeight: effectiveWeight,
@@ -342,7 +346,7 @@ export default function EditableElement({ element: el, containerRef, selected, s
             {el.fontSize ? (
               <span
                 style={{
-                  fontSize: `${el.fontSize}px`,
+                  fontSize: `${effectiveFontSize}px`,
                   fontFamily: effectiveFamily,
                   fontWeight: effectiveWeight,
                   fontStyle: effectiveStyle,
@@ -360,16 +364,17 @@ export default function EditableElement({ element: el, containerRef, selected, s
               <>
                 {el.role === 'kicker' && (
                   <span
-                    className="text-[10px] tracking-[0.25em]"
-                    style={{ fontWeight: effectiveWeight, fontStyle: effectiveStyle, color: effectiveColor, textTransform: el.textTransform }}
+                    className="tracking-[0.25em]"
+                    style={{ fontSize: `${effectiveFontSize}px`, fontWeight: effectiveWeight, fontStyle: effectiveStyle, color: effectiveColor, textTransform: el.textTransform }}
                   >
                     {el.content}
                   </span>
                 )}
                 {el.role === 'headline' && (
                   <h3
-                    className="text-[28px] leading-none"
+                    className="leading-none"
                     style={{
+                      fontSize: `${effectiveFontSize}px`,
                       fontFamily: effectiveFamily,
                       fontStyle: effectiveStyle,
                       fontWeight: effectiveWeight,
@@ -382,16 +387,16 @@ export default function EditableElement({ element: el, containerRef, selected, s
                 )}
                 {el.role === 'subheading' && (
                   <span
-                    className="text-[9px] tracking-[0.3em]"
-                    style={{ fontWeight: effectiveWeight, fontStyle: effectiveStyle, color: effectiveColor, textTransform: el.textTransform }}
+                    className="tracking-[0.3em]"
+                    style={{ fontSize: `${effectiveFontSize}px`, fontWeight: effectiveWeight, fontStyle: effectiveStyle, color: effectiveColor, textTransform: el.textTransform }}
                   >
                     {el.content}
                   </span>
                 )}
                 {(el.role === 'caption' || el.role === 'body' || !el.role) && (
                   <span
-                    className="text-[10px] tracking-widest whitespace-pre-line"
-                    style={{ fontWeight: effectiveWeight, fontStyle: effectiveStyle, color: effectiveColor, textTransform: el.textTransform }}
+                    className="tracking-widest whitespace-pre-line"
+                    style={{ fontSize: `${effectiveFontSize}px`, fontWeight: effectiveWeight, fontStyle: effectiveStyle, color: effectiveColor, textTransform: el.textTransform }}
                   >
                     {el.content}
                   </span>
