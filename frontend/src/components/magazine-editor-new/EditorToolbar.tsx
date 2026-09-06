@@ -1,17 +1,12 @@
 import {
-  Bold, Italic, Underline, AlignLeft, AlignCenter, AlignRight, List, Sparkles, Wand2,
-  MoreHorizontal, Minus, Plus, Lock, Unlock, Copy, Trash2, ChevronDown,
+  Lock, Unlock, Copy, Trash2,
 } from 'lucide-react';
 import ElementToolbar from './ElementToolbar';
 import MultiSelectToolbar from './MultiSelectToolbar';
 import PositionPanel from './PositionPanel';
 import type { TemplateElement, ImageQuality, TemplateDimensions } from '@/lib/magazine-editor-new/types';
 
-function Divider() {
-  return <div className="w-px h-6 bg-[#E7E7E4] mx-1" />;
-}
-
-function IconButton({ icon: Icon, label, onClick, active }: { icon: typeof Bold; label: string; onClick?: () => void; active?: boolean }) {
+function IconButton({ icon: Icon, label, onClick, active }: { icon: typeof Lock; label: string; onClick?: () => void; active?: boolean }) {
   return (
     <button
       type="button"
@@ -86,51 +81,7 @@ export default function EditorToolbar({
           onDuplicate={onDuplicateElement}
           onDelete={onDeleteElement}
         />
-      ) : (
-      /* Default formatting row — shown when nothing is selected. Full rich-text
-         editing (fonts, size, etc.) is Step 4 scope, not built yet; this row
-         is inert placeholder UI carried over from Step 1. */
-      <div className="flex items-center gap-1 px-4 py-2 overflow-x-auto">
-        <button
-          type="button"
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[#E7E7E4] text-[13px] text-[#1C2024] hover:bg-[#F5F5F3] transition-colors cursor-pointer"
-        >
-          Playfair Display <ChevronDown className="w-3.5 h-3.5 text-[#6F7478]" strokeWidth={1.75} />
-        </button>
-
-        <div className="flex items-center gap-0.5 ml-1 border border-[#E7E7E4] rounded-lg">
-          <button type="button" aria-label="Decrease font size" className="w-7 h-8 flex items-center justify-center text-[#6F7478] hover:text-[#1C2024] cursor-pointer">
-            <Minus className="w-3.5 h-3.5" strokeWidth={1.75} />
-          </button>
-          <span className="text-[13px] text-[#1C2024] px-1 w-6 text-center select-none">32</span>
-          <button type="button" aria-label="Increase font size" className="w-7 h-8 flex items-center justify-center text-[#6F7478] hover:text-[#1C2024] cursor-pointer">
-            <Plus className="w-3.5 h-3.5" strokeWidth={1.75} />
-          </button>
-        </div>
-
-        <Divider />
-
-        <IconButton icon={Bold} label="Bold" />
-        <IconButton icon={Italic} label="Italic" />
-        <IconButton icon={Underline} label="Underline" />
-
-        <Divider />
-
-        <IconButton icon={AlignLeft} label="Align left" />
-        <IconButton icon={AlignCenter} label="Align center" />
-        <IconButton icon={AlignRight} label="Align right" />
-
-        <Divider />
-
-        <IconButton icon={List} label="List" />
-        <IconButton icon={Sparkles} label="Effects" />
-        <IconButton icon={Wand2} label="Animate" />
-
-        <Divider />
-
-        <IconButton icon={MoreHorizontal} label="More options" />
-      </div>
-      )}
+      ) : null}
 
       {selectedCount === 1 && selectedElement && (
         <PositionPanel element={selectedElement} dimensions={dimensions} onPatch={onPatchElement} />
