@@ -5,7 +5,6 @@ import { PAGE_LAYOUTS } from '@/lib/magazine-editor-new/templates/pageLayouts';
 import type { MagazineTemplate, TemplateCategory, TemplateDimensions, TemplatePage } from '@/lib/magazine-editor-new/types';
 import TemplateSearch from './TemplateSearch';
 import TemplateCategories from './TemplateCategories';
-import RecentlyUsed from './RecentlyUsed';
 import TemplateCard from './TemplateCard';
 import TemplateCardSkeleton from './TemplateCardSkeleton';
 import BlankMagazineCard from './BlankMagazineCard';
@@ -23,14 +22,14 @@ const SORT_OPTIONS: { value: SortOption; label: string }[] = [
 ];
 
 interface TemplatesPanelProps {
-  recentTemplates: MagazineTemplate[];
+  recentTemplates?: MagazineTemplate[];
   onPreview: (template: MagazineTemplate) => void;
   onRequestApply: (template: MagazineTemplate) => void;
   onCreateBlank: (dimensions: TemplateDimensions) => void;
   onInsertPageLayout: (page: TemplatePage) => void;
 }
 
-export default function TemplatesPanel({ recentTemplates, onPreview, onRequestApply, onCreateBlank, onInsertPageLayout }: TemplatesPanelProps) {
+export default function TemplatesPanel({ onPreview, onRequestApply, onCreateBlank, onInsertPageLayout }: TemplatesPanelProps) {
   const { templates, isLoading, error, retry } = useTemplateLibrary();
   const [tab, setTab] = useState<'magazines' | 'layouts'>('magazines');
   const [search, setSearch] = useState('');
@@ -100,8 +99,6 @@ export default function TemplatesPanel({ recentTemplates, onPreview, onRequestAp
           </>
         )}
       </div>
-
-      {tab === 'magazines' && !search && category === 'All' && <RecentlyUsed templates={recentTemplates} onSelect={onPreview} />}
 
       <div className="flex-1 overflow-y-auto overflow-x-hidden p-4">
         {tab === 'layouts' ? (
