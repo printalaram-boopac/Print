@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { Plus, Search, Sparkles, Crown, X } from 'lucide-react';
+import { Plus, Search, Sparkles, X } from 'lucide-react';
 import {
   CANVA_OFFICIAL_TEXT_COMBOS,
   type CanvaOfficialTextCombo,
@@ -130,40 +130,7 @@ export default function TextPanel({
 
       {/* Main Content Scroll Area */}
       <div className="flex-1 overflow-y-auto overflow-x-hidden p-4 space-y-6">
-        {/* 1. Brand Kit Section (Canva Style) */}
-        {!search && (
-          <div className="space-y-2.5">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <span className="w-5 h-5 rounded bg-[#EDE4FF] flex items-center justify-center text-[#8B3DFF]">
-                  <Crown className="w-3 h-3 fill-current" />
-                </span>
-                <h5 className="text-[13px] font-bold text-[#1C2024]">Brand Kit</h5>
-              </div>
-              <div className="flex items-center gap-1.5">
-                <button
-                  type="button"
-                  onClick={() => onAddText?.('headline', 'Brand Headline')}
-                  className="text-[11px] font-semibold text-[#1C2024] hover:text-[#8B3DFF] px-2 py-0.5 rounded hover:bg-[#F5F5F3] transition-colors cursor-pointer"
-                >
-                  Edit
-                </button>
-                <Crown className="w-3.5 h-3.5 text-[#F59E0B]" />
-              </div>
-            </div>
-
-            <button
-              type="button"
-              onClick={() => onAddText?.('headline', 'Brand Headline')}
-              className="w-full py-2 px-3 rounded-lg border border-dashed border-[#C3C6CD] hover:border-[#8B3DFF] hover:bg-[#F9F7FF] text-[#1C2024] font-medium text-xs transition-all flex items-center justify-center gap-1.5 cursor-pointer"
-            >
-              <Plus className="w-3.5 h-3.5 text-[#6F7478]" />
-              <span>Add your brand fonts</span>
-            </button>
-          </div>
-        )}
-
-        {/* 2. Default Text Styles (Canva Style) */}
+        {/* 1. Default Text Styles (Canva Style) */}
         <div className="space-y-2">
           <span className="text-[11px] font-bold uppercase tracking-wider text-[#6F7478]">
             Default text styles
