@@ -5,8 +5,6 @@ import type { SaveStatus } from '@/lib/magazine-editor-new/storage/useAutosave';
 import SaveStatusIndicator from './SaveStatusIndicator';
 import ProjectNameEditor from './ProjectNameEditor';
 
-const NAV_LINKS = ['Magazine Maker', 'Photo Zine', 'Templates', 'Pricing', 'Help'];
-
 interface TopNavbarProps {
   onUndo: () => void;
   onRedo: () => void;
@@ -28,25 +26,12 @@ export default function TopNavbar({
 }: TopNavbarProps) {
   return (
     <header className="h-14 sm:h-[68px] flex-shrink-0 bg-white border-b border-[#E7E7E4] flex items-center justify-between px-2.5 sm:px-5 gap-2">
-      {/* Left: brand + nav + project name */}
-      <div className="flex items-center gap-2 sm:gap-4 lg:gap-8 min-w-0">
+      {/* Left: brand + project name */}
+      <div className="flex items-center gap-2.5 sm:gap-4 min-w-0">
         <Link to="/" className="flex items-center gap-2 flex-shrink-0" title="Home">
           <img src={asset('logo.png')} alt="PrintAlarm" className="w-7 h-7 sm:w-8 sm:h-8 rounded-md object-cover" />
         </Link>
-        <nav className="hidden xl:flex items-center gap-6">
-          {NAV_LINKS.map((label, i) => (
-            <button
-              key={label}
-              type="button"
-              className={`text-[13px] font-medium whitespace-nowrap cursor-pointer transition-colors ${
-                i === 0 ? 'text-[#1C2024]' : 'text-[#6F7478] hover:text-[#1C2024]'
-              }`}
-            >
-              {label}
-            </button>
-          ))}
-        </nav>
-        <div className="border-l border-[#E7E7E4] pl-2 sm:pl-4 min-w-0 max-w-[120px] xs:max-w-[160px] sm:max-w-[220px]">
+        <div className="min-w-0 max-w-[140px] xs:max-w-[180px] sm:max-w-[260px]">
           <ProjectNameEditor name={projectName} onRename={onRenameProject} />
         </div>
       </div>
