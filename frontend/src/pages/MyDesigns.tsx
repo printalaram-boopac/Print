@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Plus, Search } from 'lucide-react';
+import { Plus, Search, ArrowLeft } from 'lucide-react';
 import { asset } from '@/lib/asset';
 import { projectStorage } from '@/lib/magazine-editor-new/storage/LocalProjectStorageAdapter';
 import { buildDefaultProject } from '@/lib/magazine-editor-new/templateData';
@@ -46,7 +46,24 @@ export default function MyDesigns() {
     <div className="min-h-screen bg-[#F5F5F3]">
       <header className="h-[68px] bg-white border-b border-[#E7E7E4] flex items-center justify-between px-5">
         <div className="flex items-center gap-3">
-          <Link to="/"><img src={asset('logo.png')} alt="PrintAlarm" className="w-8 h-8 rounded-md object-cover" /></Link>
+          <button
+            type="button"
+            onClick={() => {
+              if (window.history.length > 1) {
+                navigate(-1);
+              } else {
+                navigate('/magazine-maker');
+              }
+            }}
+            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[#6F7478] hover:text-[#1C2024] hover:bg-[#F5F5F3] transition-colors cursor-pointer text-[13px] font-medium"
+            title="Go back"
+            aria-label="Go back"
+          >
+            <ArrowLeft className="w-4 h-4" strokeWidth={2} />
+            <span>Back</span>
+          </button>
+          <div className="h-4 w-px bg-[#E7E7E4]" />
+          <Link to="/" title="Home"><img src={asset('logo.png')} alt="PrintAlarm" className="w-8 h-8 rounded-md object-cover" /></Link>
           <h1 className="text-[15px] font-semibold text-[#1C2024]">My Designs</h1>
         </div>
         <button
