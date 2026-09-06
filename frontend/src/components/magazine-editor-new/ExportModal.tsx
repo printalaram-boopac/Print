@@ -29,7 +29,6 @@ export default function ExportModal({ project, currentPageIndex, selectedPageIds
     fileType: initialFileType ?? DEFAULT_EXPORT_OPTIONS.fileType,
     pageSelection: selectedPageIds.length > 1 ? 'selected' : 'all',
   });
-  const [acknowledged, setAcknowledged] = useState(false);
   const { progress, run, cancel, retry, reset } = useExport(project, currentPageIndex, selectedPageIds);
 
   const rangeResult = options.pageSelection === 'custom' ? parsePageRange(options.customRange, project.pages.length) : null;
@@ -50,7 +49,7 @@ export default function ExportModal({ project, currentPageIndex, selectedPageIds
   );
 
   const rangeError = rangeResult && 'error' in rangeResult ? rangeResult.error : null;
-  const canDownload = pageIndices.length > 0 && !rangeError && (!preflight || preflight.issues.length === 0 || acknowledged);
+  const canDownload = pageIndices.length > 0 && !rangeError;
   const isBusy = progress.phase === 'rendering';
   const isDone = progress.phase === 'done';
   const isError = progress.phase === 'error';
@@ -118,7 +117,7 @@ export default function ExportModal({ project, currentPageIndex, selectedPageIds
                     <button
                       key={ft.value}
                       type="button"
-                      onClick={() => { setOptions((o) => ({ ...o, fileType: ft.value })); setAcknowledged(false); }}
+                      onClick={() => setOptions((o) => ({ ...o, fileType: ft.value }))}
                       className={`text-left px-3 py-2.5 rounded-lg border transition-colors cursor-pointer ${options.fileType === ft.value ? 'border-[#B8895A] bg-[#B8895A]/5' : 'border-[#E7E7E4] hover:bg-[#F5F5F3]'}`}
                     >
                       <p className="text-[12px] font-semibold text-[#1C2024]">{ft.label}</p>
@@ -195,17 +194,21 @@ export default function ExportModal({ project, currentPageIndex, selectedPageIds
                     <span className="text-[12px] text-[#1C2024]">Ready to export</span>
                   </div>
                 ) : (
-                  <div className="px-3 py-2.5 rounded-lg bg-[#F5F5F3] space-y-2">
+                  <div className="px-3 py-2.5 rounded-lg bg-[#FFF8E6] border border-[#F0DFB0]">
                     <div className="flex items-start gap-2">
                       <AlertTriangle className="w-4 h-4 text-[#B8895A] flex-shrink-0 mt-0.5" strokeWidth={1.75} />
-                      <span className="text-[12px] text-[#1C2024]">{preflight.issues.length} issue{preflight.issues.length === 1 ? '' : 's'} found — quality may be reduced.</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <button type="button" onClick={onReviewIssues} className="px-2.5 py-1 rounded-md text-[11px] font-medium text-[#1C2024] border border-[#E7E7E4] hover:bg-white cursor-pointer">Review issues</button>
-                      <label className="flex items-center gap-1.5 text-[11px] text-[#6F7478] cursor-pointer">
-                        <input type="checkbox" checked={acknowledged} onChange={(e) => setAcknowledged(e.target.checked)} className="w-3 h-3 accent-[#B8895A] cursor-pointer" />
-                        Export anyway
-                      </label>
+                      <div className="flex-1">
+                        <p className="text-[12px] text-[#1C2024] font-medium leading-snug">
+                          {preflight.issues.length} issue{preflight.issues.length === 1 ? '' : 's'} found — quality may be reduced.
+                        </p>
+                        <button
+                          type="button"
+                          onClick={onReviewIssues}
+                          className="mt-1 text-[11px] font-semibold text-[#B8895A] hover:underline cursor-pointer"
+                        >
+                          Review issues
+                        </button>
+                      </div>
                     </div>
                   </div>
                 )
