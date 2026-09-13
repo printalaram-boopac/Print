@@ -1,140 +1,197 @@
 import { Link } from 'react-router-dom';
-import { useLenis } from 'lenis/react';
-import { Phone, Mail, MapPin, Instagram, Facebook, Youtube } from 'lucide-react';
+import { Facebook, Instagram, Youtube, ArrowRight } from 'lucide-react';
 import { asset } from '@/lib/asset';
-import { logUserEvent } from '@/lib/analytics';
-
-const SOCIAL_LINKS = [
-  { href: 'https://www.instagram.com/printalarm5/', icon: Instagram, label: 'Instagram' },
-  { href: 'https://www.facebook.com/profile.php?id=61591651010384&sk=directory_intro', icon: Facebook, label: 'Facebook' },
-  { href: 'https://www.youtube.com/@Printalarm', icon: Youtube, label: 'YouTube' },
-];
-
-const EXPLORE_LINKS = [
-  { to: '/shagun-money-covers', label: 'Shagun Money Covers' },
-  { to: '/pocket-money-covers', label: 'Pocket Money Covers' },
-  { to: '/photo-zine-maker', label: 'Photo Zine Studio' },
-  { to: '/magazine-maker', label: 'Magazine Maker' },
-  { to: '/how-to-choose-a-shagun-cover', label: 'How to Choose a Shagun Cover' },
-  { to: '/blog', label: 'Blog' },
-  { to: '/about', label: 'About Us' },
-];
-
-const POLICY_LINKS = [
-  { to: '/return-exchange', label: 'Return & Exchange' },
-  { to: '/privacy-policy', label: 'Privacy Policy' },
-  { to: '/terms-conditions', label: 'Terms & Conditions' },
-  { to: '/shipping-policy', label: 'Shipping Policy' },
-];
 
 export default function Footer() {
-  const lenis = useLenis();
-
-  const scrollToTop = () => {
-    logUserEvent('CLICK_FOOTER_LOGO');
-    if (lenis) {
-      lenis.scrollTo(0, { immediate: true });
-    } else {
-      window.scrollTo(0, 0);
-    }
+  const handleSubscribe = (e: React.FormEvent) => {
+    e.preventDefault();
+    alert('Thank you for subscribing to PrintAlarm updates!');
   };
 
   return (
-    <footer className="border-t border-gold-200 pt-16 pb-8 px-4 bg-luxury-accent text-white">
-      <div className="max-w-6xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
-          {/* Brand */}
-          <div className="flex flex-col items-center md:items-start gap-1">
-            <Link to="/" onClick={scrollToTop} className="flex items-center gap-2.5 cursor-pointer">
-              <img src={asset('logo.png')} alt="Printalarm Logo" className="h-10 w-10 object-contain rounded-xl" />
-              <div className="flex flex-col items-start leading-none">
-                <span className="text-lg md:text-xl font-display font-bold text-white tracking-wide">Printalarm</span>
-                <span className="text-[8px] tracking-[0.25em] font-semibold text-luxury-gold uppercase mt-0.5">
-                  Shagun Couture
+    <footer className="bg-[#38101D] text-white pt-16 pb-8 px-4 sm:px-6 border-t border-[#571126]">
+      <div className="max-w-6xl mx-auto space-y-12">
+        {/* 5-Column Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 items-start">
+          {/* Column 1: Brand & Socials */}
+          <div className="space-y-4">
+            <Link to="/" className="flex items-center gap-2.5">
+              <div className="w-10 h-10 rounded-lg bg-white flex items-center justify-center p-1 shadow-sm">
+                <img
+                  src={asset('logo.png')}
+                  alt="PrintAlarm Logo"
+                  className="h-full w-full object-contain"
+                />
+              </div>
+              <div className="flex flex-col text-left">
+                <span className="text-lg font-display font-bold text-white tracking-wide">
+                  PrintAlarm
+                </span>
+                <span className="text-[9px] font-medium text-[#E6CCD2] tracking-wider">
+                  Print Your Memories
                 </span>
               </div>
             </Link>
-            <p className="text-sm text-gray-300 text-center md:text-left max-w-xs">
-              Hand-crafted wedding money covers personalized for your most sacred celebrations.
-            </p>
-            <div className="flex items-center gap-3 pt-1">
-              {SOCIAL_LINKS.map((social) => (
+
+            <div className="flex items-center gap-3 pt-2">
+              <a
+                href="https://www.facebook.com/profile.php?id=61591651010384&sk=directory_intro"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Facebook"
+                className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center text-white/80 hover:text-white hover:border-white transition-colors"
+              >
+                <Facebook className="w-4 h-4" />
+              </a>
+              <a
+                href="https://www.instagram.com/printalarm5/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Instagram"
+                className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center text-white/80 hover:text-white hover:border-white transition-colors"
+              >
+                <Instagram className="w-4 h-4" />
+              </a>
+              <a
+                href="https://www.youtube.com/@Printalarm"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="YouTube"
+                className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center text-white/80 hover:text-white hover:border-white transition-colors"
+              >
+                <Youtube className="w-4 h-4" />
+              </a>
+            </div>
+          </div>
+
+          {/* Column 2: Create */}
+          <div className="space-y-3">
+            <h4 className="text-xs font-bold text-white uppercase tracking-wider">
+              Create
+            </h4>
+            <ul className="space-y-2 text-xs text-[#F0DCE1]">
+              <li>
+                <a href="#frames" className="hover:text-white transition-colors">
+                  Photo Frames
+                </a>
+              </li>
+              <li>
+                <Link to="/magazine-maker" className="hover:text-white transition-colors">
+                  Magazines
+                </Link>
+              </li>
+              <li>
+                <Link to="/photo-zine-maker" className="hover:text-white transition-colors">
+                  Photo Zines
+                </Link>
+              </li>
+              <li>
+                <Link to="/templates" className="hover:text-white transition-colors">
+                  Cards & Lifafas
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Column 3: Discover */}
+          <div className="space-y-3">
+            <h4 className="text-xs font-bold text-white uppercase tracking-wider">
+              Discover
+            </h4>
+            <ul className="space-y-2 text-xs text-[#F0DCE1]">
+              <li>
+                <Link to="/templates" className="hover:text-white transition-colors">
+                  Trending Creations
+                </Link>
+              </li>
+              <li>
+                <a href="#inspiration" className="hover:text-white transition-colors">
+                  Inspiration
+                </a>
+              </li>
+              <li>
+                <a href="#how" className="hover:text-white transition-colors">
+                  How It Works
+                </a>
+              </li>
+              <li>
+                <Link to="/about" className="hover:text-white transition-colors">
+                  About PrintAlarm
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Column 4: Help */}
+          <div className="space-y-3">
+            <h4 className="text-xs font-bold text-white uppercase tracking-wider">
+              Help
+            </h4>
+            <ul className="space-y-2 text-xs text-[#F0DCE1]">
+              <li>
+                <a href="#how" className="hover:text-white transition-colors">
+                  FAQs
+                </a>
+              </li>
+              <li>
                 <a
-                  key={social.label}
-                  href={social.href}
+                  href="https://wa.me/919904544702"
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label={social.label}
-                  onClick={() => logUserEvent('CLICK_FOOTER_SOCIAL', { platform: social.label })}
-                  className="w-9 h-9 rounded-full border border-luxury-gold/40 flex items-center justify-center text-luxury-gold hover:bg-luxury-gold hover:text-luxury-accent transition-colors cursor-pointer"
+                  className="hover:text-white transition-colors"
                 >
-                  <social.icon className="w-4 h-4" strokeWidth={2} />
+                  Contact Us
                 </a>
-              ))}
-            </div>
-          </div>
-
-          {/* Explore */}
-          <div className="space-y-3">
-            <h4 className="text-xs text-luxury-gold uppercase tracking-widest font-semibold">Explore</h4>
-            <div className="flex flex-col gap-3">
-              {EXPLORE_LINKS.map((link) => (
-                <Link
-                  key={link.to}
-                  to={link.to}
-                  onClick={() => logUserEvent('CLICK_FOOTER_LINK', { label: link.label, to: link.to })}
-                  className="text-sm text-gray-300 hover:text-luxury-gold transition-colors"
-                >
-                  {link.label}
+              </li>
+              <li>
+                <Link to="/shipping-policy" className="hover:text-white transition-colors">
+                  Shipping
                 </Link>
-              ))}
-            </div>
-          </div>
-
-          {/* Policies */}
-          <div className="space-y-3">
-            <h4 className="text-xs text-luxury-gold uppercase tracking-widest font-semibold">Policies</h4>
-            <div className="flex flex-col gap-3">
-              {POLICY_LINKS.map((link) => (
-                <Link
-                  key={link.to}
-                  to={link.to}
-                  onClick={() => logUserEvent('CLICK_FOOTER_POLICY_LINK', { label: link.label, to: link.to })}
-                  className="text-sm text-gray-300 hover:text-luxury-gold transition-colors"
-                >
-                  {link.label}
+              </li>
+              <li>
+                <Link to="/return-exchange" className="hover:text-white transition-colors">
+                  Returns
                 </Link>
-              ))}
-            </div>
+              </li>
+            </ul>
           </div>
 
-          {/* Get In Touch */}
+          {/* Column 5: Stay in Touch */}
           <div className="space-y-3">
-            <h4 className="text-xs text-luxury-gold uppercase tracking-widest font-semibold">Get In Touch</h4>
-            <div className="flex flex-col gap-3">
-              <a
-                href="tel:+919904551144"
-                onClick={() => logUserEvent('CLICK_FOOTER_PHONE')}
-                className="flex items-center gap-2 text-sm text-gray-300 hover:text-luxury-gold transition-colors cursor-pointer"
+            <h4 className="text-xs font-bold text-white uppercase tracking-wider">
+              Stay in Touch
+            </h4>
+            <form onSubmit={handleSubscribe} className="flex bg-white rounded-full p-1 overflow-hidden shadow-sm">
+              <input
+                type="email"
+                placeholder="Enter your email"
+                required
+                className="flex-grow px-3 py-1.5 text-xs text-[#2D1527] outline-none placeholder:text-gray-400 min-w-0"
+              />
+              <button
+                type="submit"
+                aria-label="Subscribe"
+                className="w-8 h-8 rounded-full bg-[#38101D] text-white flex items-center justify-center flex-shrink-0 hover:bg-[#571126] transition-colors cursor-pointer"
               >
-                <Phone className="w-4 h-4 text-luxury-gold" strokeWidth={2} /> +91 99045 51144
-              </a>
-              <a
-                href="mailto:support@printalarm.in"
-                onClick={() => logUserEvent('CLICK_FOOTER_EMAIL')}
-                className="flex items-center gap-2 text-sm text-gray-300 hover:text-luxury-gold transition-colors cursor-pointer"
-              >
-                <Mail className="w-4 h-4 text-luxury-gold" strokeWidth={2} /> support@printalarm.in
-              </a>
-              <span className="flex items-center gap-2 text-sm text-gray-300">
-                <MapPin className="w-4 h-4 text-luxury-gold" strokeWidth={2} /> Surat, Gujarat, India
-              </span>
-            </div>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
+            </form>
           </div>
         </div>
 
-        <div className="gold-divider mb-6" />
-        <p className="text-[11px] text-gray-400 text-center">© 2026 Printalarm • Crafted with love for Indian weddings</p>
+        {/* Copyright & Legal Bar */}
+        <div className="pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#DEC5CB]">
+          <span>© 2026 PrintAlarm. All rights reserved.</span>
+          <div className="flex items-center gap-4">
+            <Link to="/privacy-policy" className="hover:text-white transition-colors">
+              Privacy Policy
+            </Link>
+            <span>|</span>
+            <Link to="/terms-conditions" className="hover:text-white transition-colors">
+              Terms & Conditions
+            </Link>
+          </div>
+        </div>
       </div>
     </footer>
   );

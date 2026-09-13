@@ -1,0 +1,456 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>PrintAlarm — Print Your Memories</title>
+  <meta name="description" content="Create personalised photo frames, magazines, photo zines and cards from the moments you love.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="/logo.png">
+  <style>
+    :root{--wine:#38101D;--wine-light:#571126;--cream:#FAF7F2;--sand:#F5E7D8;--gold:#BD9154;--ink:#2D1527;--muted:#6C5B59;--line:#E7D9CE;--serif:'Playfair Display',Georgia,serif;--sans:'DM Sans',Arial,sans-serif}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--cream);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.5}img{display:block;width:100%;object-fit:cover}a{color:inherit;text-decoration:none}button,input{font:inherit}.wrap{width:min(1180px,92%);margin:auto}.eyebrow{text-transform:uppercase;letter-spacing:.2em;font-size:.74rem;font-weight:700;color:#9A6545;margin:0 0 .35rem}.section-title{font:700 clamp(2rem,4vw,3.2rem)/1.03 var(--serif);margin:.1rem 0 .45rem}.sub{margin:0;color:var(--muted)}
+    .topbar{height:74px;background:#FFFDF9;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:20}.nav{height:100%;display:flex;align-items:center;gap:28px}.logo{display:flex;align-items:center;gap:12px;margin-right:auto}.logo-img{width:40px;height:40px;border-radius:10px;object-fit:contain;background:#fff;padding:3px;box-shadow:0 2px 8px rgba(56,16,29,0.12);border:1px solid rgba(189,145,84,0.25)}.logo strong{display:block;font-size:1.15rem;line-height:1;color:var(--wine)}.logo small{display:block;font-size:.65rem;color:var(--muted);letter-spacing:.04em}.links{display:flex;gap:24px;font-size:.86rem;font-weight:600}.links a:hover{color:var(--gold)}.icons{display:flex;gap:15px;align-items:center}.icon-btn{border:0;background:none;padding:5px;font-size:1.2rem;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;color:var(--ink);text-decoration:none;transition:.2s;position:relative}.icon-btn:hover{color:var(--gold);transform:translateY(-1px)}.cart-badge{position:absolute;top:2px;right:0;width:14px;height:14px;background:var(--wine);color:#fff;border-radius:50%;font-size:9px;font-weight:bold;display:grid;place-items:center}.pill,.btn{border-radius:999px;padding:.78rem 1.45rem;display:inline-flex;align-items:center;gap:.65rem;font-size:.85rem;font-weight:700;cursor:pointer;border:1px solid var(--wine);transition:.2s}.btn.primary,.pill{background:var(--wine);color:#fff}.btn.light{background:transparent;color:var(--wine);border:1px solid rgba(56,16,29,0.4)}.btn:hover{transform:translateY(-2px);box-shadow:0 7px 18px rgba(56,16,29,0.15)}.mobile-menu{display:none}
+    .hero{background:linear-gradient(100deg,#FFF9F2 0%,#F8EDE2 54%,#EFE0CF 100%);overflow:hidden}.hero-grid{display:grid;grid-template-columns:48% 52%;min-height:420px;align-items:center}.hero-copy{padding:54px 30px 54px 0;z-index:2}.hero h1{font:700 clamp(2.65rem,5vw,4.4rem)/.98 var(--serif);margin:.35rem 0 1rem;letter-spacing:-.03em}.hero-copy p{max-width:530px;margin:0 0 1.55rem;color:#5E4B4C}.actions{display:flex;gap:14px;flex-wrap:wrap}.trust{display:flex;gap:28px;margin-top:26px;font-size:.78rem;font-weight:600;color:#5E4B4C}.hero-art{height:420px;position:relative;border-radius:16px;overflow:hidden;box-shadow:0 12px 30px rgba(0,0,0,0.08);border:1px solid var(--line)}.hero-art img{height:100%;object-position:center}
+    section{padding:70px 0}.center{text-align:center}.products{background:#FFFDF9}.product-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:28px}.product{background:#F8EFE4;border-radius:14px;overflow:hidden;text-align:center;box-shadow:0 1px 0 #fff inset;transition:.25s ease;border:1px solid rgba(231,217,206,0.6)}.product:hover{transform:translateY(-4px);box-shadow:0 10px 24px rgba(56,16,29,0.1)}.product img{height:210px}.product-body{padding:20px 16px 24px}.product h3{font:700 1.25rem var(--serif);margin:0 0 6px}.product p{font-size:.83rem;min-height:40px;margin:0 0 16px;color:#55494A}.product .btn{color:#fff;border:0;padding:.65rem 1.1rem;width:100%}.btn-gold{background:var(--gold)}.btn-wine{background:var(--wine)}
+    .steps{background:#FFFAF4;border-top:1px solid rgba(231,217,206,0.5);border-bottom:1px solid rgba(231,217,206,0.5)}.steps-grid{display:grid;grid-template-columns:1.15fr .85fr;align-items:center;gap:45px}.step-list{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:28px}.step{text-align:center;border-right:1px solid var(--line);padding:0 9px}.step:last-child{border:0}.step-icon{width:50px;height:50px;border-radius:50%;background:#F5E9DD;display:grid;place-items:center;margin:0 auto 10px;font-size:1.3rem;color:var(--gold)}.step b{display:block;font-size:.78rem;color:var(--ink)}.step span{display:block;font-size:.7rem;color:var(--muted);margin-top:4px}.steps-img img{height:280px;object-position:center;border-radius:14px;box-shadow:0 8px 24px rgba(0,0,0,0.06);border:1px solid var(--line)}
+    .features{padding-top:20px}.feature{min-height:340px;margin:20px 0;border-radius:18px;overflow:hidden;background:#F5E7D8;display:grid;grid-template-columns:42% 58%;align-items:center;border:1px solid rgba(231,217,206,0.7);box-shadow:0 6px 18px rgba(0,0,0,0.03)}.feature-copy{padding:42px}.feature h2{font:700 clamp(2rem,3.6vw,3.1rem)/1.02 var(--serif);margin:.25rem 0 .8rem}.feature p{color:#5E4F4B;font-size:.92rem;margin-bottom:1.5rem}.feature-bullets{display:flex;gap:18px;margin-top:16px;font-size:.75rem;color:var(--muted);font-weight:600}.feature img{height:100%;min-height:340px}.feature.reverse{grid-template-columns:58% 42%}.feature.reverse .feature-copy{order:2}.feature.reverse img{order:1}.feature.small-grid{grid-template-columns:1fr 1fr;gap:20px;background:none;overflow:visible;border:0;box-shadow:none}.mini-feature{min-height:300px;border-radius:18px;overflow:hidden;background:#F5E7D8;display:grid;grid-template-columns:55% 45%;align-items:center;border:1px solid rgba(231,217,206,0.7);box-shadow:0 6px 18px rgba(0,0,0,0.03)}.mini-feature .feature-copy{padding:30px}.mini-feature img{min-height:300px}.mini-feature h2{font-size:1.85rem}
+    .swatches{display:flex;align-items:center;gap:14px;margin-top:16px}.swatch{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:.65rem;color:var(--muted)}.swatch-circle{width:22px;height:22px;border-radius:50%;border:2px solid transparent;cursor:pointer}.swatch.active .swatch-circle{border-color:var(--wine);transform:scale(1.1)}.input-group{margin-top:14px}.input-group label{display:block;font-size:.68rem;text-transform:uppercase;font-weight:700;color:#9A6545;letter-spacing:.08em;margin-bottom:4px}.input-group input{width:100%;max-width:210px;padding:7px 12px;border:1px solid var(--line);border-radius:8px;font-size:.82rem;font-weight:600;outline:none;background:#fff}
+    .trending{padding-top:45px}.filter-row{display:flex;gap:8px;justify-content:flex-end;margin-top:-40px}.filter{border:1px solid #CAB9B1;border-radius:999px;padding:7px 18px;background:white;font-size:.76rem;font-weight:700;cursor:pointer;transition:.2s}.filter.active{background:var(--wine);color:white;border-color:var(--wine)}.trending-row{display:grid;grid-template-columns:repeat(6,1fr);gap:14px;margin-top:28px}.trending-item{text-align:center}.trending-item img{height:120px;border-radius:10px;border:1px solid var(--line);box-shadow:0 2px 8px rgba(0,0,0,0.04);transition:.2s}.trending-item:hover img{transform:scale(1.04)}.trending-item span{display:block;font-size:.74rem;font-weight:600;margin-top:8px;color:#55494A}
+    .maroon{background:var(--wine);color:#fff;padding:54px 0}.maroon-grid{display:grid;grid-template-columns:1fr 1.2fr .8fr;align-items:center;gap:35px}.maroon-stack{position:relative;height:180px;width:240px;margin:auto}.maroon-stack img{position:absolute;width:150px;height:115px;border-radius:10px;border:2px solid rgba(255,255,255,0.25);box-shadow:0 8px 24px rgba(0,0,0,0.4)}.maroon-stack img:first-child{top:10px;left:10px;transform:rotate(-6deg)}.maroon-stack img:last-child{bottom:10px;right:10px;transform:rotate(5deg)}.maroon h2{font:700 clamp(2rem,3.2vw,2.6rem)/1.05 var(--serif);margin:.3rem 0}.benefits{display:grid;grid-template-columns:1fr;gap:18px}.benefit-item{display:flex;align-items:center;gap:12px}.benefit-item span{font-size:1.6rem;color:#D9B071}.benefit-item b{display:block;font-size:.82rem}.benefit-item small{color:#E9CFD6;font-size:.72rem}
+    .real{padding:30px 0 60px}.real-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}.real-gallery{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:45px}.real-gallery img{height:120px;border-radius:10px;border:1px solid var(--line);box-shadow:0 2px 8px rgba(0,0,0,0.04)}.bottom-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:40px}.guides{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px}.guide{background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px;min-height:125px;display:flex;flex-direction:column;justify-content:space-between;transition:.2s}.guide:hover{border-color:var(--gold);box-shadow:0 6px 18px rgba(0,0,0,0.05)}.guide b{display:block;font-size:.82rem;line-height:1.35;color:var(--ink)}.guide a{font-size:.74rem;font-weight:700;color:var(--wine)}.faq details{border-bottom:1px solid var(--line);padding:12px 4px}.faq summary{cursor:pointer;list-style:none;font-size:.85rem;font-weight:600;display:flex;justify-content:space-between}.faq summary:after{content:'+';font-weight:700;color:var(--wine)}.faq details[open] summary:after{content:'−'}.faq p{font-size:.8rem;color:var(--muted);margin-top:6px}
+    .final-cta{padding:38px 0;background:#F5E7D8;border-top:1px solid var(--line)}.final-row{display:flex;align-items:center;justify-content:space-between}.final-cta h2{font:700 1.8rem var(--serif);margin:.2rem 0}.footer{background:var(--wine);color:#fff;padding:50px 0 24px}.footer-grid{display:grid;grid-template-columns:1.4fr repeat(3,1fr) 1.5fr;gap:35px}.footer h4{font-size:.82rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;margin:0 0 14px;color:#fff}.footer a{display:block;font-size:.75rem;color:#F0DCE1;margin:8px 0;transition:.2s}.footer a:hover{color:#fff;transform:translateX(2px)}.newsletter{display:flex;background:#fff;border-radius:999px;overflow:hidden;padding:2px}.newsletter input{border:0;outline:0;padding:10px 14px;min-width:0;width:100%;font-size:.78rem;color:var(--ink)}.newsletter button{border:0;background:var(--wine);color:#fff;width:38px;height:38px;border-radius:50%;cursor:pointer}.copyright{border-top:1px solid rgba(255,255,255,0.15);margin-top:35px;padding-top:18px;display:flex;justify-content:space-between;color:#DEC5CB;font-size:.7rem}
+    .socials{display:flex;gap:10px;margin-top:14px}.social-btn{width:32px;height:32px;border-radius:50%;border:1px solid rgba(255,255,255,0.25);display:grid;place-items:center;font-size:.8rem;color:#fff;transition:.2s}.social-btn:hover{background:#fff;color:var(--wine)}
+    @media(max-width:900px){.links{display:none}.mobile-menu{display:inline-flex}.topbar{height:66px}.hero-grid{grid-template-columns:1fr}.hero-copy{padding:44px 0 28px}.hero-art{height:300px}.product-grid{grid-template-columns:repeat(2,1fr)}.steps-grid{grid-template-columns:1fr}.feature,.feature.reverse{grid-template-columns:1fr}.feature .feature-copy,.feature.reverse .feature-copy{order:1}.feature img,.feature.reverse img{order:2}.feature.small-grid{grid-template-columns:1fr}.bottom-grid{grid-template-columns:1fr}.footer-grid{grid-template-columns:repeat(2,1fr)}.footer-grid>:first-child{grid-column:1/-1}.filter-row{margin:18px 0 0;justify-content:flex-start;overflow:auto}.maroon-grid{grid-template-columns:1fr}.trending-row,.real-gallery{grid-template-columns:repeat(3,1fr)}}
+    @media(max-width:560px){section{padding:52px 0}.icons .icon-btn{display:none}.icons .icon-btn.mobile-menu{display:inline-flex}.pill{padding:.65rem 1rem}.hero h1{font-size:2.7rem}.trust{display:grid;grid-template-columns:1fr 1fr;gap:12px}.product-grid{grid-template-columns:1fr}.product img{height:240px}.step-list{grid-template-columns:repeat(2,1fr);gap:20px}.step{border:0}.steps-img{display:none}.feature-copy{padding:28px}.feature img{min-height:240px}.mini-feature{grid-template-columns:1fr}.mini-feature img{min-height:210px}.maroon-grid{text-align:center}.final-row{flex-direction:column;gap:18px;text-align:center}.footer-grid{grid-template-columns:1fr 1fr}.newsletter-wrap{grid-column:1/-1}.copyright{flex-direction:column;gap:8px}.guides{grid-template-columns:1fr}.trending-row,.real-gallery{grid-template-columns:repeat(2,1fr)}}
+  </style>
+</head>
+<body>
+  <!-- Header Topbar matching reference -->
+  <header class="topbar">
+    <div class="wrap nav">
+      <a href="/" class="logo" title="PrintAlarm Home">
+        <img src="/logo.png" alt="PrintAlarm Logo" class="logo-img" />
+        <span><strong>PrintAlarm</strong><small>Print Your Memories</small></span>
+      </a>
+      <nav class="links" aria-label="Main navigation">
+        <a href="#frames">Frames</a>
+        <a href="/magazine-maker">Magazines</a>
+        <a href="/photo-zine-maker">Photo Zines</a>
+        <a href="/templates">Cards & Lifafas</a>
+        <a href="#inspiration">Inspiration</a>
+        <a href="#how">How It Works</a>
+      </nav>
+      <div class="icons">
+        <a href="/templates" class="icon-btn" title="Search Designs" aria-label="Search">🔍</a>
+        <a href="/auth" class="icon-btn" title="Account / Profile" aria-label="Account">👤</a>
+        <a href="/dashboard" class="icon-btn" title="My Orders & Cart" aria-label="Cart">
+          🛒<span class="cart-badge">0</span>
+        </a>
+        <a href="/templates" class="pill">Start Creating</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">PERSONALISED, BY YOU.</p>
+          <h1>Turn Your Photos Into Something Worth Keeping.</h1>
+          <p>Create personalised frames, magazines, photo zines and cards from the moments you love.</p>
+          <div class="actions">
+            <a class="btn primary" href="/templates">Start Creating <span>→</span></a>
+            <a class="btn light" href="#products">Explore Products <span>→</span></a>
+          </div>
+          <div class="trust">
+            <span>📷 &nbsp;Easy to personalise</span>
+            <span>♡ &nbsp;Preview before ordering</span>
+            <span>📦 &nbsp;Made with care</span>
+          </div>
+        </div>
+        <div class="hero-art">
+          <img src="/homepage/hero-collection.jpg" alt="A collection of personalised frames, magazines and cards">
+        </div>
+      </div>
+    </section>
+
+    <!-- 4 Core Products Grid: What Will You Create? -->
+    <section class="products center" id="products">
+      <div class="wrap">
+        <p class="eyebrow">MAKE IT YOURS</p>
+        <h2 class="section-title">What Will You Create?</h2>
+        <p class="sub">From one favourite photo to a whole story, choose how you'd like to keep your memories.</p>
+        <div class="product-grid">
+          <article class="product" data-kind="frames">
+            <img src="/homepage/product-frame.jpg" alt="Personalised photo frame">
+            <div class="product-body">
+              <h3>Photo Frames</h3>
+              <p>Give your favourite photo a place to stay.</p>
+              <a class="btn btn-gold" href="/designer">Create a Frame →</a>
+            </div>
+          </article>
+          <article class="product" data-kind="magazines">
+            <img src="/homepage/product-magazine.jpg" alt="Personalised magazine">
+            <div class="product-body">
+              <h3>Personalised Magazine</h3>
+              <p>Your photos. Your stories. Your magazine.</p>
+              <a class="btn btn-wine" href="/magazine-maker">Create Magazine →</a>
+            </div>
+          </article>
+          <article class="product" data-kind="zines">
+            <img src="/homepage/product-zine.jpg" alt="Pocket-sized photo zine">
+            <div class="product-body">
+              <h3>Photo Zine</h3>
+              <p>8 photos. One little story to keep.</p>
+              <a class="btn btn-wine" href="/photo-zine-maker">Create a Zine →</a>
+            </div>
+          </article>
+          <article class="product" data-kind="cards">
+            <img src="/homepage/product-card.jpg" alt="Personalised celebration card">
+            <div class="product-body">
+              <h3>Cards & Lifafas</h3>
+              <p>Made personal for every celebration.</p>
+              <a class="btn btn-gold" href="/templates">Personalise Yours →</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5 Steps: Made By You. Made Easy. -->
+    <section class="steps" id="how">
+      <div class="wrap steps-grid">
+        <div>
+          <p class="eyebrow">FROM PHOTO TO KEEPSAKE</p>
+          <h2 class="section-title">Made By You. Made Easy.</h2>
+          <p class="sub">Creating something personal shouldn't feel complicated.</p>
+          <div class="step-list">
+            <div class="step">
+              <div class="step-icon">♡</div>
+              <b>01 Choose</b>
+              <span>Pick what you'd like to create.</span>
+            </div>
+            <div class="step">
+              <div class="step-icon">⇧</div>
+              <b>02 Upload</b>
+              <span>Add the photos that matter to you.</span>
+            </div>
+            <div class="step">
+              <div class="step-icon">✣</div>
+              <b>03 Personalise</b>
+              <span>Choose your design, words and details.</span>
+            </div>
+            <div class="step">
+              <div class="step-icon">▧</div>
+              <b>04 Preview</b>
+              <span>See your creation before you order.</span>
+            </div>
+            <div class="step">
+              <div class="step-icon">▣</div>
+              <b>05 Receive</b>
+              <span>We print it and deliver it to you.</span>
+            </div>
+          </div>
+        </div>
+        <div class="steps-img">
+          <img src="/homepage/steps-editor.jpg" alt="PrintAlarm online personalisation editor">
+        </div>
+      </div>
+    </section>
+
+    <!-- Product Feature Deep-Dives -->
+    <section class="features" id="create">
+      <div class="wrap">
+        <!-- 1. Magazines -->
+        <article class="feature" id="magazines">
+          <div class="feature-copy">
+            <p class="eyebrow">PERSONALISED MAGAZINES</p>
+            <h2>Your Memories.<br>Your Magazine.</h2>
+            <p>Turn your favourite photos and stories into a magazine that's completely yours. Create the cover, arrange your photos, add your words and make every page personal.</p>
+            <a class="btn primary" href="/magazine-maker">Create Your Magazine →</a>
+            <div class="feature-bullets">
+              <span>• Choose a design</span>
+              <span>• Add your photos</span>
+              <span>• Tell your story</span>
+            </div>
+          </div>
+          <img src="/homepage/feature-magazine.jpg" alt="Personalised wedding magazine and open photo spread">
+        </article>
+
+        <!-- 2. Photo Zines -->
+        <article class="feature reverse" id="zines">
+          <img src="/homepage/feature-zine.jpg" alt="A small travel photo zine held open">
+          <div class="feature-copy">
+            <p class="eyebrow">SMALL BOOK. BIG MEMORIES.</p>
+            <h2>8 Photos. One Little Story.</h2>
+            <p>Choose eight favourite photos and turn them into a pocket-sized photo zine made to keep, share or gift.</p>
+            <a class="btn primary" href="/photo-zine-maker">Create Your Photo Zine →</a>
+            <div class="feature-bullets">
+              <span>• 8 photos</span>
+              <span>• Easy to make</span>
+              <span>• Made for giving</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- 3 & 4. Frames and Cards Side by Side -->
+        <div class="feature small-grid">
+          <!-- Frames Feature -->
+          <article class="mini-feature" id="frames">
+            <div class="feature-copy">
+              <p class="eyebrow">YOUR FAVOURITE MOMENTS, FRAMED</p>
+              <h2>Give Your Favourite Photo a Place to Stay.</h2>
+              <p>Turn the photos you love into personalised frames for your desk, walls and favourite spaces.</p>
+              <a class="btn primary" href="/designer">Create Your Frame →</a>
+              <div class="swatches">
+                <div class="swatch">
+                  <div class="swatch-circle" style="background:#1a1a1a;"></div>
+                  <span>Black</span>
+                </div>
+                <div class="swatch active">
+                  <div class="swatch-circle" style="background:#b88746;"></div>
+                  <span>Natural Wood</span>
+                </div>
+                <div class="swatch">
+                  <div class="swatch-circle" style="background:#d4af37;"></div>
+                  <span>Gold</span>
+                </div>
+              </div>
+            </div>
+            <img src="/homepage/feature-frame.jpg" alt="Family photograph in a wooden frame">
+          </article>
+
+          <!-- Cards Feature -->
+          <article class="mini-feature" id="cards">
+            <div class="feature-copy">
+              <p class="eyebrow">MADE FOR CELEBRATIONS</p>
+              <h2>A Little More Personal.</h2>
+              <p>Create personalised cards and Shagun Lifafas for weddings, celebrations, blessings and thoughtful gifting.</p>
+              <div class="input-group">
+                <label>Enter your name</label>
+                <input type="text" value="Aarav & Diya" id="customNameInput">
+              </div>
+              <div style="margin-top:12px">
+                <a class="btn primary" href="/templates">Personalise Yours →</a>
+              </div>
+            </div>
+            <img src="/homepage/feature-card.jpg" alt="Personalised floral envelope">
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Trending Creations -->
+    <section class="trending" id="inspiration">
+      <div class="wrap">
+        <p class="eyebrow">MADE TO INSPIRE</p>
+        <h2 class="section-title">Trending Creations</h2>
+        <p class="sub">See what people are creating with their favourite moments.</p>
+        <div class="filter-row">
+          <button class="filter active" data-filter="all">All</button>
+          <button class="filter" data-filter="frames">Frames</button>
+          <button class="filter" data-filter="magazines">Magazines</button>
+          <button class="filter" data-filter="zines">Photo Zines</button>
+          <button class="filter" data-filter="cards">Cards</button>
+        </div>
+        <div class="trending-row">
+          <a href="/designer" class="trending-item">
+            <img src="/homepage/quad-frame.jpg" alt="Photo Frame">
+            <span>Photo Frame</span>
+          </a>
+          <a href="/magazine-maker" class="trending-item">
+            <img src="/homepage/quad-magazine.jpg" alt="Wedding Magazine">
+            <span>Wedding Magazine</span>
+          </a>
+          <a href="/photo-zine-maker" class="trending-item">
+            <img src="/homepage/quad-zine.jpg" alt="Travel Zine">
+            <span>Travel Zine</span>
+          </a>
+          <a href="/templates" class="trending-item">
+            <img src="/homepage/quad-card.jpg" alt="Shagun Lifafa">
+            <span>Shagun Lifafa</span>
+          </a>
+          <a href="/designer" class="trending-item">
+            <img src="/homepage/feature-frame.jpg" alt="Family Frame">
+            <span>Family Frame</span>
+          </a>
+          <a href="/templates" class="trending-item">
+            <img src="/homepage/feature-card.jpg" alt="Invitation Card">
+            <span>Invitation Card</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Maroon Emotional Value Section -->
+    <section class="maroon">
+      <div class="wrap maroon-grid">
+        <div class="maroon-stack">
+          <img src="/homepage/quad-frame.jpg" alt="Framed moment">
+          <img src="/homepage/feature-frame.jpg" alt="Family moments">
+        </div>
+        <div>
+          <h2 style="color:#fff">Your Photos Already<br>Mean Something.</h2>
+          <p style="color:#E9CFD6;font-size:.9rem;margin-bottom:1.5rem">We simply help you turn them into something you can hold, gift and keep.</p>
+          <a class="btn light" style="background:#FFFAF4;color:var(--wine);border:0" href="/templates">Start Creating →</a>
+        </div>
+        <div class="benefits">
+          <div class="benefit-item">
+            <span>♡</span>
+            <div>
+              <b>Made Personal</b>
+              <small>Your story, your way.</small>
+            </div>
+          </div>
+          <div class="benefit-item">
+            <span>🎁</span>
+            <div>
+              <b>Easy to Create</b>
+              <small>No design experience needed.</small>
+            </div>
+          </div>
+          <div class="benefit-item">
+            <span>⭐</span>
+            <div>
+              <b>Made to Keep</b>
+              <small>Thoughtfully printed for memories that last.</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Real Life Loved & Guides -->
+    <section class="real">
+      <div class="wrap">
+        <div class="real-head">
+          <h2 class="section-title">Created by You. Loved in Real Life.</h2>
+          <a href="/templates" class="filter">View More →</a>
+        </div>
+        <div class="real-gallery">
+          <img src="/homepage/quad-frame.jpg" alt="Black wood frame portrait">
+          <img src="/homepage/quad-zine.jpg" alt="Travel photo zine open">
+          <img src="/homepage/quad-magazine.jpg" alt="Together wedding magazine">
+          <img src="/homepage/product-card.jpg" alt="Floral wedding envelope">
+          <img src="/homepage/feature-frame.jpg" alt="Family framed photograph">
+          <img src="/homepage/feature-card.jpg" alt="Custom Shagun Lifafa">
+        </div>
+        
+        <div class="bottom-grid">
+          <div>
+            <p class="eyebrow">IDEAS & INSPIRATION</p>
+            <h2 class="section-title" style="font-size:2rem">Make More With Your Memories.</h2>
+            <div class="guides">
+              <article class="guide">
+                <b>How to Create Your Own Personalised Magazine</b>
+                <a href="/magazine-maker">Read Guide →</a>
+              </article>
+              <article class="guide">
+                <b>8 Photos That Make a Perfect Photo Zine</b>
+                <a href="/photo-zine-maker">Read Guide →</a>
+              </article>
+              <article class="guide">
+                <b>How to Choose the Right Frame for Your Photo</b>
+                <a href="/how-to-choose-a-shagun-cover">Read Guide →</a>
+              </article>
+            </div>
+          </div>
+          <div class="faq">
+            <h2 class="section-title" style="font-size:2rem">Frequently Asked Questions</h2>
+            <details>
+              <summary>What can I personalise?</summary>
+              <p>You can personalise frames, magazines, photo zines, cards and lifafas with your own photos, names, and customized words.</p>
+            </details>
+            <details>
+              <summary>Do I need design experience?</summary>
+              <p>No! Simply pick what you like, upload your photos, arrange them with our easy visual tools, and preview live.</p>
+            </details>
+            <details>
+              <summary>Can I preview my design before ordering?</summary>
+              <p>Yes, our interactive studios let you inspect covers, page layouts, and 3D previews in real time.</p>
+            </details>
+            <details>
+              <summary>Can I use photos from my phone?</summary>
+              <p>Yes, you can upload photos directly from your smartphone or computer in seconds.</p>
+            </details>
+            <details>
+              <summary>Do you deliver across India?</summary>
+              <p>Yes, we offer insured, fast pan-India courier delivery with express rush options available.</p>
+            </details>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Final Call to Action -->
+    <section class="final-cta">
+      <div class="wrap final-row">
+        <div>
+          <p class="eyebrow">YOUR PHOTOS ARE READY.</p>
+          <h2>What Will You Make With Them?</h2>
+          <p class="sub">Frames &nbsp;·&nbsp; Magazines &nbsp;·&nbsp; Photo Zines &nbsp;·&nbsp; Cards & Lifafas</p>
+        </div>
+        <a class="btn primary" href="/templates">Start Creating →</a>
+      </div>
+    </section>
+  </main>
+
+  <!-- Brand Footer matching reference -->
+  <footer class="footer">
+    <div class="wrap">
+      <div class="footer-grid">
+        <div>
+          <div class="logo">
+            <img src="/logo.png" alt="PrintAlarm Logo" class="logo-img" style="background:#fff;" />
+            <span><strong style="color:#fff">PrintAlarm</strong><small style="color:#E6CCD2">Print Your Memories</small></span>
+          </div>
+          <div class="socials">
+            <a href="https://www.facebook.com/profile.php?id=61591651010384&sk=directory_intro" target="_blank" class="social-btn" aria-label="Facebook">f</a>
+            <a href="https://www.instagram.com/printalarm5/" target="_blank" class="social-btn" aria-label="Instagram">ig</a>
+            <a href="https://www.youtube.com/@Printalarm" target="_blank" class="social-btn" aria-label="YouTube">yt</a>
+          </div>
+        </div>
+        <div>
+          <h4>Create</h4>
+          <a href="#frames">Photo Frames</a>
+          <a href="/magazine-maker">Magazines</a>
+          <a href="/photo-zine-maker">Photo Zines</a>
+          <a href="/templates">Cards & Lifafas</a>
+        </div>
+        <div>
+          <h4>Discover</h4>
+          <a href="/templates">Trending Creations</a>
+          <a href="#inspiration">Inspiration</a>
+          <a href="#how">How It Works</a>
+          <a href="/about">About PrintAlarm</a>
+        </div>
+        <div>
+          <h4>Help</h4>
+          <a href="#how">FAQs</a>
+          <a href="https://wa.me/919904544702" target="_blank" rel="noreferrer">Contact Us</a>
+          <a href="/shipping-policy">Shipping</a>
+          <a href="/return-exchange">Returns</a>
+        </div>
+        <div class="newsletter-wrap">
+          <h4>Stay in Touch</h4>
+          <form class="newsletter" id="newsletter">
+            <input type="email" aria-label="Email address" placeholder="Enter your email" required>
+            <button aria-label="Subscribe">→</button>
+          </form>
+        </div>
+      </div>
+      <div class="copyright">
+        <span>© 2026 PrintAlarm. All rights reserved.</span>
+        <span>
+          <a href="/privacy-policy" style="color:inherit;display:inline;">Privacy Policy</a> &nbsp;&nbsp;|&nbsp;&nbsp; 
+          <a href="/terms-conditions" style="color:inherit;display:inline;">Terms & Conditions</a>
+        </span>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
