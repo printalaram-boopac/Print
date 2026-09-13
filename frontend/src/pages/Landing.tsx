@@ -101,7 +101,6 @@ const FAQ_ITEMS = [
 export default function Landing() {
   const [activeFilter, setActiveFilter] = useState('all');
   const [openFaq, setOpenFaq] = useState<number | null>(0);
-  const [customName, setCustomName] = useState('Aarav & Diya');
   const [activeSwatch, setActiveSwatch] = useState('wood');
 
   const filteredTrending = activeFilter === 'all'
@@ -514,47 +513,21 @@ export default function Landing() {
                   Create personalised cards and Shagun Lifafas for weddings, celebrations, blessings and thoughtful gifting.
                 </p>
 
-                {/* Input with real-time feedback */}
-                <div className="pt-1">
-                  <label className="block text-[0.68rem] uppercase font-bold text-[#9A6545] tracking-[0.08em] mb-1">
-                    Enter your name
-                  </label>
-                  <input
-                    type="text"
-                    value={customName}
-                    onChange={(e) => setCustomName(e.target.value)}
-                    placeholder="e.g. Aarav & Diya"
-                    className="w-full max-w-[210px] px-3 py-1.5 rounded-[8px] bg-white border border-[#E7D9CE] text-[0.82rem] font-semibold text-[#35151C] outline-none focus:border-[#BD8D4B] transition-colors shadow-2xs"
-                  />
-                </div>
-
-                <div className="pt-1">
+                <div className="pt-2">
                   <Link
-                    to={`/templates?name=${encodeURIComponent(customName)}`}
+                    to="/templates"
                     className="inline-flex items-center gap-1.5 rounded-full px-5 py-2.5 bg-[#571126] text-white font-bold text-[0.82rem] hover:bg-[#38101D] hover:-translate-y-0.5 transition-all cursor-pointer shadow-xs"
                   >
                     Personalise Yours →
                   </Link>
                 </div>
               </div>
-              <div className="h-full min-h-[280px] relative overflow-hidden flex items-center justify-center">
+              <div className="h-full min-h-[280px] overflow-hidden">
                 <img
                   src="/homepage/feature-card.jpg"
                   alt="Personalised floral envelope"
                   className="w-full h-full object-cover min-h-[280px] group-hover:scale-104 transition-transform duration-500"
                 />
-                {customName && (
-                  <motion.div
-                    key={customName}
-                    initial={{ scale: 0.95, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    className="absolute inset-0 flex items-center justify-center pointer-events-none p-4"
-                  >
-                    <span className="font-display text-sm md:text-base font-bold text-[#7D5A1E] drop-shadow-xs bg-white/80 backdrop-blur-xs px-3.5 py-1.5 rounded-md border border-[#BD8D4B]/35 rotate-[-4deg] shadow-xs">
-                      {customName}
-                    </span>
-                  </motion.div>
-                )}
               </div>
             </motion.article>
           </div>
